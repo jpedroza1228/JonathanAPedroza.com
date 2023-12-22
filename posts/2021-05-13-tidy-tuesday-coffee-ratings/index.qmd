@@ -1,0 +1,279 @@
+---
+title: "Tidy Tuesday Coffee Ratings" 
+subtitle: |
+  I decided to use TidyModels to create some models predicting Washed/Not Washed (Natural) Coffees. 
+image: coffee_process.jpg
+categories: [Visualizations, Analysis, Tidy Tuesday]
+date: 2021-05-13
+# citation:
+  # url: 
+params:
+  slug: Tidy-Tuesday-Coffee-Ratings
+  date: 2021-05-13
+---
+
+```{r packages, include = FALSE}
+library(tidyverse)
+library(tidymodels)
+library(themis)
+```
+
+## Predicting Process of Green Coffee Beans
+
+With coffee being a hobby of mine, I was scrolling through past Tidy Tuesdays and found one on coffee ratings. Originally I thought looking at predictions of total cup points, but I assumed with all the coffee tasting characteristics that it wouldn't really tell me anything. Instead, I decided to look into the processing method, as there are different taste characteristics between washed and other processing methods.
+
+```{r importing data}
+coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv') %>% 
+  mutate(species = as.factor(species),
+         process = recode(processing_method, "Washed / Wet" = "washed",
+                          "Semi-washed / Semi-pulped" = "not_washed",
+                          "Pulped natural / honey" = "not_washed",
+                          "Other" = "not_washed",
+                          "Natural / Dry" = "not_washed",
+                          "NA" = NA_character_),
+         process = as.factor(process),
+         process = relevel(process, ref = "washed"),
+         country_of_origin = as.factor(country_of_origin)) %>% 
+  drop_na(process) %>% 
+  filter(country_of_origin != "Cote d?Ivoire")
+
+```
+
+After looking at the distributions of procssing methods, I also decided to make the processing method binary with washed and not washed. This worked out better for the prediction models. There are also some descriptives of each variable.
+
+```{r}
+coffee %>% 
+  ggplot(aes(processing_method)) +
+  geom_bar(color = "white", fill = "dodgerblue") +
+  coord_flip()
+
+coffee %>% 
+  ggplot(aes(process)) +
+  geom_bar(color = "white", fill = "dodgerblue") +
+  coord_flip()
+
+psych::describe(coffee, na.rm = TRUE)[c("n", "mean", "sd", "min", "max", "skew", "kurtosis")]
+```
+
+Now, its time to split the data into training and testing data. I also included the function of `strata` to stratify sampling based on process.
+
+```{r}
+set.seed(05132021)
+
+coffee_split <- initial_split(coffee, strata = "process")
+
+coffee_train <- training(coffee_split)
+coffee_test <- testing(coffee_split)
+```
+
+I also did some cross validation for the training dataset and used the metrics I was most interested in.
+
+```{r}
+set.seed(05132021)
+
+coffee_fold <- vfold_cv(coffee_train, strata = "process", v = 10)
+
+metric_measure <- metric_set(accuracy, mn_log_loss, roc_auc)
+```
+
+From the beginning I was interested in the tasting characteristics and how they would predict whether the green coffee was washed or not washed. I also included the total cup points because I wanted to see the importance of that predictor on the processing method. The only feature engineering I did was to remove any zero variance in the predictors of the model.
+
+```{r}
+set.seed(05132021)
+
+char_recipe <- recipe(process ~ aroma + flavor + aftertaste +
+                        acidity + body + balance + uniformity + clean_cup +
+                        sweetness + total_cup_points,
+                      data = coffee_train) %>% 
+  step_zv(all_predictors(), -all_outcomes())
+
+char_recipe %>% 
+  prep() %>% 
+  bake(new_data = NULL) %>%
+  head()
+
+```
+
+### Logistic Regression
+
+The first model I wanted to test with the current recipe was logistic regression. The `accuracy` and `roc auc` were alright for a starting model.
+
+```{r log regression, echo = FALSE, eval = TRUE}
+
+set.seed(05132021)
+
+lr_mod <- logistic_reg()  %>%
+  set_engine("glmnet") %>% 
+  set_mode("classification") %>%  
+  set_args(penalty = 0,
+           mixture = 0)
+
+lr_flo <- workflow() %>% 
+  add_recipe(char_recipe) %>% 
+  add_model(lr_mod)
+
+lr_fit <- tune::fit_resamples(object = lr_flo,
+                    resamples = coffee_fold,
+                    metrics = metric_measure,
+                    control = control_resamples(verbose = FALSE,
+                                                save_pred = TRUE))
+
+```
+
+```{r metrics of log reg}
+collect_metrics(lr_fit)
+```
+
+### Lasso Regression
+
+Now for the first penalized regression. The lasso regression did not improve in either metric. Let's try the next penalized regression.
+
+```{r lasso reg, echo = FALSE, eval = TRUE}
+set.seed(05132021)
+
+lasso_mod <- logistic_reg()  %>%
+  set_engine("glmnet") %>% 
+  set_mode("classification") %>% 
+  set_args(penalty = 0,
+           mixture = 1)
+
+lasso_flo <- lr_flo %>% 
+  update_model(lasso_mod) 
+
+lasso_fit <- tune::fit_resamples(object = lasso_flo,
+                    resamples = coffee_fold,
+                    metrics = metric_measure,
+                    control = control_resamples(verbose = FALSE,
+                                                save_pred = TRUE))
+```
+
+```{r metrics lasso reg}
+collect_metrics(lasso_fit)
+```
+
+### Ridge Regression
+
+The ridge regression was shown to not be a good fitting model. So I tested an additional penalized regression while tuning hyper-parameters.
+
+```{r ridge reg, echo = FALSE, eval = TRUE}
+set.seed(05132021)
+
+ridge_mod <- logistic_reg()  %>%
+  set_engine("glmnet") %>% 
+  set_mode("classification") %>% 
+  set_args(penalty = 1,
+           mixture = 0)
+
+ridge_flo <- lasso_flo %>% 
+  update_model(ridge_mod) 
+
+ridge_fit <- tune::fit_resamples(object = ridge_flo,
+                    resamples = coffee_fold,
+                    metrics = metric_measure,
+                    control = control_resamples(verbose = FALSE,
+                                                save_pred = TRUE))
+```
+
+```{rmetrics ridge}
+collect_metrics(ridge_fit)
+```
+
+### Elastic Net Regression
+
+The elastic net regression had slightly better accuracy than the non-penalized logistic regression but the ROC AUC was exactly the same. While the elastic net regression did not take long computationally due to the small amount of data, this model would not be chosen over the logistic regression.
+
+```{r elastic reg, echo = FALSE, eval = TRUE}
+set.seed(05132021)
+
+elastic_tune_mod <- logistic_reg()  %>%
+  set_engine("glmnet") %>% 
+  set_mode("classification") %>% 
+  set_args(penalty = tune(),
+           mixture = tune())
+
+elastic_tune_flo <- ridge_flo %>% 
+  update_model(elastic_tune_mod) 
+
+elastic_grid <- grid_regular(penalty(), mixture(), levels = 10)
+
+elastic_fit <- tune_grid(elastic_tune_flo,
+                          resamples = coffee_fold,
+                          grid = elastic_grid,
+                    metrics = metric_measure,
+                           control = tune::control_resamples(verbose = FALSE,
+                                                             save_pred = TRUE))
+
+```
+
+```{r metrics elastic reg}
+collect_metrics(elastic_fit)
+show_best(elastic_fit, metric = "accuracy", n = 5)
+show_best(elastic_fit, metric = "roc_auc", n = 5)
+
+select_best(elastic_fit, metric = "accuracy")
+select_best(elastic_fit, metric = "roc_auc")
+```
+
+### New Recipe
+
+Even though the elastic net regression was only slightly better, I decided to update the workflow using that model. This time I decided to update the recipe by including additional predictors like if there were any defects in the green coffee beans, the species of the coffee (e.g., Robusta and Arabica), and the country of origin. I also included additional steps in my recipe by transforming the category predictors and working with the factor predictors, like species, and country of origin. The inclusion of additional steps and the predictors created a better fitting model with the elastic net regression.
+
+```{r}
+set.seed(05132021)
+
+bal_rec <- recipe(process ~ aroma + flavor + aftertaste +
+                        acidity + body + balance + uniformity + clean_cup +
+                        sweetness + total_cup_points + category_one_defects + category_two_defects + species +
+                        country_of_origin,
+                      data = coffee_train) %>% 
+  step_BoxCox(category_two_defects, category_one_defects) %>% 
+  step_novel(species, country_of_origin) %>% 
+  step_other(species, country_of_origin, threshold = .01) %>%
+  step_unknown(species, country_of_origin) %>% 
+  step_dummy(species, country_of_origin) %>% 
+  step_zv(all_predictors(), -all_outcomes())
+```
+
+```{r new recipe, echo = FALSE, eval = TRUE}
+
+bal_flo <- elastic_tune_flo %>% 
+  update_recipe(bal_rec)
+
+elastic_bal_fit <- tune_grid(bal_flo,
+                          resamples = coffee_fold,
+                          grid = elastic_grid,
+                    metrics = metric_measure,
+                           control = tune::control_resamples(verbose = FALSE,
+                                                             save_pred = TRUE))
+```
+
+```{r metrics new recipe}
+collect_metrics(elastic_bal_fit) 
+
+show_best(elastic_bal_fit, metric = "accuracy", n = 5)
+show_best(elastic_bal_fit, metric = "mn_log_loss", n = 5)
+show_best(elastic_bal_fit, metric = "roc_auc", n = 5)
+
+select_best(elastic_bal_fit, metric = "accuracy")
+select_best(elastic_bal_fit, metric = "mn_log_loss")
+select_best(elastic_bal_fit, metric = "roc_auc")
+```
+
+Now using the testing dataset, we can see how well the final model fit the testing data. While not the best at predicting washed green coffee beans, this was a good test to show that the penalized regressions are not always the best fitting models compared to regular logistic regression. In the end, it seemed like the recipe was the most important component to predicting washed green coffee beans.
+
+```{r testing, echo = FALSE, eval = TRUE}
+
+best_model <- select_best(elastic_bal_fit, metric = "roc_auc")
+
+final_workflow <- finalize_workflow(bal_flo, best_model)
+
+set.seed(05132021)
+
+final_results <- last_fit(final_workflow,
+                                   split = coffee_split)
+```
+
+```{r final metrics}
+final_results %>%
+  collect_metrics()
+```
