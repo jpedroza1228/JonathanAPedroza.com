@@ -1,0 +1,29 @@
+---
+title: "Jonathan A. Pedroza (JP)"
+image: avatar.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/jp_prev_uo
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/
+    - icon: github
+      text: Github
+      href: https://github.com/jpedroza1228
+    - icon: graduation-cap
+      text: Google Scholar
+      href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
+    - icon: cv
+      text: CV
+      href: https://drive.google.com/file/d/1GbjOT36Nh_KaPjrq0ek7UrQ4sg2gdCGQ/view?usp=sharing
+---
+
+Hi! I'm JP. I'm a trained Prevention Scientist from the University of Oregon. I'm currently serving as an Academy mentor for RStudio and working as a R programmer consultant as I'm pursuing full-time work.
+
+My interests include examining environmental factors that contribute to inequities of access and engagement in health behaviors, creating visualizations to disseminate data to various audiences, and learning more about inferential statistics and predictive modeling techniques. I enjoy using R as my main programming language and am competent in Python. I also have an understanding of creating queries using SQL.
+
+Away from my computer I enjoy everything about coffee, hiking, cycling, and playing with my cat. If you have any questions, you can reach me on [twitter](https://twitter.com/jp_prev_uo) or through email (cpppedroza\@gmail.com).
+
