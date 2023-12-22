@@ -11,7 +11,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: minty
     css: jp_style.css
     toc: true
 
