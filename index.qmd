@@ -1,18 +1,18 @@
 ---
 title: "Welcome to my posts"
 subtitle: "Where I share about R, Python, and Other Interesting Topics"
-listing:
-  feed: true
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
+#listing:
+#  feed: true
+#  contents: posts
+#  sort: "date desc"
+#  type: default
+#  categories: true
 page-layout: full
 title-block-banner: true
 image: avatar.jpg
 ---
 
-```{r write-redirects}
+```{r write-redirects, eval = FALSE}
 #| echo: false
 # list names of post folders
 posts <- list.dirs(
