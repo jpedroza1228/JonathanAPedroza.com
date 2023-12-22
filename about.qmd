@@ -4,6 +4,12 @@ image: avatar.jpg
 about:
   template: jolla
   links:
+    - icon: <i class="fa-solid fa-rainbow"></i>
+      text: BlueSky
+      href: https://bsky.app/profile/jonathanpedroza.bsky.social
+    - icon: <i class="fa-brands fa-mastodon"></i>
+      text: Mastodon
+      href: https://fosstodon.org/@jpedroza
     - icon: twitter
       text: Twitter
       href: https://twitter.com/jp_prev_uo
