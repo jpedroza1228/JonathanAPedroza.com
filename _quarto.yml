@@ -12,7 +12,7 @@ website:
 format:
   html:
     theme: cosmo
-    css: styles.css
+    css: jp_style.css
     toc: true
 
 editor: visual
