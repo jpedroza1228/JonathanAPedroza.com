@@ -1,9 +1,5 @@
 project:
   type: website
-  render:
-    - index.qmd
-    - about.qmd
-    - jp_style.css
 
 website:
   title: "Log([J]onathan [And]rew [P]edroza)"
