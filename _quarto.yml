@@ -1,17 +1,21 @@
 project:
   type: website
+  render:
+    - index.qmd
+    - about.qmd
+    - jp_style.css
 
 website:
   title: "Log([J]onathan [And]rew [P]edroza)"
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: Posts
       - about.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: minty
     css: jp_style.css
     toc: true
 
