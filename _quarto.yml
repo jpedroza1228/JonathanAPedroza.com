@@ -12,6 +12,7 @@ website:
 format:
   html:
     theme: minty
+    page-layout: full
     css: jp_style.css
     toc: true
 
