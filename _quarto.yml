@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "Log([J]onathan [And]rew [P]edroza)"
+  title: "Log(J-And-P)"
   navbar:
     left:
       - href: index.qmd
