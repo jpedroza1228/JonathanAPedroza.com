@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2022-06-02">
 
-<title>Log([J]onathan [And]rew [P]edroza) - Prophet Model</title>
+<title>Log(J-And-P) - Prophet Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,13 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -95,10 +89,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-submit-button-title": "Submit"
   }
 }</script>
 
@@ -109,12 +101,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Log([J]onathan [And]rew [P]edroza)</span>
+    <span class="navbar-title">Log(J-And-P)</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -124,21 +116,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About Me</span></a>
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">My Posts</span></a>
+    <a class="nav-link" href="../../posts.html" rel="" target="">
+ <span class="menu-text">My Posts</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools ms-auto">
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -159,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
       
       <div>
@@ -204,7 +196,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-
 <p>As I start looking for non-academic positions, I wanted to practice forecasting as I didn’t really have much experience with these types of models. <strong>NOTE: This is for practicing forecasting skills and you should not trust this model with your own stocks.</strong> After plenty of reading,</p>
 <p><img src="https://media.giphy.com/media/ql6hxonaYC6EE/giphy.gif" class="img-fluid" alt="reading book"> I finally have some understanding of how to utilize these models. This post started because even after a BA, 2 masters degrees, and a doctorate, my brother still has no clue what I do. He, along with most of my family think I am a Clinical Psychologist. <img src="https://media.giphy.com/media/l4EpgzkiwfFJKADLy/giphy.gif" class="img-fluid" alt="psychologist"></p>
 <p>So for me to try and make my brother understand what I do, I thought I would show him with something that he has become interested with recently; stocks. So for this post, I’ll</p>
@@ -244,8 +235,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_light</span>())</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>jet <span class="ot">&lt;-</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(<span class="st">'https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0"</span>, <span class="at">sheet =</span> <span class="dv">1</span>, <span class="at">range =</span> <span class="st">"A1:B1000"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ds =</span> <span class="fu">as_date</span>(date))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="cleaning-up-the-data" class="level3">
@@ -283,11 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(year_num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/variation over time-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/variation over time-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Next, we can look at the histograms for the outcome of interest. If we look at the histograms, we can see that there are potential outliers in the original stock prices data. We can also see that cleaning the variable removed the potential outliers.</p>
@@ -320,22 +307,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>$close</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/histograms-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/histograms-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $clean</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/histograms-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/histograms-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>There will also be a lot of use of the <code>purrr</code> package and the <code>map</code> functions, which are part of the tidyverse. We can also see that in the plot series visualization using <code>modeltime's plot_time_series</code> function, that the cleaned stock prices remove the outliers. So from here on out, I’ll be using the cleaned stock prices.</p>
@@ -351,22 +330,14 @@ $clean</code></pre>
 <pre><code>$close</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/plot time series-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/plot time series-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $clean</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/plot time series-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/plot time series-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can also look for anomalies, or points that deviate from the trend. Using the <code>plot_anomaly_diagnostics</code> function from the <code>modeltime</code> package, I can see all the anomalies in the data. I also used ggplot to create my own visualization using the same data. Lastly, we’ll deal with those anomalies by removing them from the dataset. This is not too much of a problem because the Prophet model should be able to handle this fairly easy.</p>
@@ -377,11 +348,7 @@ $clean</code></pre>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.facet_ncol =</span> <span class="dv">1</span>,</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.interactive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/anomaly detection-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/anomaly detection-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tk_anomaly_diagnostics</span>(ds,</span>
@@ -394,11 +361,7 @@ $clean</code></pre>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">begin =</span> .<span class="dv">5</span>,</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">end =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/anomaly detection-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/anomaly detection-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>anomaly <span class="ot">&lt;-</span> jetblue <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tk_anomaly_diagnostics</span>(ds,</span>
@@ -414,11 +377,7 @@ $clean</code></pre>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                            clean,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">.interactive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/seasonality-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/seasonality-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -430,7 +389,7 @@ $clean</code></pre>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 12</code></pre>
+<pre><code>[1] 8</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parallel_start</span>(<span class="dv">10</span>,</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">.method =</span> <span class="st">'parallel'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -512,10 +471,10 @@ $clean</code></pre>
 <pre><code># A tibble: 1 × 9
   .model_id .model_desc           .type    mae  mape  mase smape  rmse   rsq
       &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Fitted  1.01  9.04  4.67  8.84  1.36 0.951</code></pre>
+1         1 PROPHET W/ REGRESSORS Fitted 0.629  4.06  1.93  4.05 0.831 0.957</code></pre>
 </div>
 </div>
-<p>So with the model, we can see that the Mean Absolute Scaled Error (MASE) is 4.6661098 and the Root Mean Square Error (RMSE) is 1.3581316. Not bad for an initial run. Let’s look at how the model fits the training data.</p>
+<p>So with the model, we can see that the Mean Absolute Scaled Error (MASE) is 1.9270147 and the Root Mean Square Error (RMSE) is 0.8312475. Not bad for an initial run. Let’s look at how the model fits the training data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">train =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>  </span>
@@ -525,11 +484,7 @@ $clean</code></pre>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Prophet Baseline Model'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/baseline visual-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/baseline visual-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>So the model appears to follow the trend line. We’ll try to tune some of these parameters to see if we can make the model better.</p>
@@ -591,7 +546,7 @@ $clean</code></pre>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">'C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2022-06-02-prophet-model/tuned_metrics.rds'</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">'C:/Users/cpppe/Desktop/github_projects/log-of-jandp/posts/2022-06-02-prophet-model/tuned_metrics.rds'</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="sc">%&gt;%</span> </span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">'rmse'</span>) <span class="sc">%&gt;%</span> </span>
@@ -627,7 +582,7 @@ $clean</code></pre>
 <pre><code># A tibble: 1 × 9
   .model_id .model_desc           .type    mae  mape  mase smape  rmse   rsq
       &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Fitted 0.821  7.34  3.80  7.24  1.14 0.966</code></pre>
+1         1 PROPHET W/ REGRESSORS Fitted 0.501  3.24  1.54  3.23 0.659 0.973</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -640,14 +595,10 @@ $clean</code></pre>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'JetBlue Stock Prices - Training Model'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/final train-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<p><img src="index_files/figure-html/final train-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</div>
-<p>We can see that when using the whole training set, we have a RMSE of 1.1376295 and a MASE of 3.8002858 so both metrics reduced slightly.</p>
+<p>We can see that when using the whole training set, we have a RMSE of 0.6588232 and a MASE of 1.5354125 so both metrics reduced slightly.</p>
 </section>
 </section>
 <section id="testing-the-model" class="level2">
@@ -665,11 +616,7 @@ $clean</code></pre>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'JetBlue Stock Prices - Testing Model'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/testing-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/testing-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>test_model <span class="ot">&lt;-</span> <span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -681,12 +628,12 @@ $clean</code></pre>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>test_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 9
-  .model_id .model_desc           .type   mae  mape  mase smape  rmse   rsq
-      &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Test   8.45  97.0  33.5  54.8  9.50 0.330</code></pre>
+  .model_id .model_desc           .type   mae  mape  mase smape  rmse    rsq
+      &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1         1 PROPHET W/ REGRESSORS Test   1.11  8.80  4.57  8.58  1.35 0.0196</code></pre>
 </div>
 </div>
-<p>Well, that doesn’t look very good and we can see that with the metrics. The MASE has gotten much worse (33.5134924) and so has the RMSE (9.5004118) <img src="https://media.giphy.com/media/32mC2kXYWCsg0/giphy.gif" class="img-fluid" alt="sweating"></p>
+<p>Well, that doesn’t look very good and we can see that with the metrics. The MASE has gotten much worse (4.5736587) and so has the RMSE (1.3542052) <img src="https://media.giphy.com/media/32mC2kXYWCsg0/giphy.gif" class="img-fluid" alt="sweating"></p>
 </section>
 <section id="forecasting-ahead-a-year" class="level2">
 <h2 class="anchored" data-anchor-id="forecasting-ahead-a-year">Forecasting Ahead a Year</h2>
@@ -710,22 +657,22 @@ $clean</code></pre>
 <span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(future)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 5,795
+<pre><code>Rows: 1,357
 Columns: 17
 $ close         &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
 $ ds            &lt;date&gt; 2002-04-12, 2002-04-15, 2002-04-16, 2002-04-17, 2002-04…
 $ actual_day    &lt;ord&gt; Fri, Mon, Tue, Wed, Thu, Fri, Mon, Tue, Wed, Thu, Fri, M…
 $ clean         &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
 $ observed      &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
-$ season        &lt;dbl&gt; -0.0032985578, 0.0016970238, -0.0057367089, -0.000464552…
-$ trend         &lt;dbl&gt; 13.40668, 13.41621, 13.42575, 13.43529, 13.44483, 13.454…
-$ remainder     &lt;dbl&gt; -0.073377842, -0.017911511, 0.149984134, -0.074826110, -…
-$ seasadj       &lt;dbl&gt; 13.33330, 13.39830, 13.57574, 13.36046, 13.09220, 12.933…
-$ remainder_l1  &lt;dbl&gt; -2.219351, -2.219351, -2.219351, -2.219351, -2.219351, -…
-$ remainder_l2  &lt;dbl&gt; 2.2352, 2.2352, 2.2352, 2.2352, 2.2352, 2.2352, 2.2352, …
+$ season        &lt;dbl&gt; 0.017592887, 0.001065775, -0.001828751, -0.005043169, -0…
+$ trend         &lt;dbl&gt; 13.47847, 13.48774, 13.49702, 13.50629, 13.51556, 13.524…
+$ remainder     &lt;dbl&gt; -0.16606354, -0.08880934, 0.07481227, -0.14124623, -0.40…
+$ seasadj       &lt;dbl&gt; 13.31241, 13.39893, 13.57183, 13.36504, 13.11179, 12.912…
+$ remainder_l1  &lt;dbl&gt; -3.129268, -3.129268, -3.129268, -3.129268, -3.129268, -…
+$ remainder_l2  &lt;dbl&gt; 3.177322, 3.177322, 3.177322, 3.177322, 3.177322, 3.1773…
 $ anomaly       &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", "No", "No", "N…
-$ recomposed_l1 &lt;dbl&gt; 11.18403, 11.19856, 11.20067, 11.21548, 11.23328, 11.231…
-$ recomposed_l2 &lt;dbl&gt; 15.63858, 15.65311, 15.65522, 15.67003, 15.68783, 15.686…
+$ recomposed_l1 &lt;dbl&gt; 10.36680, 10.35954, 10.36592, 10.37198, 10.37451, 10.413…
+$ recomposed_l2 &lt;dbl&gt; 16.67339, 16.66613, 16.67251, 16.67857, 16.68110, 16.719…
 $ year_num      &lt;fct&gt; 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002, 20…
 $ month_num     &lt;fct&gt; 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 05, …
 $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 1, 2…</code></pre>
@@ -744,11 +691,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Forecasted JetBlue Stock Prices'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/forecasting-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/forecasting-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -759,7 +702,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>link <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/11DWSWLFXT84uGg_mBvVYJevQOsN7ghYovJefH87BJXc/edit#gid=0'</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>amer <span class="ot">&lt;-</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(link) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(link, , <span class="at">sheet =</span> <span class="dv">1</span>, <span class="at">range =</span> <span class="st">"A1:B1000"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ds =</span> <span class="fu">as_date</span>(date))</span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -804,7 +747,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <pre><code># A tibble: 1 × 9
   .model_id .model_desc           .type    mae  mape  mase smape  rmse   rsq
       &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Fitted  1.74  5.85  2.83  5.80  2.22 0.970</code></pre>
+1         1 PROPHET W/ REGRESSORS Fitted  1.29  3.12  1.86  3.11  1.65 0.931</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>future_amer <span class="ot">&lt;-</span> american <span class="sc">%&gt;%</span> </span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">future_frame</span>(<span class="at">.length_out =</span> <span class="st">'1 year'</span>, <span class="at">.bind_data =</span> <span class="cn">TRUE</span>)</span>
@@ -827,11 +770,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>)  <span class="sc">+</span> </span>
 <span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Predicted American Airlines Stock Prices'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/american airlines-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/american airlines-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>model_cali <span class="sc">%&gt;%</span> </span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modeltime_refit</span>(<span class="at">data =</span> future_amer) <span class="sc">%&gt;%</span></span>
@@ -840,11 +779,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_modeltime_forecast</span>(<span class="at">.interactive =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Forecasted American Airlines Stock Prices'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/american airlines-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="index_files/figure-html/american airlines-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -931,9 +866,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -943,17 +879,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -966,125 +893,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1128,7 +936,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1154,32 +961,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1240,7 +1021,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 
