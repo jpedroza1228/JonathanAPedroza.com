@@ -12,32 +12,38 @@ params:
   date: 2024-03-16
 ---
 
+**Under Development**
+
+![](C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2024-03-16-bayes-net-part2-estimation/jessica-tan-caution.jpg)
+
 **As I am continuing to grow in understanding and conducting bayesian networks, this page and series may change in the future. -JP**
 
 ```{r}
-#| eval: true
+#| eval: false
 #| echo: true
 
-
+library(tidyverse)
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
 ```
 
 # Appendix (Stan Code Sections Combined)
 
 
-```{default}
-#| echo: true
-#| eval: false
-
 data {
-  int<lower=1> J; // # of respondents/students j
-  int<lower=1> I; // # of items i
-  int<lower=1> K; // # of attributes k
+  int<lower=1> J; // number of examinees
+  int<lower=1> I; // number of items
+  int<lower=1> K; // number of latent variables
+  int<lower=1> C; // number of classes
   matrix[J, I] X; // response matrix x
-  matrix[I, K] Q; //Q matrix Q
+  matrix[I, K] Q; // Q matrix Q
+  matrix[C, K] alpha; // attribute profile matrix
 }
 parameters {
-  array[I] real<lower=0, upper=1> guess;
-  array[I] real<lower=0, upper=1> no_guess;
+  simplex[C] nu; // class probabilities
+  vector<lower=0, upper=1>[I] false_pos;
+  vector<lower=0, upper=1>[I] true_pos;
   real<lower=0, upper=1> lambda1;
   real<lower=0, upper=1> lambda20;
   real<lower=0, upper=1> lambda21;
@@ -49,53 +55,196 @@ parameters {
   real<lower=0, upper=1> lambda51;
 }
 transformed parameters {
-  array[J] real theta1;
-  array[J] real theta2;
-  array[J] real theta3;
-  array[J] real theta4;
-  array[J] real theta5;
-  matrix[J, I] delta;
-  array[I] real pi;
-  matrix[J, I] log_lik;
-  vector[I] ps_i = rep_vector(0, I); // Initialize ps_i with zeros
-  array[J] real ps_j;
-  
-  for (j in 1 : J) {
-    theta1[j] = lambda1 * 1 + (1 - lambda1) * (1 - 1);
-    theta2[j] = theta1[j] * lambda21 + (1 - theta1[j]) * lambda20;
-    theta3[j] = theta2[j] * lambda31 + (1 - theta2[j]) * lambda30;
-    theta4[j] = theta3[j] * lambda41 + (1 - theta3[j]) * lambda40;
-    theta5[j] = theta4[j] * lambda51 + (1 - theta4[j]) * lambda50;
-    
-    for (i in 1 : I) {
-      delta[j, i] = pow(theta1[j], Q[i, 1]) * pow(theta2[j], Q[i, 2])
-                    * pow(theta3[j], Q[i, 3]) * pow(theta4[j], Q[i, 4])
-                    * pow(theta5[j], Q[i, 5]);
-      
-      pi[i] = pow(guess[i], delta[j, i]) * pow(no_guess[i], 1 - delta[j, i]);
-      
-      log_lik[j, i] = X[j, i] * log(pi[i]) + (1 - X[j, i]) * log(1 - pi[i]);
-      
-      // Accumulate the values of log_lik over items
-      ps_i[i] = ps_i[i] + log_lik[j, i];
-    }
-    // Sum up the log_lik values for each student
-    ps_j[j] = sum(log_lik[j]);
-  }
+  vector[C] log_nu;
+  log_nu = log(nu);
 }
 model {
-  guess ~ beta(5, 25);
-  no_guess ~ beta(25, 5);
-  lambda1 ~ beta(34, 7);
-  lambda20 ~ beta(8, 36);
-  lambda21 ~ beta(36, 8);
-  lambda30 ~ beta(8, 26);
-  lambda31 ~ beta(26, 8);
-  lambda40 ~ beta(22, 28);
-  lambda41 ~ beta(28, 22);
-  lambda50 ~ beta(22, 22);
-  lambda51 ~ beta(22, 22);
+  vector[2] theta_log1;
+  vector[2] theta_log2;
+  vector[2] theta_log3;
+  vector[2] theta_log4;
+  vector[2] theta_log5;
+  vector[C] theta1;
+  vector[C] theta2;
+  vector[C] theta3;
+  vector[C] theta4;
+  vector[C] theta5;
+  matrix[I, C] delta;
+  real pie;
+  vector[I] log_item;
+  vector[C] log_lik;
   
-  target += log_sum_exp(ps_j);
+  // Priors
+  lambda1 ~ beta(25, 5);
+  lambda20 ~ beta(10, 20);
+  lambda21 ~ beta(20, 10);
+  lambda30 ~ beta(5, 25);
+  lambda31 ~ beta(25, 5);
+  lambda40 ~ beta(5, 25);
+  lambda41 ~ beta(25, 5);
+  lambda50 ~ beta(12, 18);
+  lambda51 ~ beta(18, 12);
+  
+  for (i in 1 : I) {
+    false_pos[i] ~ beta(4, 26);
+    true_pos[i] ~ beta(26, 4);
+  }
+  
+  theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1);
+  theta_log1[2] = bernoulli_lpmf(1 | lambda1);
+  
+  theta_log2[1] = bernoulli_lpmf(1 | lambda20);
+  theta_log2[2] = bernoulli_lpmf(1 | lambda21);
+  
+  theta_log3[1] = bernoulli_lpmf(1 | lambda30);
+  theta_log3[2] = bernoulli_lpmf(1 | lambda31);
+  
+  theta_log4[1] = bernoulli_lpmf(1 | lambda40);
+  theta_log4[2] = bernoulli_lpmf(1 | lambda41);
+  
+  theta_log5[1] = bernoulli_lpmf(1 | lambda50);
+  theta_log5[2] = bernoulli_lpmf(1 | lambda51);
+  
+  for (c in 1 : C) {
+    if (alpha[c, 1] > 0) {
+      theta1[c] = theta_log1[2];
+    } else {
+      theta1[c] = theta_log1[1];
+    }
+    if (alpha[c, 2] > 0) {
+      theta2[c] = theta_log2[2];
+    } else {
+      theta2[c] = theta_log2[1];
+    }
+    if (alpha[c, 3] > 0) {
+      theta3[c] = theta_log3[2];
+    } else {
+      theta3[c] = theta_log3[1];
+    }
+    if (alpha[c, 4] > 0) {
+      theta4[c] = theta_log4[2];
+    } else {
+      theta4[c] = theta_log4[1];
+    }
+    if (alpha[c, 5] > 0) {
+      theta5[c] = theta_log5[2];
+    } else {
+      theta5[c] = theta_log5[1];
+    }
+  }
+  
+  //Likelihood
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2])
+                      * pow(exp(theta3[c]), Q[i, 3]) * pow(exp(theta4[c]), Q[i, 4])
+                      * pow(exp(theta5[c]), Q[i, 5]);
+        
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+      log_lik[c] = log_nu[c] + sum(log_item);
+    }
+    target += log_sum_exp(log_lik);
+  }
 }
-```
+generated quantities {
+  vector[2] theta_log1;
+  vector[2] theta_log2;
+  vector[2] theta_log3;
+  vector[2] theta_log4;
+  vector[2] theta_log5;
+  vector[C] theta1;
+  vector[C] theta2;
+  vector[C] theta3;
+  vector[C] theta4;
+  vector[C] theta5;
+  matrix[I, C] delta;
+  real pie;
+  vector[I] log_item;
+  
+  matrix[J, C] prob_resp_class; // posterior probabilities of respondent j being in latent class c 
+  matrix[J, K] prob_resp_attr; // posterior probabilities of respondent j being a master of attribute k 
+  row_vector[C] prob_joint;
+  vector[C] prob_attr_class;
+  
+  matrix[J, I] x_rep;
+  
+  theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1);
+  theta_log1[2] = bernoulli_lpmf(1 | lambda1);
+  
+  theta_log2[1] = bernoulli_lpmf(1 | lambda20);
+  theta_log2[2] = bernoulli_lpmf(1 | lambda21);
+  
+  theta_log3[1] = bernoulli_lpmf(1 | lambda30);
+  theta_log3[2] = bernoulli_lpmf(1 | lambda31);
+  
+  theta_log4[1] = bernoulli_lpmf(1 | lambda40);
+  theta_log4[2] = bernoulli_lpmf(1 | lambda41);
+  
+  theta_log5[1] = bernoulli_lpmf(1 | lambda50);
+  theta_log5[2] = bernoulli_lpmf(1 | lambda51);
+  
+  for (c in 1 : C) {
+    if (alpha[c, 1] > 0) {
+      theta1[c] = theta_log1[2];
+    } else {
+      theta1[c] = theta_log1[1];
+    }
+    if (alpha[c, 2] > 0) {
+      theta2[c] = theta_log2[2];
+    } else {
+      theta2[c] = theta_log2[1];
+    }
+    if (alpha[c, 3] > 0) {
+      theta3[c] = theta_log3[2];
+    } else {
+      theta3[c] = theta_log3[1];
+    }
+    if (alpha[c, 4] > 0) {
+      theta4[c] = theta_log4[2];
+    } else {
+      theta4[c] = theta_log4[1];
+    }
+    if (alpha[c, 5] > 0) {
+      theta5[c] = theta_log5[2];
+    } else {
+      theta5[c] = theta_log5[1];
+    }
+  }
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2])
+                      * pow(exp(theta3[c]), Q[i, 3]) * pow(exp(theta4[c]), Q[i, 4])
+                      * pow(exp(theta5[c]), Q[i, 5]);
+        
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+        }
+      prob_joint[c] = nu[c] * exp(sum(log_item)); //here is where the problem starts with trying to correctly classify students with proficiency mastery
+    }
+    prob_resp_class[j] = prob_joint / sum(prob_joint);
+  }
+  
+  for (j in 1 : J) {
+    for (k in 1 : K) {
+      for (c in 1 : C) {
+        // Calculate the probability of mastering attribute k given class c
+        prob_attr_class[c] = prob_resp_class[j, c] * alpha[c, k];
+      }
+      // Sum the probabilities to get the posterior probability of mastering attribute k
+      prob_resp_attr[j, k] = sum(prob_attr_class);
+    }
+  }
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        x_rep[j, i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+    }
+  }
+}
