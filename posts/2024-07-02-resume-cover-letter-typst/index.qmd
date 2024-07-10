@@ -10,10 +10,7 @@ params:
   date: 2024-07-06
 ---
 
-**Under Development**
-
-![](C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2024-07-02-resume-cover-letter-typst/jessica-tan-caution.jpg)
-
+# **Under Development**
 
 I have been using [Typst](https://typst.app/), an awesome app for working on pdf files at the same time as colleagues. You could think of this as something similar to Google Docs or GitHub for code. This also got me thinking about creating a small series of blog posts about using Typst and then creating Typst templates for documents using Quarto. The latter topics would be using Quarto extensions and if following along, you would need Quarto version 1.4 at least to be able to use Typst code chunks on a Quarto document. So first, I will show the Typst file I will be using because let's face it I'm on the job market and free publicity is always good.
 

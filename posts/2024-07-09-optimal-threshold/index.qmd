@@ -12,10 +12,7 @@ params:
   date: 2024-07-09
 ---
 
-**Under Development**
-
-![](C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2024-07-09-optimal-threshold/jessica-tan-caution.jpg)
-
+# **Under Development**
 
 Now that I'm playing catch up with some posts I have wanted to write, I thought now would be an excellent time to write about this method I have been trying out to figure out the closest optimal threshold. While I found other ways to find the optimal threshold at a much faster rate, I still thought this was an interesting use of machine learning to try and figure out the optimal threshold. Particularly, this is a method to try and find an optimal threshold when the truth is not known. From what I could find there was not much literature on trying to find an optimal threshold when the truth was not known. So I'll first show this method when the truth is known followed by trying this method out when there is no truth.
 
