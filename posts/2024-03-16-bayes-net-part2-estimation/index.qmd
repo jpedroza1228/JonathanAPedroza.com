@@ -12,11 +12,7 @@ params:
   date: 2024-03-16
 ---
 
-**Under Development**
-
-![](C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2024-03-16-bayes-net-part2-estimation/jessica-tan-caution.jpg)
-
-**As I am continuing to grow in understanding and conducting bayesian networks, this page and series may change in the future. -JP**
+# **Under Development**
 
 ```{r}
 #| eval: false
