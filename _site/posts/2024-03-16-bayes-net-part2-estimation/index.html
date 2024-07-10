@@ -145,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
+    <div class="quarto-title column-page">
       <h1 class="title">Bayes Net Pt. 2</h1>
             <p class="subtitle lead"></p><p>Estimation</p><p></p>
                                 <div class="quarto-categories">
@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       
       <div>
@@ -177,100 +177,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#appendix-stan-code-sections-combined" id="toc-appendix-stan-code-sections-combined" class="nav-link active" data-scroll-target="#appendix-stan-code-sections-combined">Appendix (Stan Code Sections Combined)</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
-<p><strong>As I am continuing to grow in understanding and conducting bayesian networks, this page and series may change in the future. -JP</strong></p>
-<section id="appendix-stan-code-sections-combined" class="level1">
-<h1>Appendix (Stan Code Sections Combined)</h1>
+<p><strong>Under Development - Not Complete</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  int&lt;lower=1&gt; J; // # of respondents/students j</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  int&lt;lower=1&gt; I; // # of items i</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  int&lt;lower=1&gt; K; // # of attributes k</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  matrix[J, I] X; // response matrix x</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  matrix[I, K] Q; //Q matrix Q</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>parameters {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  array[I] real&lt;lower=0, upper=1&gt; guess;</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  array[I] real&lt;lower=0, upper=1&gt; no_guess;</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda1;</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda20;</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda21;</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda30;</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda31;</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda40;</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda41;</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda50;</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  real&lt;lower=0, upper=1&gt; lambda51;</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>transformed parameters {</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  array[J] real theta1;</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  array[J] real theta2;</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  array[J] real theta3;</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  array[J] real theta4;</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  array[J] real theta5;</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  matrix[J, I] delta;</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  array[I] real pi;</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  matrix[J, I] log_lik;</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  vector[I] ps_i = rep_vector(0, I); // Initialize ps_i with zeros</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  array[J] real ps_j;</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  for (j in 1 : J) {</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    theta1[j] = lambda1 * 1 + (1 - lambda1) * (1 - 1);</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    theta2[j] = theta1[j] * lambda21 + (1 - theta1[j]) * lambda20;</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    theta3[j] = theta2[j] * lambda31 + (1 - theta2[j]) * lambda30;</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    theta4[j] = theta3[j] * lambda41 + (1 - theta3[j]) * lambda40;</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    theta5[j] = theta4[j] * lambda51 + (1 - theta4[j]) * lambda50;</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    for (i in 1 : I) {</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>      delta[j, i] = pow(theta1[j], Q[i, 1]) * pow(theta2[j], Q[i, 2])</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                    * pow(theta3[j], Q[i, 3]) * pow(theta4[j], Q[i, 4])</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                    * pow(theta5[j], Q[i, 5]);</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>      pi[i] = pow(guess[i], delta[j, i]) * pow(no_guess[i], 1 - delta[j, i]);</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>      log_lik[j, i] = X[j, i] * log(pi[i]) + (1 - X[j, i]) * log(1 - pi[i]);</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>      // Accumulate the values of log_lik over items</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>      ps_i[i] = ps_i[i] + log_lik[j, i];</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    // Sum up the log_lik values for each student</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    ps_j[j] = sum(log_lik[j]);</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>model {</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  guess ~ beta(5, 25);</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  no_guess ~ beta(25, 5);</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  lambda1 ~ beta(34, 7);</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  lambda20 ~ beta(8, 36);</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  lambda21 ~ beta(36, 8);</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  lambda30 ~ beta(8, 26);</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  lambda31 ~ beta(26, 8);</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  lambda40 ~ beta(22, 28);</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  lambda41 ~ beta(28, 22);</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  lambda50 ~ beta(22, 22);</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  lambda51 ~ beta(22, 22);</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  target += log_sum_exp(ps_j);</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>data { int&lt;lower=1&gt; J; // number of examinees int&lt;lower=1&gt; I; // number of items int&lt;lower=1&gt; K; // number of latent variables int&lt;lower=1&gt; C; // number of classes matrix[J, I] X; // response matrix x matrix[I, K] Q; // Q matrix Q matrix[C, K] alpha; // attribute profile matrix } parameters { simplex[C] nu; // class probabilities vector&lt;lower=0, upper=1&gt;[I] false_pos; vector&lt;lower=0, upper=1&gt;[I] true_pos; real&lt;lower=0, upper=1&gt; lambda1; real&lt;lower=0, upper=1&gt; lambda20; real&lt;lower=0, upper=1&gt; lambda21; real&lt;lower=0, upper=1&gt; lambda30; real&lt;lower=0, upper=1&gt; lambda31; real&lt;lower=0, upper=1&gt; lambda40; real&lt;lower=0, upper=1&gt; lambda41; real&lt;lower=0, upper=1&gt; lambda50; real&lt;lower=0, upper=1&gt; lambda51; } transformed parameters { vector[C] log_nu; log_nu = log(nu); } model { vector[2] theta_log1; vector[2] theta_log2; vector[2] theta_log3; vector[2] theta_log4; vector[2] theta_log5; vector[C] theta1; vector[C] theta2; vector[C] theta3; vector[C] theta4; vector[C] theta5; matrix[I, C] delta; real pie; vector[I] log_item; vector[C] log_lik;</p>
+<p>// Priors lambda1 ~ beta(25, 5); lambda20 ~ beta(10, 20); lambda21 ~ beta(20, 10); lambda30 ~ beta(5, 25); lambda31 ~ beta(25, 5); lambda40 ~ beta(5, 25); lambda41 ~ beta(25, 5); lambda50 ~ beta(12, 18); lambda51 ~ beta(18, 12);</p>
+<p>for (i in 1 : I) { false_pos[i] ~ beta(4, 26); true_pos[i] ~ beta(26, 4); }</p>
+<p>theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1); theta_log1[2] = bernoulli_lpmf(1 | lambda1);</p>
+<p>theta_log2[1] = bernoulli_lpmf(1 | lambda20); theta_log2[2] = bernoulli_lpmf(1 | lambda21);</p>
+<p>theta_log3[1] = bernoulli_lpmf(1 | lambda30); theta_log3[2] = bernoulli_lpmf(1 | lambda31);</p>
+<p>theta_log4[1] = bernoulli_lpmf(1 | lambda40); theta_log4[2] = bernoulli_lpmf(1 | lambda41);</p>
+<p>theta_log5[1] = bernoulli_lpmf(1 | lambda50); theta_log5[2] = bernoulli_lpmf(1 | lambda51);</p>
+<p>for (c in 1 : C) { if (alpha[c, 1] &gt; 0) { theta1[c] = theta_log1[2]; } else { theta1[c] = theta_log1[1]; } if (alpha[c, 2] &gt; 0) { theta2[c] = theta_log2[2]; } else { theta2[c] = theta_log2[1]; } if (alpha[c, 3] &gt; 0) { theta3[c] = theta_log3[2]; } else { theta3[c] = theta_log3[1]; } if (alpha[c, 4] &gt; 0) { theta4[c] = theta_log4[2]; } else { theta4[c] = theta_log4[1]; } if (alpha[c, 5] &gt; 0) { theta5[c] = theta_log5[2]; } else { theta5[c] = theta_log5[1]; } }</p>
+<p>//Likelihood for (j in 1 : J) { for (c in 1 : C) { for (i in 1 : I) { delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2]) * pow(exp(theta3[c]), Q[i, 3]) * pow(exp(theta4[c]), Q[i, 4]) * pow(exp(theta5[c]), Q[i, 5]);</p>
+<pre><code>    pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+    log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+  }
+  log_lik[c] = log_nu[c] + sum(log_item);
+}
+target += log_sum_exp(log_lik);</code></pre>
+<p>} } generated quantities { vector[2] theta_log1; vector[2] theta_log2; vector[2] theta_log3; vector[2] theta_log4; vector[2] theta_log5; vector[C] theta1; vector[C] theta2; vector[C] theta3; vector[C] theta4; vector[C] theta5; matrix[I, C] delta; real pie; vector[I] log_item;</p>
+<p>matrix[J, C] prob_resp_class; // posterior probabilities of respondent j being in latent class c matrix[J, K] prob_resp_attr; // posterior probabilities of respondent j being a master of attribute k row_vector[C] prob_joint; vector[C] prob_attr_class;</p>
+<p>matrix[J, I] x_rep;</p>
+<p>theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1); theta_log1[2] = bernoulli_lpmf(1 | lambda1);</p>
+<p>theta_log2[1] = bernoulli_lpmf(1 | lambda20); theta_log2[2] = bernoulli_lpmf(1 | lambda21);</p>
+<p>theta_log3[1] = bernoulli_lpmf(1 | lambda30); theta_log3[2] = bernoulli_lpmf(1 | lambda31);</p>
+<p>theta_log4[1] = bernoulli_lpmf(1 | lambda40); theta_log4[2] = bernoulli_lpmf(1 | lambda41);</p>
+<p>theta_log5[1] = bernoulli_lpmf(1 | lambda50); theta_log5[2] = bernoulli_lpmf(1 | lambda51);</p>
+<p>for (c in 1 : C) { if (alpha[c, 1] &gt; 0) { theta1[c] = theta_log1[2]; } else { theta1[c] = theta_log1[1]; } if (alpha[c, 2] &gt; 0) { theta2[c] = theta_log2[2]; } else { theta2[c] = theta_log2[1]; } if (alpha[c, 3] &gt; 0) { theta3[c] = theta_log3[2]; } else { theta3[c] = theta_log3[1]; } if (alpha[c, 4] &gt; 0) { theta4[c] = theta_log4[2]; } else { theta4[c] = theta_log4[1]; } if (alpha[c, 5] &gt; 0) { theta5[c] = theta_log5[2]; } else { theta5[c] = theta_log5[1]; } }</p>
+<p>for (j in 1 : J) { for (c in 1 : C) { for (i in 1 : I) { delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2]) * pow(exp(theta3[c]), Q[i, 3]) * pow(exp(theta4[c]), Q[i, 4]) * pow(exp(theta5[c]), Q[i, 5]);</p>
+<pre><code>    pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+    log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+    }
+  prob_joint[c] = nu[c] * exp(sum(log_item)); //here is where the problem starts with trying to correctly classify students with proficiency mastery
+}
+prob_resp_class[j] = prob_joint / sum(prob_joint);</code></pre>
+<p>}</p>
+<p>for (j in 1 : J) { for (k in 1 : K) { for (c in 1 : C) { // Calculate the probability of mastering attribute k given class c prob_attr_class[c] = prob_resp_class[j, c] * alpha[c, k]; } // Sum the probabilities to get the posterior probability of mastering attribute k prob_resp_attr[j, k] = sum(prob_attr_class); } }</p>
+<p>for (j in 1 : J) { for (c in 1 : C) { for (i in 1 : I) { x_rep[j, i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie); } } } }</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

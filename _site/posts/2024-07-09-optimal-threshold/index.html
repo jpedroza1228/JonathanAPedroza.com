@@ -191,6 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<p><strong>Under Development - Not Complete</strong></p>
 <p>Now that I’m playing catch up with some posts I have wanted to write, I thought now would be an excellent time to write about this method I have been trying out to figure out the closest optimal threshold. While I found other ways to find the optimal threshold at a much faster rate, I still thought this was an interesting use of machine learning to try and figure out the optimal threshold. Particularly, this is a method to try and find an optimal threshold when the truth is not known. From what I could find there was not much literature on trying to find an optimal threshold when the truth was not known. So I’ll first show this method when the truth is known followed by trying this method out when there is no truth.</p>
 <section id="fabricating-some-data" class="level2">
 <h2 class="anchored" data-anchor-id="fabricating-some-data">Fabricating Some Data</h2>
@@ -227,11 +228,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   estimates truth
       &lt;dbl&gt; &lt;int&gt;
 1     0.160     1
-2     0.181     1
+2     0.181     0
 3     0.192     0
-4     0.200     1
+4     0.200     0
 5     0.206     0
-6     0.212     1</code></pre>
+6     0.212     0</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_train <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> .<span class="dv">75</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data_test <span class="ot">&lt;-</span> <span class="fu">anti_join</span>(data, data_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -267,9 +268,9 @@ Parameters:
  SVM-Kernel:  radial 
        cost:  10 
 
-Number of Support Vectors:  329
+Number of Support Vectors:  367
 
- ( 128 201 )
+ ( 201 166 )
 
 
 Number of Classes:  2 
@@ -283,8 +284,8 @@ Levels:
 <pre><code># A tibble: 2 × 2
   value     n
   &lt;fct&gt; &lt;int&gt;
-1 0        53
-2 1        72</code></pre>
+1 0        52
+2 1        73</code></pre>
 </div>
 </div>
 <div class="cell">
