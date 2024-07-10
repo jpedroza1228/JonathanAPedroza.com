@@ -1,0 +1,92 @@
+---
+title: "Finding Optimal Thresholds" 
+subtitle: |
+  Using Support Vector Machines
+image: "buttons.jpg"
+categories: [svm, classification, optimal threshold, threshold]
+date: 2024-07-09
+# citation:
+  # url: 
+params:
+  slug: optimal-threshold
+  date: 2024-07-09
+---
+
+Now that I'm playing catch up with some posts I have wanted to write, I thought now would be an excellent time to write about this method I have been trying out to figure out the closest optimal threshold. While I found other ways to find the optimal threshold at a much faster rate, I still thought this was an interesting use of machine learning to try and figure out the optimal threshold. Particularly, this is a method to try and find an optimal threshold when the truth is not known. From what I could find there was not much literature on trying to find an optimal threshold when the truth was not known. So I'll first show this method when the truth is known followed by trying this method out when there is no truth.
+
+## Fabricating Some Data
+
+
+```{r}
+library(tidyverse)
+library(e1071)
+cat_map <- purrr::map
+
+n <- 500
+seed <- 12345
+truth <- rbinom(n = n, size = 1, prob = .6)
+estimates <- bayestestR::distribution_beta(n = n, shape1 = 12, shape2 = 18)
+
+data <- tibble(
+  estimates = estimates,
+  truth = truth
+)
+
+data |> head()
+
+data_train <- data |> slice_sample(prop = .75)
+data_test <- anti_join(data, data_train)
+```
+
+```{r}
+set.seed(seed)
+class_weights <- data_train |> count(truth) |> arrange(n)
+cls_weights <- class_weights[2, 2]/class_weights[1, 2]
+
+svm_mod <- svm(
+  truth ~ estimates,
+  data = data_train,
+  type = "C-classification",
+  kernel = "radial",
+  cost = 10,
+  class.weights = c("0" = as.numeric(cls_weights), "1" = 1),
+  probability = TRUE
+)
+summary(svm_mod)
+svm_pred <- predict(svm_mod, data_test)
+svm_pred |> as_tibble() |> count(value)
+```
+
+```{r}
+map_dbl(
+  data$estimates,
+  ~rbinom(n = 1, size = 1, prob = .x)
+)
+```
+
+
+```{r}
+probably_threshold <- function(
+  r6,
+  task,
+  threshold,
+  output = TRUE
+){
+  thresholds <- c(threhold, 1 - threshold)
+  names(thresholds) <- {{task}}$class_names
+
+  if(output == TRUE){
+    confuse <- {{r6}}$clone(deep = TRUE)$set_threshold(threhsolds)$confusion |> t()
+    score <- {{r6}}$clone(deep = TRUE)$set_threshold$score(msrs(c("classif.mcc", "classif.acc", "classif.auc", "classif.ce", "classif.sensitivity", "classif.specificity")))
+
+    list(confuse, score)
+  }
+  else{
+    preds <- {{r6}}$clone(deep = TRUE)$set_threshold(thresholds)
+
+    preds
+  }
+}
+
+
+```

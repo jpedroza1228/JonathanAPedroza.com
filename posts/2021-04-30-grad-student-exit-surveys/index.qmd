@@ -23,7 +23,7 @@ library(tidyverse)
 
 theme_set(theme_minimal())
 
-exit <- read_csv("https://raw.githubusercontent.com/jpedroza1228/exitsurveys/main/data/student_experience.csv") %>% 
+exit <- read_csv(here::here("posts", "2021-04-30-grad-student-exit-surveys/exit_data.csv")) %>% 
   janitor::clean_names() 
 
 exit$program <- str_replace_all(exit$program,"_", " ")

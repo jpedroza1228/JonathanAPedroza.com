@@ -343,13 +343,13 @@ tuned_metrics %>%
   filter(.metric == 'rmse') %>% 
   arrange(mean)
 
-saveRDS(tuned_metrics,
-        file = 'tuned_metrics.rds')
+# saveRDS(tuned_metrics,
+#         file = 'tuned_metrics.rds')
 ```
 
 ```{r rds, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
 metrics <-
-  readr::read_rds('C:/Users/cpppe/Desktop/github_projects/log-of-jandp/posts/2022-06-02-prophet-model/tuned_metrics.rds')
+  readr::read_rds(here::here('posts/2022-06-02-prophet-model/tuned_metrics.rds'))
 
 metrics %>% 
   filter(.metric == 'rmse') %>% 
