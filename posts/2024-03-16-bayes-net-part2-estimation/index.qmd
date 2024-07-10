@@ -12,7 +12,7 @@ params:
   date: 2024-03-16
 ---
 
-# **Under Development**
+**Under Development - Not Complete**
 
 ```{r}
 #| eval: false
@@ -24,7 +24,7 @@ library(posterior)
 library(bayesplot)
 ```
 
-# Appendix (Stan Code Sections Combined)
+
 
 
 data {
