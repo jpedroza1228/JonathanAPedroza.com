@@ -1,0 +1,145 @@
+---
+title: "Bayes Nets Pt. 1" 
+subtitle: |
+  Quick Introduction
+image: /posts/2024-03-09-bayesian-networks-pt-1/network_playground.jpg
+categories: [bayesian, bayesian network, bayes net, R, stan, cmdstanr]
+date: 2024-03-09
+# citation:
+  # url: 
+params:
+  slug: Bayes-Net-part-1
+  date: 2024-03-09
+---
+
+**Under Development**
+
+![](C:\Users\cpppe\Desktop\github_projects\log-of-jandp\posts\2024-03-09-bayesian-networks-pt-1/jessica-tan-caution.jpg)
+
+**As I am continuing to grow in understanding and conducting bayesian networks, this page and series may change in the future. -JP**
+
+Okay, I will be the first to state that I am not an expert in the field of conducint bayeaian networks, bayesian analyses, statistics (the list goes on), **but** I have been struggling to find any blog posts about conducting a bayes net with latent variables that uses the programming language [Stan](https://mc-stan.org/). There are several tutorials on how to download Stan using either R or Python, so I will not be covering that. For this post, I will be doing all my programming in R, while calling on Stan to conduct the Markov Chain Monte Carlo (MCMC) sampling. Maybe a future post will follow this tutorial using Python and Stan. Additionally, I will be creating data that will represent educational assessment data, with latent variables representing proficiency in certain skills (e.g., math, English/language arts, and science) for students. While most of my experience of using bayes nets is to represent measurement models, bayes net can be used outside of this field. Bayes net is similar to path analysis and structural equation modeling; however, EXPLAIN DIFFERENCE BETWEEN THE TWO METHODS. I will also start referring to everything in this series in a bayesian network framework. For instance, instead of using variables, whether they are observed or unobserved (latent), I will be referring to them as nodes and latent nodes, respectively. When it comes to showing the "paths" between nodes, I wwill now be referring to them as edges. Lastly, any image that shows all of the nodes and the edges connecting to one another will be referred to as a directed acyclic graph or DAG.  
+
+Okay, now on to this post. For this post I will simply discuss creating the data in R to be used in Stan, as well as creating the object of data that will be used in the Stan calculations. One last comment before diving in, I will be using *cmdstanr* instead of *rstan* for my *Stan* computations.
+
+## Getting the Data Set Up
+
+```{r}
+#| echo: true
+#| eval: true
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(cmdstanr)
+library(bayestestR)
+library(bayesplot)
+library(posterior)
+
+set.seed(12345)
+bern_dist <- function(prob_value)(
+  rbinom(n = 1000, size = 1, prob = prob_value)
+)
+
+y <- tibble(
+  y1 = bern_dist(prob = .8),
+  y2 = bern_dist(prob = .74),
+  y3 = bern_dist(prob = .88),
+  y4 = bern_dist(prob = .90),
+  y5 = bern_dist(prob = .64),
+  y6 = bern_dist(prob = .61),
+  y7 = bern_dist(prob = .79),
+  y8 = bern_dist(prob = .89),
+  y9 = bern_dist(prob = .81),
+  y10 = bern_dist(prob = .54),
+  y11 = bern_dist(prob = .60),
+  y12 = bern_dist(prob = .46),
+  y13 = bern_dist(prob = .37),
+  y14 = bern_dist(prob = .3),
+  y15 = bern_dist(prob = .65),
+) |>
+  rowid_to_column() |>
+  rename(
+    studentid = rowid
+  )
+```
+
+The first thing I am going to do is load in all the necessary libraries that you need. Then I decided to create a function that would create a binomial distribution with a single trial, so essentially a bernoulii distribution. I decided on some random numbers for the probabilities of correct responses to the 15 different items and decided to create some fake studentids for each row. 
+
+```{r}
+#| eval: true
+#| echo: false
+
+y |>
+  gt::gt() |>
+  gt::opt_interactive(
+    use_filters = TRUE,
+    use_resizers = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE
+  )
+```
+
+I decided to create a simple table that shows all of the students and their responses for the 15 items in this assessment. I'm not sure why I have all the data in the table, but I used some pagination so there is not a laundry list of rows with 0s and 1s clogging up this post...hopefully.
+
+
+```{r}
+#| eval: true
+#| echo: true
+
+# map(y |> select(-studentid), table)
+# map(y |> select(-studentid), ~round(prop.table(table(.x)), 2))
+
+map(y |> select(-studentid), table)[[1]]
+```
+
+
+After seeing that the data looks correct, I am also neurotic and need to make sure that my created data is how I imagined it would be. So I looped through each of my items to make sure the proportions are correct. More importantly,  I like to see the counts of the data and get an understanding of how many are answering each item correctly. I commented out the loop and am only going to show the counts for the first item. So seeing at how my function had approximately 80% of the students answering the item correctly, I can now see that `r table(y$y1)[2]` answered item 1 correctly.
+
+### Q Matrix
+
+```{r}
+#| eval: true
+#| echo: true
+
+q_matrix <- tibble(
+  item_id = map_chr(1:15, ~paste0("y", .x)),
+  att1 = c(1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0),
+  att2 = c(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0),
+  att3 = c(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1)
+) 
+
+q_matrix |>
+  gt::gt() |>
+  gt::opt_interactive(
+    use_filters = TRUE,
+    use_resizers = TRUE,
+    use_highlight = TRUE,
+    use_compact_mode = TRUE
+  )
+```
+
+Okay, now on to the Q-matrix. This is the only other piece of information we may need for our model in Stan. **WARNING** I am creating this q-matrix to be as simple as possible. This means that in a realistic scenario, you would either want to use a structural learning algorithm to see what nodes have edges to our three latent nodes, or you should probably have experts on your latent attributes to declare what items measure what latent attribute. 
+
+Above, I created a q-matrix that follows a pattern where each attribute has 5 items that correspond to that attribute. The gt table above allows you to search which items correspond to each attribute by typing `1` into the filter bar above each column. So now I believe we have everything we need to get started on a bayes net using Stan and Markov chain Monte Carlo (MCMC) sampling. 
+
+### Stan Data
+
+
+```{r}
+#| eval: false
+#| echo: true
+
+stan_data <- list(
+  J = nrow(y[, -1]), # Number of students/rows
+  I = ncol(y[, -1]), # Number of items
+  K = ncol(q_matrix[, -1]), #Number of latent attributes/skills
+  y = y[,-1], # Student responses on all items
+  Q = q_matrix[,-1] # Items that measure each attribute
+)
+
+print(stan_data)
+glimpse(stan_data)
+
+
+```

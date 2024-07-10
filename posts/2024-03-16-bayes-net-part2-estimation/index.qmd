@@ -1,0 +1,101 @@
+---
+title: "Bayes Net Pt. 2" 
+subtitle: |
+  Estimation
+image: /posts/2024-03-09-bayes-net-part2-estimation/network_playground.jpg
+categories: [bayesian, bayesian network, bayes net, R, stan, cmdstanr]
+date: 2024-03-16
+# citation:
+  # url: 
+params:
+  slug: Bayes-Net-part-2
+  date: 2024-03-16
+---
+
+**As I am continuing to grow in understanding and conducting bayesian networks, this page and series may change in the future. -JP**
+
+```{r}
+#| eval: true
+#| echo: true
+
+
+```
+
+# Appendix (Stan Code Sections Combined)
+
+
+```{default}
+#| echo: true
+#| eval: false
+
+data {
+  int<lower=1> J; // # of respondents/students j
+  int<lower=1> I; // # of items i
+  int<lower=1> K; // # of attributes k
+  matrix[J, I] X; // response matrix x
+  matrix[I, K] Q; //Q matrix Q
+}
+parameters {
+  array[I] real<lower=0, upper=1> guess;
+  array[I] real<lower=0, upper=1> no_guess;
+  real<lower=0, upper=1> lambda1;
+  real<lower=0, upper=1> lambda20;
+  real<lower=0, upper=1> lambda21;
+  real<lower=0, upper=1> lambda30;
+  real<lower=0, upper=1> lambda31;
+  real<lower=0, upper=1> lambda40;
+  real<lower=0, upper=1> lambda41;
+  real<lower=0, upper=1> lambda50;
+  real<lower=0, upper=1> lambda51;
+}
+transformed parameters {
+  array[J] real theta1;
+  array[J] real theta2;
+  array[J] real theta3;
+  array[J] real theta4;
+  array[J] real theta5;
+  matrix[J, I] delta;
+  array[I] real pi;
+  matrix[J, I] log_lik;
+  vector[I] ps_i = rep_vector(0, I); // Initialize ps_i with zeros
+  array[J] real ps_j;
+  
+  for (j in 1 : J) {
+    theta1[j] = lambda1 * 1 + (1 - lambda1) * (1 - 1);
+    theta2[j] = theta1[j] * lambda21 + (1 - theta1[j]) * lambda20;
+    theta3[j] = theta2[j] * lambda31 + (1 - theta2[j]) * lambda30;
+    theta4[j] = theta3[j] * lambda41 + (1 - theta3[j]) * lambda40;
+    theta5[j] = theta4[j] * lambda51 + (1 - theta4[j]) * lambda50;
+    
+    for (i in 1 : I) {
+      delta[j, i] = pow(theta1[j], Q[i, 1]) * pow(theta2[j], Q[i, 2])
+                    * pow(theta3[j], Q[i, 3]) * pow(theta4[j], Q[i, 4])
+                    * pow(theta5[j], Q[i, 5]);
+      
+      pi[i] = pow(guess[i], delta[j, i]) * pow(no_guess[i], 1 - delta[j, i]);
+      
+      log_lik[j, i] = X[j, i] * log(pi[i]) + (1 - X[j, i]) * log(1 - pi[i]);
+      
+      // Accumulate the values of log_lik over items
+      ps_i[i] = ps_i[i] + log_lik[j, i];
+    }
+    // Sum up the log_lik values for each student
+    ps_j[j] = sum(log_lik[j]);
+  }
+}
+model {
+  guess ~ beta(5, 25);
+  no_guess ~ beta(25, 5);
+  lambda1 ~ beta(34, 7);
+  lambda20 ~ beta(8, 36);
+  lambda21 ~ beta(36, 8);
+  lambda30 ~ beta(8, 26);
+  lambda31 ~ beta(26, 8);
+  lambda40 ~ beta(22, 28);
+  lambda41 ~ beta(28, 22);
+  lambda50 ~ beta(22, 22);
+  lambda51 ~ beta(22, 22);
+  
+  target += log_sum_exp(ps_j);
+}
+```

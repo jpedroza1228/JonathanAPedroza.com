@@ -1,0 +1,348 @@
+---
+title: "Data Manipulation in R & Python" 
+subtitle: |
+  Using dplyr, data.table, and pandas/numpy
+image: "rubiks_cube.jpg"
+categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table]
+date: 2024-07-09
+# citation:
+  # url: 
+params:
+  slug: data-manipulation-R-python
+  date: 2024-07-09
+---
+
+One of my favorite posts is the comparison between data.table and the tidyverse's dplyr packages. [Here](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/) is the link to that post. I have used that when trying to build my competence in using data.table. Now I'm going to try and expand on that by creating this post that compares cases of using dplyr, data.table, and now pandas. Hopefully this can be as useful as the comparison between dplyr an data.table post was for me. This is not an extensive way of comparing them but just to get started for anyone that wants to use python more.
+
+```{r, include = FALSE}
+library(reticulate)
+use_python("C:/Users/Jonathan/anaconda3/python.exe")
+list.files("C:/Users/Jonathan/anaconda3")
+
+```
+
+# Packages & Data
+
+```{r}
+#| label: R set up
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(data.table)
+
+r_data <- tibble(
+  x = rnorm(n = 1000),
+  x2 = rnorm(n = 1000, sd = 3),
+  y = rbinom(n = 1000, size = 1, prob = .6)
+)
+
+print(r_data)
+```
+
+```{r}
+r_table <- data.table(
+  x = rnorm(n = 1000),
+  x2 = rnorm(n = 1000, sd = 3),
+  y = rbinom(n = 1000, size = 1, prob = .6)
+)
+
+print(r_table)
+```
+
+```{python}
+#| label: python set up
+import pandas as pd
+import numpy as np
+
+data = {
+    "x": np.random.normal(0, scale=1, size=1000),
+    "x2": np.random.normal(0, scale=3, size=1000),
+    "y": np.random.binomial(n=1, p=0.6, size=1000)
+}
+
+# Creating DataFrame
+py_data = pd.DataFrame(data)
+
+print(py_data)
+```
+
+# Basic Operations
+
+## Filtering (Integers)
+
+```{r}
+r_data |>
+  filter(
+    x > 1
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[x > 1]
+)
+```
+
+```{python}
+py_data[py_data["x"] > 1].head()
+```
+
+## Filtering (Categorical)
+
+```{r}
+r_data |>
+  filter(
+    y == 1
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[y == 1]
+)
+```
+
+```{python}
+py_data[py_data["y"] == 1].head()
+```
+
+## Filtering Multiple Columns
+
+```{r}
+r_data |>
+  filter(
+    y == 1 &
+    x2 < 0
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[
+    y == 1 &
+    x2 > 0
+  ]
+)
+```
+
+```{python}
+py_data[
+  (py_data["y"] == 1) & 
+  (py_data["x2"] > 0)
+    ].head()
+```
+
+## Sorting Rows
+
+```{r}
+r_data |> 
+  arrange(y) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[order(y)]
+)
+```
+
+```{python}
+py_data.sort_values(by = "y").head()
+```
+
+## Selecting Specific Columns
+
+```{r}
+r_data |>
+  select(
+    y
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[,"y"]
+)
+```
+
+```{python}
+py_data["y"].head()
+
+# py_data.filter(items = "y").head()
+```
+
+## Selecting Multiple Columns
+
+```{r}
+r_data |> 
+  select(x, x2) |> 
+  head()
+```
+
+```{r}
+head(
+  r_table[,list(x, x2)]
+)
+```
+
+```{python}
+# py_data[{"x", "x2"}].head()
+
+py_data.filter(items = ["x", "x2"]).head()
+```
+
+## Selecting Using Regex
+
+```{r}
+r_data |>
+  select(
+    matches("x")
+  ) |>
+  head()
+```
+
+```{r}
+cols <- grep("^x", names(r_table))
+
+head(
+  r_table[, ..cols]
+)
+```
+
+```{python}
+py_data.filter(regex = "x").head()
+```
+
+## Summarize Data
+
+```{r}
+r_data |>
+  summarize(
+    avg = mean(x)
+  )
+
+  r_data |>
+  summarize(
+    total = sum(x)
+  )
+```
+
+```{r}
+r_table[, .(avg = mean(x))]
+
+r_table[, .(total = sum(x))]
+```
+
+```{python}
+py_data["x"].mean()
+
+py_data["x"].sum()
+```
+
+## Adding/Updating/Deleting Columns
+
+```{r}
+r_data <- r_data |>
+  mutate(
+    x_mult = x*x2
+  )
+head(r_data)
+```
+
+```{r}
+r_table[, x_mult := x*x2]
+head(r_table[, "x_mult"])
+```
+
+```{python}
+py_data["x_mult"] = py_data["x"] * py_data["x2"]
+py_data["x_mult"].head()
+```
+
+## Counting
+
+```{r}
+r_data |> count(y)
+```
+
+```{r}
+r_table[, .N, by = (y)]
+```
+
+```{python}
+py_data["y"].value_counts()
+```
+
+## Group By
+
+```{r}
+r_data |>
+  group_by(y) |>
+  summarize(
+    avg = mean(x)
+  )
+```
+
+```{r}
+r_table[, .(avg = mean(x)), by = "y"]
+```
+
+```{python}
+py_data.groupby("y")[["x"]].mean()
+```
+
+## Chain Expressions
+
+```{r}
+r_data |>
+  group_by(y) |>
+  summarize(
+    avg = mean(x)
+  ) |>
+  filter(
+    y == 1
+  )
+```
+
+```{r}
+r_table[, 
+  by = y,
+  .(avg = mean(x))
+  ][
+    y == 1
+  ]
+```
+
+```{python}
+py_group = py_data.groupby("y")[["x"]].mean()
+
+py_group.loc[1]
+```
+
+## Pivot Data
+
+```{r}
+r_data |>
+  pivot_longer(
+    -y
+  )
+```
+
+```{r}
+melt(r_table, id.vars = "y")
+```
+
+```{python}
+py_data["id"] = py_data.index
+
+py_data.head()
+
+py_pivot = py_data.pivot(index='id', columns='y', values=['x', 'x2', 'x_mult'])
+
+print(py_pivot.head())
+```

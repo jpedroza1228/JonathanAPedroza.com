@@ -1,0 +1,89 @@
+---
+title: "Using Typst To Create Documents" 
+image: /posts/2024-07-02-resume-cover-letter-typst/daria-kraplak-typewriter.jpg
+categories: [R, Typst]
+date: 2024-07-06
+# citation:
+  # url: 
+params:
+  slug: typst-use
+  date: 2024-07-06
+---
+
+I was recently laid off due to budget cuts so it was a perfect type to dust off the ol' resume and cover letter and tailor them for positions. I also recently have been using [Typst](https://typst.app/), an awesome app for working on pdf files at the same time as colleagues. You could think of this as something similar to Google Docs or GitHub for code. This also got me thinking about creating a small series of blog posts about using Typst and then creating Typst templates for documents using Quarto. The latter topics would be using Quarto extensions and if following along, you would need Quarto version 1.4 at least to be able to use Typst code chunks on a Quarto document. So first, I will show the Typst file I will be using because let's face it I'm on the job market and free publicity is always good.
+
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExODdza3RxajVkamQ4OHBod3JoMzVkZ2w0MXd2ZTE3Nmo5dTgybGw5dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l4EoS4FShnTLbptOE/giphy.gif). 
+ 
+ [Here](https://typst.app/project/r_x7QzRyUJvW-82WNRrQ3G) is the link for the Typst resume to view. If you want, you can just copy and paste that into Typst and change the information. I will walk through each section of the document with Typst code in the post, as well as a cover letter post, and then end the series with a Quarto extension to create a Typst template so you can just write your resume and/or cover letter in Quarto. 
+
+## Typst Documentation
+
+I will be the first to state that Typst documentation is a little difficult to follow at first. Hopefully with this tutorial you will get a better understanding of the basics of Typst code. As someone who tried to learn LaTeX to edit the previous resume I had found a template for, I wish Typst existed earlier.
+
+## Creating a Typst Document
+
+Working in the Typst app is pretty straightforward with you creating a username, followed by your dashboard with nothing there. This will be the location of all of your documents as you get started with Typst. While there are Typst templates already for resumes I really wanted to create something similar to the resume I had in LaTeX. Working in Quarto, you will have to learn how to create Typst code chunks. They are slightly different from other languages' code chunks but you can still use all of the Quarto code chunk arguments.
+
+From what I have seen online, there does not seem to be much difference in the ordering of some of the beginning Typst documentation. I have decided to start my Typst document with any variables I will be including, followed by any Typst packages I will need, and then setting up the general parameters for the document. These general parameters are for the document overall. Things like setting the font to a specific font, size and maybe weight would be a good parameter to set at the top of your document. 
+
+## Breakdown of Variables, Packages, and \# Set function for parameters
+
+::: {.cell-output-stdout}
+```
+//Variables
+#let name = [Jonathan A. Pedroza Ph.D]
+
+//Packages
+#import "@preview/tablex:0.0.8": tablex
+#import "lib-gen.typ": *
+#import "lib-impl.typ": *
+#import "lib.typ": *
+
+#set page(
+  margin: (
+    top: 0cm,
+    bottom: 0cm,
+    left: .5cm,
+    right: 0cm
+  )
+)
+
+#set block(spacing: 0.5em)
+
+#set rect(
+  width: 37%,
+  height: 100%
+)
+```
+:::
+
+Above is the beginning Typst code for the resume I created. I'm going to walk through the code a little, but for more detailed information, check out the [help documentation](https://typst.app/docs/). The `//` syntax can be included wherever to include comments. Since I have been showing others how to use Typst to create quick pretty PDFs, I have been including a lot of comments for things like variables. To create variables in Typst, you will need to use the `#let` function followed by your variable name, an equal sign, and the information you want to include. So I created the variable `name`, which would be used as `#name` in Typst and the document will spell out my full name. After that, just as the comment states, I included the tablex package, which I have found to be useful for creating tables and grids. If you'd like you can use the `#table` or `#grid` functions from Typst. Additionally, I also included the files for using the [FontAwesome Typst package](https://typst.app/universe/package/fontawesome/). You can find all the icons and other information about FontAwesome at the [FontAwesome website](https://fontawesome.com/). I was just being lazy as I wanted to create my resume quick so I could get it out into the world ASAP. Next I set the margins to maximize the amount of space I would have for my resume and I created a block after the titles Education and Professional Experience since I did not want the default amount of space before my education and experience entries. The `#set` function creates rules for the document as a whole. So For the whole document I have the same margins throughout, a block to create more space between headers and text underneath and the rectangle to separate the sections of the document. Lastly, I set a rectangle for 37% of the document's width and 100% of the height. There are other metrics that can be used to create the rectangle but I personally was enjoying using percentages for this document. This rectangle is for the right side of the document that includes the contact information.
+
+## Grid of Entries
+
+::: {.cell-output-stdout}
+```
+#grid(
+  columns: (70%, 82%),
+  [
+    #linebreak()
+
+    #set text(
+      font: "Source Sans Pro",
+      size: 10pt
+    )
+    #set align(center)
+    
+    = Education #fa-graduation-cap()
+    #line(
+      length: 94%,
+      stroke: black
+    )
+```
+:::
+
+I decided to separate some of these functions because it might be easier to talk about. So the grid here is actually separating the main text and the contact information text. As I am reading this, I can see that I probably should have set the font to be 10pt throughout the document rather than within the grid.
+
+
+
+

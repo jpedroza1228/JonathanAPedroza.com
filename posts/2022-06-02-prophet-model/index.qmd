@@ -68,8 +68,8 @@ googlesheets4::gs4_deauth()
 theme_set(theme_light())
 
 jet <- 
-  googlesheets4::read_sheet('https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0') %>% 
-  janitor::clean_names() %>% 
+  googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0", sheet = 1, range = "A1:B1000") %>% 
+  janitor::clean_names() %>%
   mutate(ds = as_date(date))
 ```
 
@@ -343,13 +343,13 @@ tuned_metrics %>%
   filter(.metric == 'rmse') %>% 
   arrange(mean)
 
-saveRDS(tuned_metrics,
-        file = 'tuned_metrics.rds')
+# saveRDS(tuned_metrics,
+#         file = 'tuned_metrics.rds')
 ```
 
 ```{r rds, echo = TRUE, eval = TRUE, message = FALSE, warning = FALSE}
 metrics <-
-  readr::read_rds('C:/Users/Jonathan/Documents/GitHubRepos/log-of-jandp/posts/2022-06-02-prophet-model/tuned_metrics.rds')
+  readr::read_rds(here::here('posts/2022-06-02-prophet-model/tuned_metrics.rds'))
 
 metrics %>% 
   filter(.metric == 'rmse') %>% 
@@ -462,7 +462,7 @@ Let's take this a step further and see how well our algorithm fits on a differen
 link <- 'https://docs.google.com/spreadsheets/d/11DWSWLFXT84uGg_mBvVYJevQOsN7ghYovJefH87BJXc/edit#gid=0'
 
 amer <- 
-  googlesheets4::read_sheet(link) %>% 
+  googlesheets4::read_sheet(link, , sheet = 1, range = "A1:B1000") %>% 
   janitor::clean_names() %>% 
   mutate(ds = as_date(date))
 
