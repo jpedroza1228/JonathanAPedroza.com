@@ -1,5 +1,5 @@
 ---
-title: "Bayes Nets Pt. 1" 
+title: "Bayes Nets" 
 subtitle: |
   Quick Introduction
 image: /posts/2024-03-09-bayesian-networks-pt-1/network_playground.jpg
@@ -252,7 +252,6 @@ The first model I will go over is essentially a naive bayes model; however, naiv
 The DCM is somewhat difficult to visualize. Based on the model in the blog post above, the skills are not determined by priors and instead of a delta parameter, the parameter is already created in the data. I will talk shortly about that when conducting the DCM. Additionally, while the other two models have priors for `true positives` and `false positives`, the DCM includes similar parameters with prior distributions; the slip (essentially the student slipped up and made a mistake even though they have the skills) parameter and the guess (got the answer correctly but do not have the necessary skills) parameter. Those priors are different from the ones created for the bayes net models so we'll talk about those next post.
 
 ## Bayes Net
-
 
 ```{r}
 #| echo: true
