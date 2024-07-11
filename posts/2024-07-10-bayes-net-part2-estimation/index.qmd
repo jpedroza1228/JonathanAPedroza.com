@@ -1,0 +1,390 @@
+---
+title: "Bayes Net Pt. 2" 
+subtitle: |
+  Estimation
+image: /posts/2024-03-09-bayes-net-part2-estimation/network_playground.jpg
+categories: [bayesian, bayesian network, bayes net, R, stan, cmdstanr]
+date: 2024-07-10
+# citation:
+  # url: 
+params:
+  slug: Bayes-Net-part-2
+  date: 2024-07-10
+---
+
+**Under Development - Not Complete**
+
+TEXT
+
+```{r}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
+
+theme_set(theme_light())
+options(
+  mc.cores = parallel::detectCores(),
+  scipen = 9999
+)
+color_scheme_set("viridis")
+
+react_table <- function(data){
+  reactable::reactable(
+    {{data}},
+    filterable = TRUE,
+    sortable = TRUE,
+    highlight = TRUE,
+    searchable = TRUE
+  )
+  }
+```
+
+TEXT
+
+```{r}
+set.seed(12345)
+bern_dist <- function(prob_value)(
+  rbinom(n = 300, size = 1, prob = prob_value)
+)
+
+y <- tibble(
+  y1 = bern_dist(prob = .7),
+  y2 = bern_dist(prob = .74),
+  y3 = bern_dist(prob = .88),
+  y4 = bern_dist(prob = .90),
+  y5 = bern_dist(prob = .64),
+  y6 = bern_dist(prob = .61),
+  y7 = bern_dist(prob = .79),
+  y8 = bern_dist(prob = .89),
+  y9 = bern_dist(prob = .81),
+  y10 = bern_dist(prob = .54),
+  y11 = bern_dist(prob = .60),
+  y12 = bern_dist(prob = .46),
+  y13 = bern_dist(prob = .37),
+  y14 = bern_dist(prob = .3),
+  y15 = bern_dist(prob = .65),
+) |>
+  rowid_to_column() |>
+  rename(
+    studentid = rowid
+  )
+
+q_matrix <- tibble(
+  item_id = map_chr(1:15, ~paste0("y", .x)),
+  att1 = c(1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0),
+  att2 = c(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0),
+  att3 = c(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1)
+) 
+
+skills <- 3
+skill_combo <- rep(list(0:1), skills)
+alpha <- expand.grid(skill_combo)
+
+alpha <- alpha |>
+  rename(
+    att1 = Var1,
+    att2 = Var2,
+    att3 = Var3
+  ) |>
+  mutate(
+    class = seq(1:nrow(alpha)),
+    .before = att1
+  )
+```
+
+TEXT
+
+```{r}
+stan_file <- list(
+  J = nrow(y[,-1]),
+  I = ncol(y[,-1]),
+  K = ncol(q_matrix[,-1]),
+  C = nrow(alpha),
+  X = y[,-1],
+  Q = q_matrix[, -1],
+  alpha = alpha[,-1]
+)
+```
+
+TEXT
+
+```{r}
+#| echo: true
+#| eval: false
+
+set.seed(12345)
+mod <- cmdstan_model(here::here("posts/2024-03-16-bayes-net-part2-estimation/simple_bayes_net.stan"))
+
+fit <- mod$sample(
+  data = stan_file,
+  seed = 12345,
+  iter_warmup = 2000,
+  iter_sampling = 2000
+)
+
+# fit$save_object("simple_bayes_net.RDS")
+
+bn_converge <- summarize_draws(fit$draws(), default_convergence_measures())
+bn_measure <- summarize_draws(fit$draws(), default_summary_measures())
+```
+
+TEXT
+
+```{r}
+fit <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/simple_bayes_net.RDS"))
+bn_converge <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_converge.RDS"))
+bn_measure <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_measure.RDS"))
+
+fit$diagnostic_summary()
+
+# saveRDS(bn_converge, "bn_converge.RDS")
+# saveRDS(bn_measure, "bn_measure.RDS")
+
+bn_converge |> arrange(desc(rhat)) |> head()
+bn_measure |> mutate(across(-variable, ~round(.x, 3))) |> react_table()
+```
+
+TEXT
+
+```{r}
+y_rep <- fit$draws("x_rep") |> as_draws_matrix()
+stu_resp_attr <- fit$draws("prob_resp_attr") |> as_draws_matrix()
+```
+
+TEXT
+
+```{r}
+mcmc_trace(exp(y_rep[,seq(1, 4500, 300)])) +
+  scale_y_continuous(limits = c(0, 1))
+
+mcmc_intervals(exp(y_rep[,seq(1, 4500, 300)]))
+
+mcmc_areas(exp(y_rep[,seq(1, 4500, 300)]))
+
+y |> react_table()
+```
+
+TEXT
+
+```{r}
+ppc_stat(
+  y = y |> pull(y2) |> as.vector(),
+  yrep = exp(y_rep[,301:600]),
+  stat = "mean"
+)
+
+ppc_stat(
+  y = y |> pull(y2) |> as.vector(),
+  yrep = exp(y_rep[,301:600]),
+  stat = "median"
+)
+
+ppc_stat(
+  y = y |> pull(y2) |> as.vector(),
+  yrep = exp(y_rep[,301:600]),
+  stat = "sd"
+)
+
+ppc_stat(
+  y = y |> pull(y2) |> as.vector(),
+  yrep = exp(y_rep[,301:600]),
+  stat = "min"
+)
+
+ppc_stat(
+  y = y |> pull(y2) |> as.vector(),
+  yrep = exp(y_rep[,301:600]),
+  stat = "max"
+)
+```
+
+
+```{r}
+library(loo)
+
+loo(y_rep)
+waic(y_rep)
+
+bn_resid <- y[,-1] - exp(y_rep)
+
+bn_resid |> 
+  as_tibble() |>
+  rowid_to_column() |>
+  ggplot(
+    aes(
+      rowid,
+      y2
+    )
+  ) +
+  geom_point(
+    alpha = .7
+  )
+```
+
+
+```{r}
+y_pred_mean <- exp(y_rep) |>
+  as_tibble() |>
+  summarize(
+    across(
+      everything(),
+      ~mean(.x)
+      )
+  )
+y_pred_class <- y_pred_mean |>
+  mutate(
+    across(
+      everything(),
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+y_pred_class <- y_pred_class |>
+  pivot_longer(
+    everything()
+  ) |>
+  separate(
+    name,
+    into = c("stu", "item"),
+    sep = ","
+  ) |>
+  mutate(
+    stu = str_remove(stu, "\\["),
+    item = str_remove(item, "\\]"),
+    item = paste0("item", item),
+    stu = str_remove(stu, "x_rep")
+  ) |>
+  pivot_wider(
+    names_from = item,
+    values_from = value
+  )
+
+map2(
+  y_pred_class[,-1],
+  y[,-1],
+  ~table(.x, .y)
+)
+
+map2(
+  y_pred_class[,-1],
+  y[,-1],
+  ~prop.table(
+    table(.x, .y)
+  )
+)
+
+y_pred_long <- y_pred_class |>
+  pivot_longer(-stu)
+
+y_long <- y |>
+  pivot_longer(-studentid)
+
+accuracy <- mean(y_pred_long$value == y_long$value)
+accuracy
+
+precision <- sum(y_pred_long$value == 1 & y_long == 1) / sum(y_pred_long$value == 1)
+recall <- sum(y_pred_long$value == 1 & y_long == 1) / sum(y_long == 1)
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+precision
+recall
+f1_score
+
+library(pROC)
+
+# Have to make 
+roc_curve <- roc(y, y_pred_mean)
+auc_value <- auc(roc_curve)
+
+print(paste("AUC: ", auc_value))
+plot(roc_curve, main = "ROC Curve")
+```
+
+
+```{r}
+actual_stu_resp_attr <- tibble(
+  studentid = 1:nrow(y),
+  att1 = runif(nrow(y), 0.5, 1),
+  att2 = runif(nrow(y), 0.5, 1),
+  att3 = runif(nrow(y), 0.5, 1)
+) |>
+  mutate(
+    across(
+      -studentid,
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+stu_resp_attr_mean <- stu_resp_attr |>
+  as_tibble() |>
+  summarize(
+    across(
+      everything(),
+      ~mean(.x)
+      )
+  )
+stu_resp_attr_class <- stu_resp_attr_mean |>
+  mutate(
+    across(
+      everything(),
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+stu_resp_attr_class <- stu_resp_attr_class |>
+  pivot_longer(
+    everything()
+  ) |>
+  separate(
+    name,
+    into = c("stu", "att"),
+    sep = ","
+  ) |>
+  mutate(
+    stu = str_remove(stu, "\\["),
+    att = str_remove(att, "\\]"),
+    att = paste0("att", att),
+    stu = str_remove(stu, "prob_resp_attr")
+  ) |>
+  pivot_wider(
+    names_from = att,
+    values_from = value
+  )
+
+map2(
+  stu_resp_attr_class[,2:4],
+  actual_stu_resp_attr[,2:4],
+  ~table(.x, .y)
+)
+
+map2(
+ stu_resp_attr_class[,2:4],
+  actual_stu_resp_attr[,2:4],
+  ~prop.table(
+    table(.x, .y)
+  )
+)
+
+stu_resp_attr_long <- stu_resp_attr_class |>
+  pivot_longer(-stu)
+
+actual_stu_resp_attr_long <- actual_stu_resp_attr |>
+  pivot_longer(-studentid)
+
+accuracy <- mean(stu_resp_attr_long$value == actual_stu_resp_attr_long$value)
+accuracy
+
+precision_att <- sum(stu_resp_attr_long$value == 1 & actual_stu_resp_attr_long == 1) / sum(stu_resp_attr_long$value == 1)
+recall_att <- sum(stu_resp_attr_long$value == 1 & actual_stu_resp_attr_long == 1) / sum(actual_stu_resp_attr_long == 1)
+f1_score_att <- 2 * (precision * recall) / (precision + recall)
+
+precision_att
+recall_att
+f1_score_att
+```
