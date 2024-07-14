@@ -50,7 +50,7 @@ TEXT
 ```{r}
 set.seed(12345)
 bern_dist <- function(prob_value)(
-  rbinom(n = 300, size = 1, prob = prob_value)
+  rbinom(n = 100, size = 1, prob = prob_value)
 )
 
 y <- tibble(
@@ -119,7 +119,7 @@ TEXT
 #| eval: false
 
 set.seed(12345)
-mod <- cmdstan_model(here::here("posts/2024-03-16-bayes-net-part2-estimation/simple_bayes_net.stan"))
+mod <- cmdstan_model(here::here("posts/2024-07-10-bayes-net-part2-estimation/simple_bayes_net.stan"))
 
 fit <- mod$sample(
   data = stan_file,
@@ -137,9 +137,9 @@ bn_measure <- summarize_draws(fit$draws(), default_summary_measures())
 TEXT
 
 ```{r}
-fit <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/simple_bayes_net.RDS"))
-bn_converge <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_converge.RDS"))
-bn_measure <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_measure.RDS"))
+# fit <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/simple_bayes_net.RDS"))
+# bn_converge <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_converge.RDS"))
+# bn_measure <- read_rds(here::here("posts/2024-03-16-bayes-net-part2-estimation/bn_measure.RDS"))
 
 fit$diagnostic_summary()
 
@@ -310,9 +310,9 @@ plot(roc_curve, main = "ROC Curve")
 ```{r}
 actual_stu_resp_attr <- tibble(
   studentid = 1:nrow(y),
-  att1 = runif(nrow(y), 0.5, 1),
-  att2 = runif(nrow(y), 0.5, 1),
-  att3 = runif(nrow(y), 0.5, 1)
+  att1 = runif(nrow(y), 0, 1),
+  att2 = runif(nrow(y), 0, 1),
+  att3 = runif(nrow(y), 0, 1)
 ) |>
   mutate(
     across(
