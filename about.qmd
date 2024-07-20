@@ -24,7 +24,7 @@ about:
       href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
     - icon: cv
       text: CV
-      href: https://drive.google.com/file/d/1GbjOT36Nh_KaPjrq0ek7UrQ4sg2gdCGQ/view?usp=sharing
+      href: https://drive.google.com/file/d/1acXkAkxBIUjOdWx8rM0UtjwVCS-RapF-/view?usp=sharing
 ---
 
 Hi! I am **J**onathan **And**rew **P**edroza PhD, but I have gotten used to everyone just referring to me as JP. I am a Data Scientist and Psychometrician for [Accessible Teaching, Learning, and Assessment Systems (ATLAS)](https://atlas.ku.edu/) at the University of Kansas. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a [Prevention Scientist](http://www.preventionresearch.org/prevscience_description.php) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. In addition to my work at ATLAS, I am also a Posit (Previously RStudio) Academy Mentor to cohorts around the world where I help cohort members with learning R while providing tips about additional packages and best practices using R and the Tidyverse.
