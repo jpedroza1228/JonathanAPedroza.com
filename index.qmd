@@ -1,8 +1,18 @@
 ---
 title: "Home"
-subtitle: "Data Science Using R, Python, & Whatever Else Seems Useful"
+subtitle: "Data Science Using R, Python, Additional ...and Cats"
 page-layout: full
 title-block-banner: true
 ---
+
+**Under Development**
+
+# Useful Resources
+
+[Link to Resume Quarto Extension]()
+
+[Link to Cover Letter Quarto Extension]()
+
+# Data Science Colleagues
 
 ![](cats_together.jpg)

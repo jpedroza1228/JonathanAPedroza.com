@@ -2,7 +2,7 @@
 title: "Bayes Net Pt. 2" 
 subtitle: |
   Estimation
-image: /posts/2024-03-09-bayes-net-part2-estimation/network_playground.jpg
+image: /posts/2024-07-10-bayes-net-part2-estimation/network_playground.jpg
 categories: [Bayesian, Bayesian Network, bayes net, R, stan, cmdstanr]
 date: 2024-07-10
 # citation:
