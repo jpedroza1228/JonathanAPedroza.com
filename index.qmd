@@ -5,13 +5,11 @@ page-layout: full
 title-block-banner: true
 ---
 
-**Under Development**
-
 # Useful Resources
 
-[Link to Resume Quarto Extension]()
+**Currently a work in progress** [Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
 
-[Link to Cover Letter Quarto Extension]()
+[Link to Cover Letter Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/CoverLetter)
 
 # Data Science Colleagues
 
