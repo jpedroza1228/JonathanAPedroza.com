@@ -1,6 +1,6 @@
 ---
 title: "Home"
-subtitle: "Data Science Using R, Python, Additional ...and Cats"
+subtitle: "Data Science Using R, Python, ...and Cats"
 page-layout: full
 title-block-banner: true
 ---
