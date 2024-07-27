@@ -1,13 +1,15 @@
 ---
 title: "Home"
-subtitle: "Data Science Using R, Python, ...and Cats"
+subtitle: "Data Science Using R, Python, And Other Useful Software"
 page-layout: full
 title-block-banner: true
 ---
 
 # Useful Resources
 
-**Currently a work in progress** [Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
+**Currently a work in progress**
+
+[Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
 
 [Link to Cover Letter Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/CoverLetter)
 
