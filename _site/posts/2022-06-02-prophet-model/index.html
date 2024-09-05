@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_light</span>())</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>jet <span class="ot">&lt;-</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0"</span>, <span class="at">sheet =</span> <span class="dv">1</span>, <span class="at">range =</span> <span class="st">"A1:B1000"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0"</span>, <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ds =</span> <span class="fu">as_date</span>(date))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -512,10 +512,10 @@ $clean</code></pre>
 <pre><code># A tibble: 1 × 9
   .model_id .model_desc           .type    mae  mape  mase smape  rmse   rsq
       &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Fitted 0.629  4.06  1.93  4.05 0.831 0.957</code></pre>
+1         1 PROPHET W/ REGRESSORS Fitted 0.895  8.26  4.14  8.09  1.20 0.962</code></pre>
 </div>
 </div>
-<p>So with the model, we can see that the Mean Absolute Scaled Error (MASE) is 1.9270147 and the Root Mean Square Error (RMSE) is 0.8312475. Not bad for an initial run. Let’s look at how the model fits the training data.</p>
+<p>So with the model, we can see that the Mean Absolute Scaled Error (MASE) is 4.1398965 and the Root Mean Square Error (RMSE) is 1.1991467. Not bad for an initial run. Let’s look at how the model fits the training data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">train =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>  </span>
@@ -627,7 +627,7 @@ $clean</code></pre>
 <pre><code># A tibble: 1 × 9
   .model_id .model_desc           .type    mae  mape  mase smape  rmse   rsq
       &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Fitted 0.501  3.24  1.54  3.23 0.659 0.973</code></pre>
+1         1 PROPHET W/ REGRESSORS Fitted 0.800  7.28  3.70  7.16  1.10 0.968</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -647,7 +647,7 @@ $clean</code></pre>
 </div>
 </div>
 </div>
-<p>We can see that when using the whole training set, we have a RMSE of 0.6588232 and a MASE of 1.5354125 so both metrics reduced slightly.</p>
+<p>We can see that when using the whole training set, we have a RMSE of 1.1013642 and a MASE of 3.7008292 so both metrics reduced slightly.</p>
 </section>
 </section>
 <section id="testing-the-model" class="level2">
@@ -681,12 +681,12 @@ $clean</code></pre>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>test_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 9
-  .model_id .model_desc           .type   mae  mape  mase smape  rmse    rsq
-      &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-1         1 PROPHET W/ REGRESSORS Test   1.11  8.80  4.57  8.58  1.35 0.0196</code></pre>
+  .model_id .model_desc           .type   mae  mape  mase smape  rmse   rsq
+      &lt;int&gt; &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1         1 PROPHET W/ REGRESSORS Test   2.17  20.4  8.89  19.1  2.83 0.681</code></pre>
 </div>
 </div>
-<p>Well, that doesn’t look very good and we can see that with the metrics. The MASE has gotten much worse (4.5736587) and so has the RMSE (1.3542052) <img src="https://media.giphy.com/media/32mC2kXYWCsg0/giphy.gif" class="img-fluid" alt="sweating"></p>
+<p>Well, that doesn’t look very good and we can see that with the metrics. The MASE has gotten much worse (8.8923832) and so has the RMSE (2.8295592) <img src="https://media.giphy.com/media/32mC2kXYWCsg0/giphy.gif" class="img-fluid" alt="sweating"></p>
 </section>
 <section id="forecasting-ahead-a-year" class="level2">
 <h2 class="anchored" data-anchor-id="forecasting-ahead-a-year">Forecasting Ahead a Year</h2>
@@ -710,22 +710,22 @@ $clean</code></pre>
 <span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(future)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 1,357
+<pre><code>Rows: 5,922
 Columns: 17
 $ close         &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
 $ ds            &lt;date&gt; 2002-04-12, 2002-04-15, 2002-04-16, 2002-04-17, 2002-04…
 $ actual_day    &lt;ord&gt; Fri, Mon, Tue, Wed, Thu, Fri, Mon, Tue, Wed, Thu, Fri, M…
 $ clean         &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
 $ observed      &lt;dbl&gt; 13.33, 13.40, 13.57, 13.36, 13.10, 12.93, 12.45, 12.56, …
-$ season        &lt;dbl&gt; 0.017592887, 0.001065775, -0.001828751, -0.005043169, -0…
-$ trend         &lt;dbl&gt; 13.47847, 13.48774, 13.49702, 13.50629, 13.51556, 13.524…
-$ remainder     &lt;dbl&gt; -0.16606354, -0.08880934, 0.07481227, -0.14124623, -0.40…
-$ seasadj       &lt;dbl&gt; 13.31241, 13.39893, 13.57183, 13.36504, 13.11179, 12.912…
-$ remainder_l1  &lt;dbl&gt; -3.129268, -3.129268, -3.129268, -3.129268, -3.129268, -…
-$ remainder_l2  &lt;dbl&gt; 3.177322, 3.177322, 3.177322, 3.177322, 3.177322, 3.1773…
+$ season        &lt;dbl&gt; -0.0040803648, -0.0002458832, -0.0051024208, 0.000334500…
+$ trend         &lt;dbl&gt; 13.40485, 13.41437, 13.42388, 13.43339, 13.44290, 13.452…
+$ remainder     &lt;dbl&gt; -0.0707726153, -0.0141198535, 0.1512239275, -0.073725750…
+$ seasadj       &lt;dbl&gt; 13.33408, 13.40025, 13.57510, 13.35967, 13.09091, 12.934…
+$ remainder_l1  &lt;dbl&gt; -2.189152, -2.189152, -2.189152, -2.189152, -2.189152, -…
+$ remainder_l2  &lt;dbl&gt; 2.205557, 2.205557, 2.205557, 2.205557, 2.205557, 2.2055…
 $ anomaly       &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", "No", "No", "N…
-$ recomposed_l1 &lt;dbl&gt; 10.36680, 10.35954, 10.36592, 10.37198, 10.37451, 10.413…
-$ recomposed_l2 &lt;dbl&gt; 16.67339, 16.66613, 16.67251, 16.67857, 16.68110, 16.719…
+$ recomposed_l1 &lt;dbl&gt; 11.21162, 11.22497, 11.22962, 11.24457, 11.26285, 11.259…
+$ recomposed_l2 &lt;dbl&gt; 15.60633, 15.61968, 15.62433, 15.63928, 15.65756, 15.653…
 $ year_num      &lt;fct&gt; 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002, 20…
 $ month_num     &lt;fct&gt; 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 05, …
 $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 1, 2…</code></pre>

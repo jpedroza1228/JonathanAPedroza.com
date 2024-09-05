@@ -68,7 +68,7 @@ googlesheets4::gs4_deauth()
 theme_set(theme_light())
 
 jet <- 
-  googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0", sheet = 1, range = "A1:B1000") %>% 
+  googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1SpRXsC3kXDaQLUfC6cPIOvsqxDF6updhgHRJeT8PTog/edit#gid=0", sheet = 1) %>% 
   janitor::clean_names() %>%
   mutate(ds = as_date(date))
 ```
