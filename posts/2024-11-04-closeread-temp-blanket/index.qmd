@@ -1,0 +1,381 @@
+---
+title: "My submission to Posit's Closeread Competition" 
+subtitle: |
+  Crocheting a Temperature Blanket with JP
+#image: 
+categories: [closeread, ggplot2, HTML, quarto]
+date: 2024-11-04
+# citation:
+  # url: 
+execute:
+  warning: false
+  message: false
+params:
+  slug: closeread-temp-blanket 
+  date: 2024-11-04
+---
+
+```{r}
+#| include: false
+
+# Photo by Анна Малышева (Заволока): https://www.pexels.com/photo/close-up-of-woman-hands-tangled-with-string-12298480/
+# Photo by Surene Palvie: https://www.pexels.com/photo/assorted-color-yarns-on-brown-wicker-basket-2070676/
+```
+
+When I saw that Posit had posted a blog post about storytelling with Quarto (see blog post [here](https://posit.co/blog/closeread-prize-announcement/)) using [Closeread](https://closeread.dev/) I became interested in trying out Closeread for this competition. This is my first time reading about Closeread and it sparked my interest in trying to tell a story using a quarto document. For my submission, I thought I would do something silly about a topic that is serious. I am going to try my hardest to write this in a serious way, but this is also probably going to dissolve into a delusional fever dream of a post. I wanted to show the weather differences in Los Angeles from 2013 to 2023 by creating a story of global warming while showing visualizations of the temperature differences using "temperature blankets". If you know anything about me, the first thing you recognize is art != JP so instead I thought I would create a temperature blanket using ggplot2.  
+
+For the competition I decided to do everything in R because I knew I was going to be mess around a lot using the `theme()` function in ggplot2. So below is going to be a walkthough of my thought process for creating the Closeread story. Then I will probably create a Closeread specific GitHub repo.
+
+# Loading the Data
+
+I'm going to start by loading the tidyverse package and reading the data. I specifically wanted data from Los Angeles because I live here and thought I would compare a ten-year difference since I also lived here in 2013. I got data [here](https://temperature-blanket.com/), but I have not looked over the data at all.
+
+```{r}
+library(tidyverse)
+
+temp <- read_csv(here::here("posts/2024-11-04-closeread-temp-blanket", "weather_data_la2013_la2023.csv")) |>
+  janitor::clean_names()
+```
+
+So I decided it is probably best to make sure everything is correct in the data.
+
+```{r}
+temp |>
+  count(city)
+
+temp |>
+  inspectdf::inspect_na()
+```
+
+Okay, so everything looks okay to me. While there are plenty of data points to look at, I think I am going to focus on the average temperature to create my temperature blankets. I also just want to point out that all temperatures will be in Farenheit. Before making my visualization, I want to break down my date category into years, months, and days. This will be easier to use `facet_wrap()` to separate my years.
+
+```{r}
+temp <- temp |>
+  mutate(date2 = date) |>
+  separate(
+    date2,
+    into = c(
+      "year", "month", "day"
+    ),
+    sep = "-"
+  )
+```
+
+Now, we can focus on creating our plot. Interestingly, I have never had to make one axis on my plots be set to an amount that would range across the entirety of the axis. This was definitely one of those times where I just tried something and BAM! it worked. I set my y-axis to 1 and it worked. We will not focus on the values for the y-axis because they don't make any sense, but I did try some other values. The value that you choose on the y-axis does not matter, especially for this visualization because we are going to remove the axis titles and text.  
+
+```{r}
+temp |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = average_temperature_f
+    )
+  ) +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  NULL
+```
+
+For some reason, I am not a fan of the blankets being horizontal, so I'm going to change the orientation of them.
+
+```{r}
+temp |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = average_temperature_f
+    )
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  NULL
+```
+
+We need a color scale. This will obviously be a manual scale so after some googling I found this [scale project sheet](https://craftwarehouse.com/wp-content/uploads/TEMPERATURE-BLANKET-PLANNER-PAGE-2022-PDF-v1.pdf?x72995). Shoutout to the Craft Warehouse because this was the easiest scale to follow (for me) and the large balls of yarn allowed me to find color codes that matched the yarn fairly well.
+
+```{r}
+temp <- temp |>
+  mutate(
+    temp_color = case_when(
+      average_temperature_f > 96 ~ "96+", #cherry red
+      average_temperature_f >= 89 & average_temperature_f < 96 ~ "89-95", #really red
+      average_temperature_f >= 82 & average_temperature_f < 89 ~ "82-88", #carrot
+      average_temperature_f >= 75 & average_temperature_f < 82 ~ "75-81", #canary
+      average_temperature_f >= 68 & average_temperature_f < 75 ~ "68-74", #yellow
+      average_temperature_f >= 61 & average_temperature_f < 68 ~ "61-67", #green apple
+      average_temperature_f >= 54 & average_temperature_f < 61 ~ "54-60", #porcelain blue
+      average_temperature_f >= 47 & average_temperature_f < 54 ~ "47-53", #teal
+      average_temperature_f >= 40 & average_temperature_f < 47 ~ "40-46", #alaskan blue
+      average_temperature_f >= 33 & average_temperature_f < 40 ~ "33-39", #cobalt
+      average_temperature_f >= 26 & average_temperature_f < 33 ~ "26-32", #thistle
+      average_temperature_f < 26 ~ "Below 26" #purple
+    ),
+    month_name = case_when(
+      month == "01" ~ "Jan",
+      month == "02" ~ "Feb",
+      month == "03" ~ "Mar",
+      month == "04" ~ "Apr",
+      month == "05" ~ "May",
+      month == "06" ~ "Jun",
+      month == "07" ~ "Jul",
+      month == "08" ~ "Aug",
+      month == "09" ~ "Sept",
+      month == "10" ~ "Oct",
+      month == "11" ~ "Nov",
+      month == "12" ~ "Dec"
+    ),
+    across(
+      c(
+        temp_color,
+        month_name
+      ),
+      ~as.factor(.x)
+    ),
+    temp_color = fct_relevel(
+      temp_color,
+      "96+",
+      "89-95",
+      "82-88",
+      "75-81",
+      "68-74",
+      "61-67",
+      "54-60",
+      "47-53",
+      "40-46",
+      "33-39",
+      "26-32",
+      "Below 26"
+    )
+  )
+```
+
+```{r}
+temp |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    )
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  NULL
+```
+
+```{r}
+temp |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    )
+  ) +
+  geom_text(
+    data = temp |>
+    filter(
+        str_detect(
+          date,
+        "-01$"
+      )
+    ),
+    aes(
+      label = month_name
+    ),
+    nudge_y = -.53
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  ggmap::theme_nothing()
+  NULL
+```
+
+```{r}
+# temp |> 
+#   mutate(
+#     day = as.numeric(day)
+#   ) |>
+#   pull(day)
+
+map(
+  temp |> 
+  mutate(
+    day = as.numeric(day)
+  ) |>
+  pull(day),
+  ~temp |>
+  filter(day == .x) |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    )
+  ) +
+  geom_text(
+    data = temp |>
+    filter(
+        str_detect(
+          date,
+        "-01$"
+      )
+    ),
+    aes(
+      label = month_name
+    ),
+    nudge_y = -.53
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  ggmap::theme_nothing()
+)
+
+temp |> 
+  mutate(
+    month = as.numeric(month)
+  ) |>
+  distinct(month) |>
+  pull(month)
+
+map(
+  temp |> 
+  mutate(
+    month = as.numeric(month)
+  ) |>
+  distinct(month) |>
+  pull(month),
+  ~temp |>
+  filter(month == .x) |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    )
+  ) +
+  geom_text(
+    data = temp |>
+    filter(
+        str_detect(
+          date,
+        "-01$"
+      )
+    ),
+    aes(
+      label = month_name
+    ),
+    nudge_y = -.53
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  ggmap::theme_nothing()
+)
+```
