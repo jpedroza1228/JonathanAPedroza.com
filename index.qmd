@@ -7,7 +7,9 @@ title-block-banner: true
 
 # Useful Resources
 
-**Currently a work in progress**
+## Quarto Extensions
+
+[Link to invoice Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/invoice)
 
 [Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
 
