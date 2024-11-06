@@ -7,6 +7,8 @@ categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table]
 date: 2024-07-09
 # citation:
   # url: 
+execute:
+    freeze: true
 params:
   slug: data-manipulation-R-python
   date: 2024-07-09

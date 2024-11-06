@@ -7,6 +7,8 @@ categories: [Bayesian, Bayesian Network, bayes net, R, rstan, cmdstanr, posterio
 date: 2024-11-03
 # citation:
   # url: 
+execute:
+    freeze: true
 params:
   slug: Bayes-Net-Bnlearn-Coffee-Tasting
   date: 2024-11-03

@@ -7,6 +7,8 @@ categories: [Visualizations, Shiny]
 date: 2021-06-19
 # citation:
   # url: 
+execute:
+    freeze: true
 params:
   slug: Graduate-Student-Satisfaction-Exit-Surveys
   date: 2021-06-19
