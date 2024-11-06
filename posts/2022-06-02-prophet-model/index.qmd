@@ -7,6 +7,8 @@ categories: [Visualizations, Analysis, Forecast, TidyModels, Modeltime]
 date: 2022-06-02
 # citation:
   # url: 
+execute:
+    freeze: true
 params:
   slug: Prophet-Model
   date: 2022-06-02

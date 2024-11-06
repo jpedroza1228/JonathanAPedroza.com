@@ -4,15 +4,14 @@ subtitle: |
   Crocheting a Temperature Blanket with JP
 #image: 
 categories: [closeread, ggplot2, HTML, quarto]
-date: 2024-11-04
-# citation:
-  # url: 
+date: 2024-11-05
 execute:
   warning: false
   message: false
+  freeze: true
 params:
   slug: closeread-temp-blanket 
-  date: 2024-11-04
+  date: 2024-11-05
 ---
 
 ```{r}
@@ -225,7 +224,7 @@ temp |>
     aes(
       label = month_name
     ),
-    nudge_y = -.53
+    nudge_y = -.54
   ) +
   coord_flip() +
   facet_wrap(
@@ -248,25 +247,20 @@ temp |>
       "Below 26" = "#800080"
     )
   ) +
-  ggmap::theme_nothing()
+  ggmap::theme_nothing() +
   NULL
 ```
 
 ```{r}
-# temp |> 
-#   mutate(
-#     day = as.numeric(day)
-#   ) |>
-#   pull(day)
-
-map(
-  temp |> 
+temp |>
+  group_by(year) |>
   mutate(
-    day = as.numeric(day)
+    first = first(item_number)
   ) |>
-  pull(day),
-  ~temp |>
-  filter(day == .x) |>
+  distinct(
+    first,
+    .keep_all = TRUE
+    ) |>
   ggplot(
     aes(
       date,
@@ -278,23 +272,26 @@ map(
       fill = temp_color
     )
   ) +
-  geom_text(
-    data = temp |>
-    filter(
-        str_detect(
-          date,
-        "-01$"
-      )
-    ),
-    aes(
-      label = month_name
-    ),
-    nudge_y = -.53
-  ) +
+  # geom_text(
+  #   data = temp |>
+  #   filter(
+  #       str_detect(
+  #         date,
+  #       "-01$"
+  #     )
+  #   ),
+  #   aes(
+  #     label = month_name
+  #   ),
+  #   nudge_y = -.54
+  # ) +
   coord_flip() +
   facet_wrap(
     ~year,
     scales = "free"
+  ) +
+  labs(
+    fill = ""
   ) +
   scale_fill_manual(
     values = c(
@@ -312,25 +309,28 @@ map(
       "Below 26" = "#800080"
     )
   ) +
-  ggmap::theme_nothing()
-)
+  NULL
 
-temp |> 
-  mutate(
-    month = as.numeric(month)
-  ) |>
-  distinct(month) |>
-  pull(month)
+```
 
-map(
-  temp |> 
-  mutate(
-    month = as.numeric(month)
+```{r}
+blank13 <- temp |>
+  select(
+    item_number,
+    date,
+    year,
+    temp_color,
+    average_temperature_f
   ) |>
-  distinct(month) |>
-  pull(month),
-  ~temp |>
-  filter(month == .x) |>
+  group_by(year) |>
+  mutate(
+    year_row = seq(1, 365, 1)
+  ) |>
+  ungroup() |>
+  filter(
+    year_row < 365 &
+    year == 2013
+    ) |>
   ggplot(
     aes(
       date,
@@ -340,25 +340,17 @@ map(
   geom_tile(
     aes(
       fill = temp_color
-    )
-  ) +
-  geom_text(
-    data = temp |>
-    filter(
-        str_detect(
-          date,
-        "-01$"
-      )
     ),
-    aes(
-      label = month_name
-    ),
-    nudge_y = -.53
+    color = "white",
+    alpha = .1
   ) +
   coord_flip() +
   facet_wrap(
     ~year,
     scales = "free"
+  ) +
+  labs(
+    fill = "Temperatures"
   ) +
   scale_fill_manual(
     values = c(
@@ -376,6 +368,211 @@ map(
       "Below 26" = "#800080"
     )
   ) +
-  ggmap::theme_nothing()
+  scale_y_continuous(
+    expand = c(0, 0)
+  ) +
+  scale_x_date(
+    expand = c(0, 0)
+  ) +
+  theme(
+    axis.text.y = element_text(color = "black"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.title = element_blank(),
+    strip.background = element_rect(fill = NA),
+    strip.text = element_text(size = 18),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(color = "black"),
+    legend.position = "bottom"
+  ) +
+  NULL
+
+blank23 <- temp |>
+  select(
+    item_number,
+    date,
+    year,
+    temp_color,
+    average_temperature_f
+  ) |>
+  group_by(year) |>
+  mutate(
+    year_row = seq(1, 365, 1)
+  ) |>
+  ungroup() |>
+  filter(
+    year_row < 365 &
+    year == 2023
+    ) |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    ),
+    color = "white",
+    alpha = .1
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  labs(
+    fill = "Temperatures"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  scale_y_continuous(
+    expand = c(0, 0)
+  ) +
+  scale_x_date(
+    expand = c(0, 0)
+  ) +
+  theme(
+    axis.text.y = element_text(color = "black"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.title = element_blank(),
+    strip.background = element_rect(fill = NA),
+    strip.text = element_text(size = 18),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(color = "black"),
+    legend.position = "bottom"
+  ) +
+  NULL
+```
+
+```{r}
+map(
+  seq(2, 365, 7),
+  ~temp |>
+  select(
+    item_number,
+    date,
+    year,
+    temp_color,
+    average_temperature_f
+  ) |>
+  group_by(year) |>
+  mutate(
+    year_row = seq(1, 365, 1)
+  ) |>
+  ungroup() |>
+  filter(year_row < .x) |>
+  ggplot(
+    aes(
+      date,
+      1
+    )
+  ) +
+  geom_tile(
+    aes(
+      fill = temp_color
+    ),
+    color = "white"
+  ) +
+  coord_flip() +
+  facet_wrap(
+    ~year,
+    scales = "free"
+  ) +
+  labs(
+    fill = "Temperatures"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "96+" = "#D2042D",
+      "89-95" = "#C41E3A",
+      "82-88" = "#ED9121",
+      "75-81" = "#FFFF99",
+      "68-74" = "#FFD700",
+      "61-67" = "#7CFC00",
+      "54-60" = "#AFDBF5",
+      "47-53" = "#008080",
+      "40-46" = "#A2C2E0",
+      "33-39" = "#0047AB",
+      "26-32" = "#D8BFD8",
+      "Below 26" = "#800080"
+    )
+  ) +
+  scale_y_continuous(
+    expand = c(0, 0)
+  ) +
+  scale_x_date(
+    expand = c(0, 0)
+  ) +
+  theme(
+    axis.text.y = element_text(color = "black"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.title = element_blank(),
+    strip.background = element_rect(fill = NA),
+    strip.text = element_text(size = 18),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(color = "black"),
+    legend.position = "bottom"
+  ) +
+  NULL
 )
+
+```
+
+Photo by Andrea Davis: https://www.pexels.com/photo/a-bedroom-with-a-city-view-4890676/
+
+# Layering the Visual to a Blanket
+
+```{r}
+library(magick)
+
+blanket <- image_read(
+  here::here("posts/2024-11-04-closeread-temp-blanket", "zoomed_in.jpg")
+)
+
+blanket <- image_convert(blanket, "png")
+
+blanket |>
+  image_browse()
+```
+
+
+```{r}
+library(patchwork)
+library(cowplot)
+
+ggdraw() +
+  draw_plot(blank13) +
+  draw_image(
+    blanket,
+    #width = 1,
+    #height = 1.5,
+    y = 0
+    )
+
+# needs the blank13 to be a png image
+image_append(c(blank13, blanket), stack = TRUE)
 ```

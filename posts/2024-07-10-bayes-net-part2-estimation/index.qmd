@@ -7,6 +7,8 @@ categories: [Bayesian, Bayesian Network, bayes net, R, stan, cmdstanr]
 date: 2024-07-10
 # citation:
   # url: 
+execute:
+    freeze: true
 params:
   slug: Bayes-Net-part-2
   date: 2024-07-10
