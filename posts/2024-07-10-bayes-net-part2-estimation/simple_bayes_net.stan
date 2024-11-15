@@ -69,15 +69,15 @@ model {
   vector[C] log_lik;
   
   // Priors
-  lambda1 ~ beta(25, 5);
-  lambda20 ~ beta(10, 20);
-  lambda21 ~ beta(20, 10);
-  lambda30 ~ beta(5, 25);
-  lambda31 ~ beta(25, 5);
+  lambda1 ~ beta(2, 1);
+  lambda20 ~ beta(1, 2);
+  lambda21 ~ beta(2, 1);
+  lambda30 ~ beta(1, 2);
+  lambda31 ~ beta(2, 1);
   
   for (i in 1 : I) {
-    false_pos[i] ~ beta(4, 26);
-    true_pos[i] ~ beta(26, 4);
+    false_pos[i] ~ beta(1, 2);
+    true_pos[i] ~ beta(2, 1);
   }
   
   //Likelihood

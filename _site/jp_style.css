@@ -40,3 +40,7 @@ div.quarto-about-jolla .quarto-title h1.title, div.quarto-about-jolla .quarto-ti
   /*margin-bottom: 0px;*/
   position: relative;
 }
+
+div.quarto-about-jolla main {
+  text-align: right;
+}

@@ -14,7 +14,6 @@ params:
   date: 2024-11-03
 ---
 
-
 ```{r}
 library(tidyverse)
 library(inspectdf)
@@ -760,7 +759,7 @@ The alpha parameter for predicting participants' favorite coffee showed that par
 
 alpha = compared to zero
 
-For example, b_roast_light_yb_roast_light_y is the change in log-odds for a given category when the roast level is light. Similarly, b_expert1_yb_expert1_y to b_expert10_yb_expert10_y represent the effects of being in each expert level on the log-odds of a particular category, again without any specific reference category. 
+For example, b_roast_light_yb_roast_light_y is the change in log-odds for a given category when the roast level is light. Similarly, b_expert1_yb_expert1_y to b_expert10_yb_expert10_y represent the effects of being in each expert level on the log-odds of a particular category, again without any specific reference category.
 
 ```{r}
 #| eval: false
@@ -830,7 +829,6 @@ beta_var_latte <- fit$draws(b_latte) |> as_draws_matrix()
 mcmc_trace(alphas)
 mcmc_trace(beta_var_latte)
 ```
-
 
 ```{r}
 #| eval: false

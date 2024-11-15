@@ -4,16 +4,20 @@ subtitle: |
   Estimation Using Bnlearn Package
 image: /posts/2024-11-03-bayes-net-us-coffee-tasting/pourover.jpg
 categories: [Bayesian, Bayesian Network, bayes net, R, bnlearn, dag]
-date: 2024-11-03
+date: 2024-11-11
 # citation:
   # url: 
 execute:
-    freeze: true
+  warning: false
+  message: false
 params:
   slug: Bayes-Net-Bnlearn-Coffee-Tasting
-  date: 2024-11-03
+  date: 2024-11-11
 ---
 
+For this post, I wanted to include some additional analyses to the descriptive analyses from this [video](https://www.youtube.com/watch?v=bMOOQfeloH0). Specifically, I thought this would be a good opportunity to create a bayesian network for inference. The data can be found [here](https://bit.ly/gacttCSV). There is no documentation, but each item is coded as the full question so it is easier to follow. This analysis is strictly to walk through using the bnlearn package for a fun dataset. Because the participants are subscribers to the James Hoffmann youtube channel that are located in the United States, the sample could be seen as representative of James' US subscribers.
+
+# Data Prep & Exploratory Data Analysis
 
 ```{r}
 library(tidyverse)
@@ -32,12 +36,13 @@ coffee <- read_csv(here::here("posts/2024-11-03-bayes-net-us-coffee-tasting", "h
   janitor::clean_names()
 ```
 
-
 ```{r}
 coffee |>
   inspect_na() |>
   show_plot()
 ```
+
+After scanning through the data, it seems like a good amount of data are missing. I decided to then drop any columns that are missing more than half of the data. You can see the difference between the two visuals showing the amount of missing data and the number of columns included.
 
 ```{r}
 coffee_drop <- coffee[, which(colMeans(!is.na(coffee)) > 0.5)]
@@ -46,6 +51,8 @@ coffee_drop |>
   inspect_na() |>
   show_plot()
 ```
+
+Below is the code for removing some questions that were `Check all that apply` that also had columns in the dataset that were already separated into dummy-coded variables. An example would be `where_do_you_typically_drink_coffee` was dropped because there were columns like `where_do_you_typically_drink_coffee_at_home` included in the dataset. I also renamed all of the columns to names that were easy to follow and not as long.
 
 ```{r}
 coffee_drop <- coffee_drop |>
@@ -106,6 +113,8 @@ coffee_drop <- coffee_drop |>
   )
 ```
 
+Finally, I decided to drop rows with NA from logical type columns. Once cleaning was done, the variables I was interested in had little to no missing data.
+
 ```{r}
 coffee_logical <- coffee_drop |>
   select_if(is.logical)
@@ -146,6 +155,8 @@ coffee_drop |>
   show_plot()
 ```
 
+The target variable of interest was participants' favorite coffee out of the four samples that were provided in their testing kits.
+
 ```{r}
 coffee_drop |>
   drop_na(favorite_abcd) |>
@@ -171,6 +182,8 @@ coffee_drop |>
     legend.position = "none"
   )
 ```
+
+This next visual shows the preference for each of the four coffees based on age brackets. We can see that the number of participants that rated coffee D as a 5 is highest for the 26-34 age bracket.
 
 ```{r}
 coffee_drop |>
@@ -437,7 +450,7 @@ coffee_drop |>
   NULL
 ```
 
-# Visualizing the Directed Acyclic Graph (DAG) 
+# Visualizing the Directed Acyclic Graph (DAG)
 
 ```{r}
 model_dag <- dagitty('
@@ -659,7 +672,6 @@ no_fact <- nona |>
 
 no_fact <- as.data.frame(no_fact)
 ```
-
 
 # Bayesian Network
 
@@ -1099,7 +1111,7 @@ roast_pref_func <- function(
 }
 ```
 
-The CPT here only include the probabilities for whether participants used one home brewer or not and considered all of the other home brewers as not using those at home.  
+The CPT here only include the probabilities for whether participants used one home brewer or not and considered all of the other home brewers as not using those at home.
 
 ```{r}
 roast_pref_func(
@@ -1671,4 +1683,50 @@ tibble(
   theme(
     legend.position = "none"
   )
+```
+
+## Simulated Data
+
+```{r}
+set.seed(12345)
+sim_data <- rbn(hc_fit, n = 10000)
+```
+
+```{r}
+# Learn parameters from simulated data
+learn_fit <- bn.fit(hc_up_dag, sim_data)
+
+learn_fit$loan_status$prob |> str()
+
+learn_fit$loan_status$prob[2, 1:4, 1:3, 1:3, 1:2]
+```
+
+```{r}
+set.seed(12345)
+hc_sim_predict <- predict(
+  learn_fit,
+  node = "loan_status",
+  data = sim_data,
+  method = "bayes-lw" # "parents"
+  )
+
+round(
+  prop.table(
+    table(
+      sim_data$loan_status,
+      hc_sim_predict
+    )
+  ),
+  2
+)
+
+incorrect_pred_sim <- sum(hc_sim_predict != sim_data$loan_status)  # Count mismatched predictions
+correct_pred_sim <- sum(hc_sim_predict == sim_data$loan_status)
+total_pred_sim <- length(hc_sim_predict)  # Total number of predictions
+
+# Classification error rate
+incorrect_pred_sim/total_pred_sim
+
+# Accuracy
+correct_pred_sim/total_pred_sim
 ```
