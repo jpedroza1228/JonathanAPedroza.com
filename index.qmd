@@ -14,7 +14,3 @@ title-block-banner: true
 [Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
 
 [Link to Cover Letter Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/CoverLetter)
-
-# Data Science Colleagues
-
-![](cats_together.jpg)

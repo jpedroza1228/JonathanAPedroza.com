@@ -8,13 +8,12 @@ date: 2024-11-06
 execute:
   warning: false
   message: false
-  freeze: true
 params:
   slug: closeread-temp-blanket 
   date: 2024-11-06
 ---
 
-When I saw that Posit had posted a blog post about storytelling with Quarto (see blog post [here](https://posit.co/blog/closeread-prize-announcement/)) using [Closeread](https://closeread.dev/) I became interested in trying out Closeread for this competition. This is my first time reading about Closeread and it sparked my interest in trying to tell a story using a quarto document. For my submission, I thought I would do something silly about a topic that is serious. I am going to try my hardest to write this in a serious way, but this is also probably going to dissolve into a delusional fever dream of a post. I wanted to show the weather differences in Los Angeles from 2013 to 2023 by creating a story of global warming while showing visualizations of the temperature differences using "temperature blankets". If you know anything about me, the first thing you recognize is art != JP so instead I thought I would create a temperature blanket using ggplot2.  
+When I saw that Posit had posted a blog post about storytelling with Quarto (see blog post [here](https://posit.co/blog/closeread-prize-announcement/)) using [Closeread](https://closeread.dev/) I became interested in trying out Closeread for this competition. This is my first time reading about Closeread and it sparked my interest in trying to tell a story using a quarto document. For my submission, I thought I would do something silly about a topic that is serious. I am going to try my hardest to write this in a serious way, but this is also probably going to dissolve into a delusional fever dream of a post. I wanted to show the weather differences in Los Angeles from 2013 to 2023 by creating a story of global warming while showing visualizations of the temperature differences using "temperature blankets". If you know anything about me, the first thing you recognize is art != JP so instead I thought I would create a temperature blanket using ggplot2.
 
 For the competition I decided to do everything in R because I knew I was going to be mess around a lot using the `theme()` function in ggplot2. So below is going to be a walkthough of my thought process for creating the Closeread story. Then I will probably create a Closeread specific GitHub repo.
 
@@ -53,7 +52,7 @@ temp <- temp |>
   )
 ```
 
-Now, we can focus on creating our plot. Interestingly, I have never had to make one axis on my plots be set to an amount that would range across the entirety of the axis. This was definitely one of those times where I just tried something and BAM! it worked. I set my y-axis to 1 and it worked. We will not focus on the values for the y-axis because they don't make any sense, but I did try some other values. The value that you choose on the y-axis does not matter, especially for this visualization because we are going to remove the axis titles and text.  
+Now, we can focus on creating our plot. Interestingly, I have never had to make one axis on my plots be set to an amount that would range across the entirety of the axis. This was definitely one of those times where I just tried something and BAM! it worked. I set my y-axis to 1 and it worked. We will not focus on the values for the y-axis because they don't make any sense, but I did try some other values. The value that you choose on the y-axis does not matter, especially for this visualization because we are going to remove the axis titles and text.
 
 ```{r}
 temp |>
@@ -197,7 +196,7 @@ temp |>
   NULL
 ```
 
-I was thinking about how to show the progress of the blanket. I decided to use the `dplyr::first()` function, which was a first for me. Here I have the first day of the year with the temperature range values for 2013 and 2023. 
+I was thinking about how to show the progress of the blanket. I decided to use the `dplyr::first()` function, which was a first for me. Here I have the first day of the year with the temperature range values for 2013 and 2023.
 
 ```{r}
 temp |>
@@ -247,7 +246,7 @@ temp |>
   NULL
 ```
 
-Next, I decided to do a quick loop where I used two different `seq()` functions. The first sequence was to creatte a row for each day of the year from 1 to 365 by each day. I was able to create rows called `year_row` for both years. There is probably a better way of doing this but I decided on using a `filter()` where I looped through each day and put that each day was less than the `year_row` column created. For instance, in the code chunk below you can see it as `filter(year_row < .x)`. So when the loop starts at 2 it will filter for values that are lower than 2, with the only value being 1. This will be important later on because I am not sure if I want to present a story of the weather and a creation of my blanket for every single day or if there is another metric to go by. 
+Next, I decided to do a quick loop where I used two different `seq()` functions. The first sequence was to creatte a row for each day of the year from 1 to 365 by each day. I was able to create rows called `year_row` for both years. There is probably a better way of doing this but I decided on using a `filter()` where I looped through each day and put that each day was less than the `year_row` column created. For instance, in the code chunk below you can see it as `filter(year_row < .x)`. So when the loop starts at 2 it will filter for values that are lower than 2, with the only value being 1. This will be important later on because I am not sure if I want to present a story of the weather and a creation of my blanket for every single day or if there is another metric to go by.
 
 ```{r}
 map(

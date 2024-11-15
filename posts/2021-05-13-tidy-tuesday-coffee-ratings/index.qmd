@@ -1,14 +1,15 @@
 ---
 title: "Tidy Tuesday Coffee Ratings" 
 subtitle: |
-  I decided to use TidyModels to create some models predicting Washed/Not Washed (Natural) Coffees. 
+  Using TidyModels to Predict Washed/Not Washed (Natural) Coffees. 
 image: coffee_process.jpg
-categories: [Visualizations, Analysis, Tidy Tuesday]
+categories: [ggplot2, Tidymodels, Tidy Tuesday, themis]
 date: 2021-05-13
 # citation:
   # url: 
 execute:
-    freeze: true
+    warning: false
+    message: false
 params:
   slug: Tidy-Tuesday-Coffee-Ratings
   date: 2021-05-13
@@ -26,7 +27,7 @@ library(curl)
 With coffee being a hobby of mine, I was scrolling through past Tidy Tuesdays and found one on coffee ratings. Originally I thought looking at predictions of total cup points, but I assumed with all the coffee tasting characteristics that it wouldn't really tell me anything. Instead, I decided to look into the processing method, as there are different taste characteristics between washed and other processing methods.
 
 ```{r importing data}
-coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv') %>% 
+coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv') |> 
   mutate(species = as.factor(species),
          process = recode(processing_method, "Washed / Wet" = "washed",
                           "Semi-washed / Semi-pulped" = "not_washed",
@@ -36,8 +37,8 @@ coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesda
                           "NA" = NA_character_),
          process = as.factor(process),
          process = relevel(process, ref = "washed"),
-         country_of_origin = as.factor(country_of_origin)) %>% 
-  drop_na(process) %>% 
+         country_of_origin = as.factor(country_of_origin)) |> 
+  drop_na(process) |> 
   filter(country_of_origin != "Cote d?Ivoire")
 
 ```
@@ -45,12 +46,12 @@ coffee <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesda
 After looking at the distributions of procssing methods, I also decided to make the processing method binary with washed and not washed. This worked out better for the prediction models. There are also some descriptives of each variable.
 
 ```{r}
-coffee %>% 
+coffee |> 
   ggplot(aes(processing_method)) +
   geom_bar(color = "white", fill = "dodgerblue") +
   coord_flip()
 
-coffee %>% 
+coffee |> 
   ggplot(aes(process)) +
   geom_bar(color = "white", fill = "dodgerblue") +
   coord_flip()
@@ -87,12 +88,12 @@ set.seed(05132021)
 char_recipe <- recipe(process ~ aroma + flavor + aftertaste +
                         acidity + body + balance + uniformity + clean_cup +
                         sweetness + total_cup_points,
-                      data = coffee_train) %>% 
+                      data = coffee_train) |> 
   step_zv(all_predictors(), -all_outcomes())
 
-char_recipe %>% 
-  prep() %>% 
-  bake(new_data = NULL) %>%
+char_recipe |> 
+  prep() |> 
+  bake(new_data = NULL) |>
   head()
 
 ```
@@ -105,14 +106,14 @@ The first model I wanted to test with the current recipe was logistic regression
 
 set.seed(05132021)
 
-lr_mod <- logistic_reg()  %>%
-  set_engine("glmnet") %>% 
-  set_mode("classification") %>%  
+lr_mod <- logistic_reg()  |>
+  set_engine("glmnet") |> 
+  set_mode("classification") |>  
   set_args(penalty = 0,
            mixture = 0)
 
-lr_flo <- workflow() %>% 
-  add_recipe(char_recipe) %>% 
+lr_flo <- workflow() |> 
+  add_recipe(char_recipe) |> 
   add_model(lr_mod)
 
 lr_fit <- tune::fit_resamples(object = lr_flo,
@@ -134,13 +135,13 @@ Now for the first penalized regression. The lasso regression did not improve in 
 ```{r lasso reg, echo = FALSE, eval = TRUE}
 set.seed(05132021)
 
-lasso_mod <- logistic_reg()  %>%
-  set_engine("glmnet") %>% 
-  set_mode("classification") %>% 
+lasso_mod <- logistic_reg()  |>
+  set_engine("glmnet") |> 
+  set_mode("classification") |> 
   set_args(penalty = 0,
            mixture = 1)
 
-lasso_flo <- lr_flo %>% 
+lasso_flo <- lr_flo |> 
   update_model(lasso_mod) 
 
 lasso_fit <- tune::fit_resamples(object = lasso_flo,
@@ -161,13 +162,13 @@ The ridge regression was shown to not be a good fitting model. So I tested an ad
 ```{r ridge reg, echo = FALSE, eval = TRUE}
 set.seed(05132021)
 
-ridge_mod <- logistic_reg()  %>%
-  set_engine("glmnet") %>% 
-  set_mode("classification") %>% 
+ridge_mod <- logistic_reg()  |>
+  set_engine("glmnet") |> 
+  set_mode("classification") |> 
   set_args(penalty = 1,
            mixture = 0)
 
-ridge_flo <- lasso_flo %>% 
+ridge_flo <- lasso_flo |> 
   update_model(ridge_mod) 
 
 ridge_fit <- tune::fit_resamples(object = ridge_flo,
@@ -188,13 +189,13 @@ The elastic net regression had slightly better accuracy than the non-penalized l
 ```{r elastic reg, echo = FALSE, eval = TRUE}
 set.seed(05132021)
 
-elastic_tune_mod <- logistic_reg()  %>%
-  set_engine("glmnet") %>% 
-  set_mode("classification") %>% 
+elastic_tune_mod <- logistic_reg()  |>
+  set_engine("glmnet") |> 
+  set_mode("classification") |> 
   set_args(penalty = tune(),
            mixture = tune())
 
-elastic_tune_flo <- ridge_flo %>% 
+elastic_tune_flo <- ridge_flo |> 
   update_model(elastic_tune_mod) 
 
 elastic_grid <- grid_regular(penalty(), mixture(), levels = 10)
@@ -228,18 +229,18 @@ bal_rec <- recipe(process ~ aroma + flavor + aftertaste +
                         acidity + body + balance + uniformity + clean_cup +
                         sweetness + total_cup_points + category_one_defects + category_two_defects + species +
                         country_of_origin,
-                      data = coffee_train) %>% 
-  step_BoxCox(category_two_defects, category_one_defects) %>% 
-  step_novel(species, country_of_origin) %>% 
-  step_other(species, country_of_origin, threshold = .01) %>%
-  step_unknown(species, country_of_origin) %>% 
-  step_dummy(species, country_of_origin) %>% 
+                      data = coffee_train) |> 
+  step_BoxCox(category_two_defects, category_one_defects) |> 
+  step_novel(species, country_of_origin) |> 
+  step_other(species, country_of_origin, threshold = .01) |>
+  step_unknown(species, country_of_origin) |> 
+  step_dummy(species, country_of_origin) |> 
   step_zv(all_predictors(), -all_outcomes())
 ```
 
 ```{r new recipe, echo = FALSE, eval = TRUE}
 
-bal_flo <- elastic_tune_flo %>% 
+bal_flo <- elastic_tune_flo |> 
   update_recipe(bal_rec)
 
 elastic_bal_fit <- tune_grid(bal_flo,
@@ -277,6 +278,6 @@ final_results <- last_fit(final_workflow,
 ```
 
 ```{r final metrics}
-final_results %>%
+final_results |>
   collect_metrics()
 ```

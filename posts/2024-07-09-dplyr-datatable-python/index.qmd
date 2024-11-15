@@ -1,18 +1,21 @@
 ---
 title: "Data Manipulation in R & Python" 
 subtitle: |
-  Using dplyr, data.table, and pandas/numpy
+  Using dplyr, data.table, pandas, and polars
 image: "rubiks_cube.jpg"
-categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table]
+categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table, polars]
 date: 2024-07-09
 # citation:
   # url: 
 execute:
-    freeze: true
+    warning: false
+    message: false
 params:
   slug: data-manipulation-R-python
   date: 2024-07-09
 ---
+
+**This file is going to be updated soon to include comparisons in functions from [polars](https://pola.rs/).**
 
 One of my favorite posts is the comparison between data.table and the tidyverse's dplyr packages. [Here](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/) is the link to that post. I have used that when trying to build my competence in using data.table. Now I'm going to try and expand on that by creating this post that compares cases of using dplyr, data.table, and now pandas. Hopefully this can be as useful as the comparison between dplyr an data.table post was for me. This is not an extensive way of comparing them but just to get started for anyone that wants to use python more.
 
