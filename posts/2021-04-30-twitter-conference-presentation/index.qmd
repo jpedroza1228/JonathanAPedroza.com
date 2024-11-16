@@ -2,15 +2,18 @@
 title: "Twitter Conference Presentation" 
 subtitle: |
   Post about my presentation I gave over Twitter for the American Public Health Association's Physical Activity section.
-image: la_view.jpg
+image: la_dodgers.jpg
 categories: [R, ggplot2, Visualizations, Analysis]
 date: 2021-04-30
 execute:
-    freeze: true
+    warning: false
+    message: false
 params:
   slug: Twitter-Conference-Presentation
   date: 2021-04-30
 ---
+
+![Photo by [Sean Pierce](https://unsplash.com/@prevailz?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/an-aerial-view-of-a-baseball-stadium-with-a-city-in-the-background-jYHC1xSk-EE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](la_dodgers.jpg){fig-alt="An image of dodger stadium with Los Angles in the background." fig-align="left" width="6in" height="6in"}
 
 I thought I'd talk about the analyses I conducted for my submission to the American Public Health Association Physical Activity Section's Twitter Conference. I thought it was a fun opportunity to disseminate some analyses that I conducted using public data from the [County Health Rankings and Roadmap](https://www.countyhealthrankings.org/) to examine what factors are associated with leisure-time physical activity (LTPA) in counties in California from 2016 to 2020. If you are interested in the presentation itself, you can follow it [here](https://twitter.com/PaSectionAPHA/status/1309192269447143425).
 

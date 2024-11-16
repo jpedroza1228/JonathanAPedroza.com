@@ -1,0 +1,346 @@
+---
+title: "Bayes Nets" 
+subtitle: |
+  Quick Introduction
+image: wet_spiderweb.jpg
+categories: [bayesian, bayesian network, bayes net, R, stan, cmdstanr, ggdag, dagitty]
+date: 2024-11-14
+# citation:
+  # url: 
+execute:
+    warning: false
+    message: false
+params:
+  slug: Bayes-Net-part-1
+  date: 2024-11-14
+---
+
+![Photo by [Michael Podger](https://unsplash.com/@jammypodger7470?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/tilt-shift-photography-of-dew-on-spider-web-jpgRztEuaV4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](wet_spiderweb.jpg){fig-alt="An image of a wet spider web." fig-align="left" width="6in" height="6in"}
+
+I will be the first to state that I am not an expert in the field of conducting psychometric models, Bayesian networks, Bayesian analyses, **but** I have been struggling to find any blog posts about conducting a bayes net with latent variables that uses [Stan](https://mc-stan.org/). The purpose of this post is to walk through Stan and some bayes net terminology to get a basic understanding of some psychometric models conducted using Bayesian inference.
+
+To get started, make sure you follow the detailed instructions on installing [RStan](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started). I know if using Mac, make sure to also download Xcode so that Stan will work correctly. For this post, I will be doing all my programming in R, while calling on Stan to conduct the Markov Chain Monte Carlo (MCMC) sampling. Maybe a future post will follow this tutorial using [PyStan](https://pystan.readthedocs.io/en/latest/), [Cmdstanpy](https://mc-stan.org/cmdstanpy/), or [PyMC](https://www.pymc.io/projects/docs/en/stable/learn.html), but there are just more readily available tools using R so I will be using R instead. I'm also creating some data to be used in the following posts on latent bayes nets. For these posts, I'll be creating binary data that will represent items for an education assessment where a 1 indicates that a student has answered the item correctly and a 0 indicates they did not answer the item correctly. The model will also include three latent attributes/skills/variables where a 1 would indicate that the student has mastered the skill and a 0 would indicate that they do not have mastery of the skill.
+
+While I will be discussing bayes net through an educational measurement lens, bayes net can be used outside of education to show that individuals have skills that are not directly measured. Instead of items on an assessment, tasks that capture each skill can be assessed. Before walking through some bayes net terminology, it is important to note that this model is simply for educational purposes. Components of the psychometric models I will be writing about require expert opinion and domain knowledge. For example, bayes net models require expert opinions on the assignment of items to skills. Additionally, bayes net models require expert opinion on the priors for the lambda ($\lambda$) parameters.
+
+Since there is different opinions on using different terms, I am going to stick to the following terms.
+
+-   Node = Observed variable
+-   Edge = Path/arrow between two nodes
+-   Parent = The node that has an arrow/edge directed at another node
+-   Child = The node that the arrow/edge is directed at from another node
+-   Attribute/Skill = Latent (unobserved/hidden) node
+-   DAG = Directed Acyclic Graph (visual representation of nodes \[similar to path analysis in visualization\])
+-   Q-matrix = A matrix showing the relationship between the assessment items and each attribute/skill, with each row being an item and each column being a skill.
+
+For this introductory post into bayes net, I thought it would be best to create some artificial data and show visually the models I will be planning on creating using R and Stan. I will be using *cmdstanr* instead of *rstan* for my *Stan* computations. The main difference between the two packages is that rstan avoids using R6 classes, while cmdstanr uses R6 classes. If you'd like more information on trade-offs of different object-oriented programming classes, you can read more [here](https://adv-r.hadley.nz/oo-tradeoffs.html). Finally, I will state that while this is introductory to a bayes net model, this post assumes that you have a basic understanding of Bayesian inference.
+
+# Setting up the Data
+
+```{r}
+library(tidyverse)
+library(cmdstanr)
+library(bayesplot)
+library(posterior)
+library(ggdag)
+library(dagitty)
+
+set.seed(12345)
+bern_dist <- function(prob_value)(
+  rbinom(n = 300, size = 1, prob = prob_value)
+)
+
+y <- tibble(
+  y1 = bern_dist(prob = .7),
+  y2 = bern_dist(prob = .74),
+  y3 = bern_dist(prob = .88),
+  y4 = bern_dist(prob = .90),
+  y5 = bern_dist(prob = .64),
+  y6 = bern_dist(prob = .61),
+  y7 = bern_dist(prob = .79),
+  y8 = bern_dist(prob = .89),
+  y9 = bern_dist(prob = .81),
+  y10 = bern_dist(prob = .54),
+  y11 = bern_dist(prob = .60),
+  y12 = bern_dist(prob = .46),
+  y13 = bern_dist(prob = .37),
+  y14 = bern_dist(prob = .3),
+  y15 = bern_dist(prob = .65),
+) |>
+  rowid_to_column() |>
+  rename(
+    studentid = rowid
+  )
+```
+
+The first thing I am going to do is create a function that would create a bernoulii distribution. I decided on some random numbers for the probabilities of correct responses to the 15 different items and decided to create some fake student IDs for each row. Below is a table to look into the data if you want.
+
+```{r}
+react_table <- function(data){
+  reactable::reactable(
+    {{data}},
+    filterable = TRUE,
+    sortable = TRUE,
+    highlight = TRUE,
+    searchable = TRUE
+  )
+  }
+
+react_table(y)
+```
+
+## Q Matrix
+
+```{r}
+q_matrix <- tibble(
+  item_id = map_chr(1:15, ~paste0("y", .x)),
+  att1 = c(1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0),
+  att2 = c(0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0),
+  att3 = c(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1)
+) 
+
+q_matrix |>
+  react_table()
+```
+
+Okay, now on to the Q-matrix. As previously stated, I am creating this q-matrix to be as simple as possible. This means that in a realistic scenario, you would either want to use a structural learning algorithm to see what nodes have edges to our three latent nodes, or you should probably have experts on your latent attributes to declare what items measure what latent attribute.
+
+Above, I created a q-matrix that follows a pattern where each attribute has 5 items that correspond to that attribute. The table above allows you to search which items correspond to each attribute by typing `1` into the filter bar above each column.
+
+## Attribute Profile Matrix
+
+If we only wanted to examine how the posterior distributions compare to each student and their responses, then I would only need to have my student data and the Q-matrix. However, I also want to put students into latent classes. Because of this, I also have to create an attribute profile matrix. I am going to create this matrix by creating every possible combination of skills, which will create every potential latent class. Then I will just add each row as a numbered class. Below is the final matrix created for 3 skills.
+
+```{r}
+skills <- 3
+skill_combo <- rep(list(0:1), skills)
+alpha <- expand.grid(skill_combo)
+
+alpha <- alpha |>
+  rename(
+    att1 = Var1,
+    att2 = Var2,
+    att3 = Var3
+  ) |>
+  mutate(
+    class = seq(1:nrow(alpha)),
+    .before = att1
+  )
+
+alpha |> react_table()
+```
+
+**Note: Latent classes are different from our latent nodes/attributes/skills. The matrix created above (`alpha`) is a matrix where each row is a different latent class and each column corresponds to each of the skills.**
+
+So now we have everything to build our bayes net model. Before we get to that, I do want to visually show the models I will be creating in this series.
+
+# Models
+
+## Naive Bayes
+
+```{r}
+naive_dag <- dagitty('dag {
+bb="0,0,1,1"
+"1 - L1" [latent,pos="0.175,0.076"]
+"Q" [pos="0.874,0.402"]
+Att1 [latent,pos="0.220,0.209"]
+Att2 [latent,pos="0.488,0.182"]
+Att3 [latent,pos="0.709,0.169"]
+D [latent,pos="0.481,0.421"]
+fp [latent,pos="0.572,0.888"]
+L1 [latent,pos="0.252,0.082"]
+L20 [latent,pos="0.450,0.076"]
+L21 [latent,pos="0.522,0.081"]
+L30 [latent,pos="0.679,0.068"]
+L31 [latent,pos="0.741,0.069"]
+tp [latent,pos="0.380,0.890"]
+y1 [pos="0.124,0.652"]
+y10 [pos="0.240,0.653"]
+y11 [pos="0.511,0.648"]
+y12 [pos="0.770,0.645"]
+y13 [pos="0.276,0.654"]
+y14 [pos="0.544,0.646"]
+y15 [pos="0.814,0.643"]
+y2 [pos="0.403,0.649"]
+y3 [pos="0.658,0.657"]
+y4 [pos="0.164,0.652"]
+y5 [pos="0.442,0.648"]
+y6 [pos="0.693,0.652"]
+y7 [pos="0.200,0.653"]
+y8 [pos="0.476,0.647"]
+y9 [pos="0.732,0.648"]
+"1 - L1" -> Att1
+"Q" -> D
+Att1 -> D
+Att2 -> D
+Att3 -> D
+D -> y1
+D -> y10
+D -> y11
+D -> y12
+D -> y13
+D -> y14
+D -> y15
+D -> y2
+D -> y3
+D -> y4
+D -> y5
+D -> y6
+D -> y7
+D -> y8
+D -> y9
+fp -> y1
+fp -> y10
+fp -> y11
+fp -> y12
+fp -> y13
+fp -> y14
+fp -> y15
+fp -> y2
+fp -> y3
+fp -> y4
+fp -> y5
+fp -> y6
+fp -> y7
+fp -> y8
+fp -> y9
+L1 -> Att1
+L20 -> aAtt2
+L21 -> aAtt2
+L30 -> aAtt3
+L31 -> Att3
+tp -> y1
+tp -> y10
+tp -> y11
+tp -> y12
+tp -> y13
+tp -> y14
+tp -> y15
+tp -> y2
+tp -> y3
+tp -> y4
+tp -> y5
+tp -> y6
+tp -> y7
+tp -> y8
+tp -> y9
+}
+')
+
+ggdag(naive_dag) + theme_dag()
+```
+
+-   TP = True Positive
+
+-   FP = False Positive
+
+-   Q = Q-matrix
+
+-   D = Delta
+
+-   L = Lambda
+
+-   Att = Latent Attribute
+
+The first model I will go over is a naive bayes model; however, naive bayes models do not correct for what I have labeled as true positive and false positive probabilities. This model also mimic a deterministic inputs, noisy "and" gate (DINA) model. Essentially, the model assumes that each student has mastered all skills in order to correctly respond to an assessment item. See [here](https://mc-stan.org/documentation/case-studies/dina_independent.html) for an excellent post about the DINA model.
+
+## Bayes Net
+
+```{r}
+#| echo: true
+#| eval: true
+
+bayes_net <- dagitty('dag {
+bb="0,0,1,1"
+"1 - L1" [latent,pos="0.175,0.076"]
+"Q" [pos="0.874,0.402"]
+Att1 [latent,pos="0.220,0.209"]
+Att2 [latent,pos="0.488,0.182"]
+Att3 [latent,pos="0.709,0.169"]
+D [latent,pos="0.481,0.421"]
+fp [latent,pos="0.572,0.888"]
+L1 [latent,pos="0.252,0.082"]
+L20 [latent,pos="0.450,0.076"]
+L21 [latent,pos="0.522,0.081"]
+L30 [latent,pos="0.679,0.068"]
+L31 [latent,pos="0.741,0.069"]
+fp [latent,pos="0.380,0.890"]
+y1 [pos="0.124,0.652"]
+y10 [pos="0.240,0.653"]
+y11 [pos="0.511,0.648"]
+y12 [pos="0.770,0.645"]
+y13 [pos="0.276,0.654"]
+y14 [pos="0.544,0.646"]
+y15 [pos="0.814,0.643"]
+y2 [pos="0.403,0.649"]
+y3 [pos="0.658,0.657"]
+y4 [pos="0.164,0.652"]
+y5 [pos="0.442,0.648"]
+y6 [pos="0.693,0.652"]
+y7 [pos="0.200,0.653"]
+y8 [pos="0.476,0.647"]
+y9 [pos="0.732,0.648"]
+"1 - L1" -> Att1
+"Q" -> D
+Att1 -> Att2
+Att1 -> D
+Att2 -> Att3
+Att2 -> D
+Att3 -> D
+D -> y1
+D -> y10
+D -> y11
+D -> y12
+D -> y13
+D -> y14
+D -> y15
+D -> y2
+D -> y3
+D -> y4
+D -> y5
+D -> y6
+D -> y7
+D -> y8
+D -> y9
+fp -> y1
+fp -> y10
+fp -> y11
+fp -> y12
+fp -> y13
+fp -> y14
+fp -> y15
+fp -> y2
+fp -> y3
+fp -> y4
+fp -> y5
+fp -> y6
+fp -> y7
+fp -> y8
+fp -> y9
+L1 -> Att1
+L20 -> Att2
+L21 -> Att2
+L30 -> Att3
+L31 -> Att3
+tp -> y1
+tp -> y10
+tp -> y11
+tp -> y12
+tp -> y13
+tp -> y14
+tp -> y15
+tp -> y2
+tp -> y3
+tp -> y4
+tp -> y5
+tp -> y6
+tp -> y7
+tp -> y8
+tp -> y9
+}
+')
+
+ggdag(bayes_net) + theme_dag()
+```
+
+The second model is a bayes net model that looks very similar to the first model. Now there are edges between the three latent nodes, where depending on whether a student has the previous skill, the probability differs for having the following skill. In the next post I will be estimating the first bayes net model and doing some posterior checks to see how the model works.

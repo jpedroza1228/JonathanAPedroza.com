@@ -7,6 +7,10 @@ title-block-banner: true
 
 # Useful Resources
 
+## Dashboard Example
+
+\[University of Oregon Graduate School Dashboard\](<https://jpedroza1228.github.io/gradschool_dashboard/>)
+
 ## Quarto Extensions
 
 [Link to invoice Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/invoice)
