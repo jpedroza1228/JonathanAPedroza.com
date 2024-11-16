@@ -15,6 +15,8 @@ params:
   date: 2021-06-19
 ---
 
+![Photo by [Nik](https://unsplash.com/@helloimnik?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/blue-lego-minifig-on-white-surface-fDaUCTp28dA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](upset_lego.jpg){fig-alt="An image of a sad lego spaceman." fig-align="left" width="6in" height="6in"}
+
 This post was originally designed because I was interested in working on student experience exit survey data from my department to see if there was a change from 2012 to 2015. These questions are given to every student that graduates from a graduate program at the University of Oregon (UO). This includes responses for terminal masters degrees, students that get masters degrees and move on to a doctoral degree, and the same potential students that respond again when they get their doctorate. This data is open to any UO student, staff, or faculty member that has login information for this data.
 
 This data ended up becoming a time commitment as there was no efficient way to collect data from the pdf files for each college at the UO. An example can be seen [here](https://github.com/jpedroza1228/exitsurveys/blob/main/pdf_data/exit_surveys/student_experience_survey/2015/2015-AAA-Grad-Experience-Survey-Report.pdf). One **g**reat resource for collecting data from pdfs was to use the [*pdftools*](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf) package, but if you look at the example link provided above, the UO Graduate School decided to color code cells in the table, which threw off any function to extract all the values in an efficient manner. Anyway...

@@ -1,0 +1,849 @@
+---
+title: "Bayesian Network for US Coffee Tasting Data Pt.2" 
+subtitle: |
+  Estimation Using Stan
+image: espresso.jpg
+draft: true
+categories: [Bayesian, Bayesian Network, bayes net, R, rstan, cmdstanr, posterior, bayesplot, dag]
+date: 2024-11-11
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: Bayes-Net-Bnlearn-Coffee-Tasting
+  date: 2024-11-11
+---
+
+![Photo by [Kevin Butz](https://unsplash.com/@kevin_butz?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/espresso-cups-on-espresso-maker-BBFRIGifYQ8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](espresso.jpg){fig-alt="An image of an espresso being made." fig-align="left" width="6in" height="6in"}
+
+**Currently waiting for MCMC Sampling to finish blog post.**
+
+```{r}
+library(tidyverse)
+library(inspectdf)
+library(rstan)
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
+library(reactable)
+library(ggdag)
+library(dagitty)
+
+bn_score <- bnlearn::score
+
+theme_set(theme_light())
+
+coffee <- read_csv(here::here("posts/2024-11-11-bayes-net-bnlearn-us-coffee-tasting", "hoffmann_america_taste_data.csv")) |>
+  janitor::clean_names()
+```
+
+```{r}
+coffee_drop <- coffee[, which(colMeans(!is.na(coffee)) > 0.5)]
+
+coffee_drop |>
+  inspect_na() |>
+  show_plot()
+```
+
+```{r}
+coffee_drop <- coffee_drop |>
+  select(
+    -c(
+      where_do_you_typically_drink_coffee,
+      # how_do_you_brew_coffee_at_home,
+      do_you_usually_add_anything_to_your_coffee,
+      why_do_you_drink_coffee
+    )
+  ) |>
+  rename(
+    age = what_is_your_age,
+    cup_per_day = how_many_cups_of_coffee_do_you_typically_drink_per_day,
+    drink_at_home = where_do_you_typically_drink_coffee_at_home,
+    drink_at_office = where_do_you_typically_drink_coffee_at_the_office,
+    drink_on_go = where_do_you_typically_drink_coffee_on_the_go,
+    drink_at_cafe = where_do_you_typically_drink_coffee_at_a_cafe,
+    drink_none_of_these = where_do_you_typically_drink_coffee_none_of_these,
+    home_brew_pour_over = how_do_you_brew_coffee_at_home_pour_over,
+    home_brew_french_press = how_do_you_brew_coffee_at_home_french_press,
+    home_brew_espresso = how_do_you_brew_coffee_at_home_espresso,
+    home_brew_mr_coffee = how_do_you_brew_coffee_at_home_coffee_brewing_machine_e_g_mr_coffee,
+    home_brew_pods = how_do_you_brew_coffee_at_home_pod_capsule_machine_e_g_keurig_nespresso,
+    home_brew_instant = how_do_you_brew_coffee_at_home_instant_coffee,
+    home_brew_bean2cup = how_do_you_brew_coffee_at_home_bean_to_cup_machine,
+    home_brew_cold_brew = how_do_you_brew_coffee_at_home_cold_brew,
+    home_brew_cometeer = how_do_you_brew_coffee_at_home_coffee_extract_e_g_cometeer,
+    home_brew_other = how_do_you_brew_coffee_at_home_other,
+    favorite_coffee_drink = what_is_your_favorite_coffee_drink,
+    coffee_black = do_you_usually_add_anything_to_your_coffee_no_just_black,
+    coffee_milk_alt_creamer = do_you_usually_add_anything_to_your_coffee_milk_dairy_alternative_or_coffee_creamer,
+    coffee_sugar = do_you_usually_add_anything_to_your_coffee_sugar_or_sweetener,
+    coffee_syrup = do_you_usually_add_anything_to_your_coffee_flavor_syrup,
+    coffee_other = do_you_usually_add_anything_to_your_coffee_other,
+    coffee_characteristic_preference = before_todays_tasting_which_of_the_following_best_described_what_kind_of_coffee_you_like,
+    coffee_strength = how_strong_do_you_like_your_coffee,
+    roast_preference = what_roast_level_of_coffee_do_you_prefer,
+    caffeine_preference = how_much_caffeine_do_you_like_in_your_coffee,
+    expertise = lastly_how_would_you_rate_your_own_coffee_expertise,
+    preference_a_to_b = between_coffee_a_coffee_b_and_coffee_c_which_did_you_prefer,
+    preference_a_to_d = between_coffee_a_and_coffee_d_which_did_you_prefer,
+    favorite_abcd = lastly_what_was_your_favorite_overall_coffee,
+    remote_work = do_you_work_from_home_or_in_person,
+    money_spend_a_month = in_total_much_money_do_you_typically_spend_on_coffee_in_a_month,
+    why_drink_taste_good = why_do_you_drink_coffee_it_tastes_good,
+    why_drink_caffeine = why_do_you_drink_coffee_i_need_the_caffeine,
+    why_drink_ritual = why_do_you_drink_coffee_i_need_the_ritual,
+    why_drink_makes_bathroom = why_do_you_drink_coffee_it_makes_me_go_to_the_bathroom,
+    why_drink_other = why_do_you_drink_coffee_other,
+    like_taste = do_you_like_the_taste_of_coffee,
+    know_where_coffee_comes_from = do_you_know_where_your_coffee_comes_from,
+    most_spent_on_cup_coffee = what_is_the_most_youve_ever_paid_for_a_cup_of_coffee,
+    willing_to_spend_cup_coffee = what_is_the_most_youd_ever_be_willing_to_pay_for_a_cup_of_coffee,
+    good_value_cafe = do_you_feel_like_you_re_getting_good_value_for_your_money_when_you_buy_coffee_at_a_cafe,
+    equipment_spent_5years = approximately_how_much_have_you_spent_on_coffee_equipment_in_the_past_5_years,
+    good_value_equipment = do_you_feel_like_you_re_getting_good_value_for_your_money_with_regards_to_your_coffee_equipment
+  )
+```
+
+```{r}
+coffee_logical <- coffee_drop |>
+  select_if(is.logical)
+
+coffee_drop <- coffee_drop |>
+  drop_na(
+    colnames(coffee_logical)
+  )
+
+coffee_drop <- coffee_drop |>
+  mutate(
+    across(
+      where(
+        is.logical
+      ),
+      ~case_when(
+        .x == TRUE ~ 1,
+        .x == FALSE ~ 0
+      )
+    ),
+    across(
+      where(
+        is.character
+      ),
+      ~as.factor(.x)
+    )
+  )
+
+coffee_drop <- coffee_drop |>
+  select(
+    -matches(
+      "_notes"
+    )
+  )
+
+coffee_drop |>
+  inspect_na() |>
+  show_plot()
+```
+
+# Variables Chosen For Modeling & Dropping NAs
+
+```{r}
+purrr::map2(
+  coffee_drop |>
+  select(
+    gender,
+    age,
+    cup_per_day,
+    favorite_coffee_drink,
+    home_brew_pour_over,
+    home_brew_french_press,
+    home_brew_espresso,
+    home_brew_mr_coffee,
+    home_brew_pods,
+    home_brew_instant,
+    home_brew_bean2cup,
+    home_brew_cold_brew,
+    home_brew_cometeer,
+    home_brew_other,
+    roast_preference,
+    expertise,
+    favorite_abcd
+  ) |> 
+  drop_na(),
+  names(coffee_drop |>
+  select(
+    gender,
+    age,
+    cup_per_day,
+    favorite_coffee_drink,
+    home_brew_pour_over,
+    home_brew_french_press,
+    home_brew_espresso,
+    home_brew_mr_coffee,
+    home_brew_pods,
+    home_brew_instant,
+    home_brew_bean2cup,
+    home_brew_cold_brew,
+    home_brew_cometeer,
+    home_brew_other,
+    roast_preference,
+    expertise,
+    favorite_abcd
+  ) |> 
+  drop_na()
+  ),
+  ~ggplot(
+    coffee_drop |>
+  select(
+    gender,
+    age,
+    cup_per_day,
+    favorite_coffee_drink,
+    home_brew_pour_over,
+    home_brew_french_press,
+    home_brew_espresso,
+    home_brew_mr_coffee,
+    home_brew_pods,
+    home_brew_instant,
+    home_brew_bean2cup,
+    home_brew_cold_brew,
+    home_brew_cometeer,
+    home_brew_other,
+    roast_preference,
+    expertise,
+    favorite_abcd
+  ) |> 
+  drop_na(),
+  aes(.x)
+  ) + 
+  geom_bar(
+    fill = "dodgerblue"
+  ) +
+  coord_flip() +
+  labs(
+    title = glue::glue("{.y}")
+  )
+)
+```
+
+```{r}
+nona <- 
+  coffee_drop |>
+  select(
+    submission_id,
+    gender,
+    age,
+    cup_per_day,
+    home_brew_pour_over,
+    home_brew_french_press,
+    home_brew_espresso,
+    home_brew_mr_coffee,
+    home_brew_pods,
+    home_brew_instant,
+    home_brew_bean2cup,
+    home_brew_cold_brew,
+    home_brew_cometeer,
+    home_brew_other,
+    favorite_coffee_drink,
+    roast_preference,
+    expertise,
+    favorite_abcd
+  ) |>
+  drop_na() |>
+  mutate(
+    gender = case_when(
+      gender == "Female" ~ "Female",
+      gender == "Male" ~ "Male",
+      TRUE ~ "Other"
+    ),
+    age = case_when(
+      age == "<18 years old" ~ "under24",
+      age == "18-24 years old" ~ "under24",
+      age == "45-54 years old" ~ "over44",
+      age == "55-64 years old" ~ "over44",
+      age == ">65 years old" ~ "over44",
+      TRUE ~ age
+    ),
+    cup_per_day = case_when(
+      cup_per_day == "More than 4" ~ "three_or_more",
+      cup_per_day == "4" ~ "three_or_more",
+      cup_per_day == "3" ~ "three_or_more",
+      cup_per_day == "Less than 1" ~ "one_or_less",
+      cup_per_day == "1" ~ "one_or_less",
+      TRUE ~ cup_per_day
+    ),
+    favorite_coffee_drink = case_when(
+      favorite_coffee_drink == "Regular drip coffee" ~ "drip",
+      favorite_coffee_drink == "Pourover" ~ "pourover",
+      favorite_coffee_drink == "Other" ~ "other",
+      favorite_coffee_drink == "Mocha" ~ "other",
+      favorite_coffee_drink == "Latte" ~ "latte",
+      favorite_coffee_drink == "Iced coffee" ~ "other",
+      favorite_coffee_drink == "Espresso" ~ "espresso",
+      favorite_coffee_drink == "Cortado" ~ "cortado",
+      favorite_coffee_drink == "Cold brew" ~ "other",
+      favorite_coffee_drink == "Cappuccino" ~ "cappuccino",
+      favorite_coffee_drink == "Blended drink (e.g. Frappuccino)" ~ "other",
+      favorite_coffee_drink == "Americano" ~ "americano"
+    ),
+    roast_preference = case_when(
+      roast_preference == "Nordic" ~ "light",
+      roast_preference == "Medium" ~ "medium",
+      roast_preference == "Light" ~ "light",
+      roast_preference == "Italian" ~ "dark",
+      roast_preference == "French" ~ "dark",
+      roast_preference == "Dark" ~ "dark",
+      roast_preference == "Blonde" ~ "light",
+    )
+  )
+
+id <- nona$submission_id
+
+nona <- nona |>
+  select(
+    -submission_id
+  )
+
+nona_allcat <- nona  
+```
+
+# Dummy-code Some Variables
+
+```{r}
+psych::dummy.code(nona$gender) |> head()
+
+nona$male <- psych::dummy.code(nona$gender)[, 1]
+nona$female <- psych::dummy.code(nona$gender)[, 2]
+nona$gen_other <- psych::dummy.code(nona$gender)[, 3]
+
+# age
+psych::dummy.code(nona$age) |> head()
+
+nona$twenty534 <- psych::dummy.code(nona$age)[, 1]
+nona$thirty544 <- psych::dummy.code(nona$age)[, 2]
+nona$over44 <- psych::dummy.code(nona$age)[, 3]
+nona$under24 <- psych::dummy.code(nona$age)[, 4]
+
+# cup_per_day
+psych::dummy.code(nona$cup_per_day) |> head()
+
+nona$cup_2 <- psych::dummy.code(nona$cup_per_day)[, 1]
+nona$cup_1orless <- psych::dummy.code(nona$cup_per_day)[, 2]
+nona$cup_3ormore <- psych::dummy.code(nona$cup_per_day)[, 3]
+
+# favorite_coffee_drink
+psych::dummy.code(nona$favorite_coffee_drink) |> head()
+
+nona$pourover <- psych::dummy.code(nona$favorite_coffee_drink)[, 1]
+nona$latte <- psych::dummy.code(nona$favorite_coffee_drink)[, 2]
+nona$other <- psych::dummy.code(nona$favorite_coffee_drink)[, 3]
+nona$drip <- psych::dummy.code(nona$favorite_coffee_drink)[, 4]
+nona$cappuccino <- psych::dummy.code(nona$favorite_coffee_drink)[, 5]
+nona$espresso <- psych::dummy.code(nona$favorite_coffee_drink)[, 6]
+nona$cortado <- psych::dummy.code(nona$favorite_coffee_drink)[, 7]
+nona$americano <- psych::dummy.code(nona$favorite_coffee_drink)[, 8]
+
+# roast_preference
+psych::dummy.code(nona$roast_preference) |> head()
+
+nona$roast_light <- psych::dummy.code(nona$roast_preference)[, 1]
+nona$roast_medium <- psych::dummy.code(nona$roast_preference)[, 2]
+nona$roast_dark <- psych::dummy.code(nona$roast_preference)[, 3]
+
+# expertise          
+psych::dummy.code(nona$expertise) |> head()
+
+nona$expert7 <- psych::dummy.code(nona$expertise)[, 1]
+nona$expert6 <- psych::dummy.code(nona$expertise)[, 2]
+nona$expert5 <- psych::dummy.code(nona$expertise)[, 3]
+nona$expert8 <- psych::dummy.code(nona$expertise)[, 4]
+nona$expert4 <- psych::dummy.code(nona$expertise)[, 5]
+nona$expert3 <- psych::dummy.code(nona$expertise)[, 6]
+nona$expert2 <- psych::dummy.code(nona$expertise)[, 7]
+nona$expert1 <- psych::dummy.code(nona$expertise)[, 8]
+nona$expert9 <- psych::dummy.code(nona$expertise)[, 9]
+nona$expert10 <- psych::dummy.code(nona$expertise)[, 10]
+```
+
+```{r}
+nona <- nona |>
+  select(
+    home_brew_pour_over:home_brew_other,
+    favorite_abcd:expert10
+  )
+
+# remove all the reference groups
+nona_noref <- nona |>
+  select(
+    -c(
+      male,
+      twenty534,
+      cup_2,
+      home_brew_pour_over,
+      pourover,
+      roast_medium,
+      expert5
+    )
+  )
+```
+
+## Using Stan
+
+```{r}
+colnames(nona_allcat)
+glimpse(nona_allcat)
+
+colnames(nona_noref)
+
+nona_allcat <- nona_allcat |>
+  mutate(
+    gender = case_when(
+      gender == "Male" ~ 1,
+      gender == "Female" ~ 2,
+      gender == "Other" ~ 3
+    ),
+    age = case_when(
+      age == "under24" ~ 1,
+      age == "25-34 years old" ~ 2,
+      age == "35-44 years old" ~ 3,
+      age == "over44" ~ 4
+    ),
+    cup_per_day = case_when(
+      cup_per_day == "one_or_less" ~ 1,
+      cup_per_day == "2" ~ 2,
+      cup_per_day == "three_or_more" ~ 3
+    ),
+    favorite_coffee_drink = case_when(
+      favorite_coffee_drink == "pourover" ~ 1,
+      favorite_coffee_drink == "latte" ~ 2,
+      favorite_coffee_drink == "other" ~ 3,
+      favorite_coffee_drink == "drip" ~ 4,
+      favorite_coffee_drink == "cappuccino" ~ 5,
+      favorite_coffee_drink == "espresso" ~ 6,
+      favorite_coffee_drink == "cortado" ~ 7,
+      favorite_coffee_drink == "americano" ~ 8
+    ),
+    roast_preference = case_when(
+      roast_preference == "light" ~ 1,
+      roast_preference == "medium" ~ 2,
+      roast_preference == "dark" ~ 3
+    ),
+    expertise = case_when(
+      expertise == "1" ~ 1,
+      expertise == "2" ~ 2,
+      expertise == "3" ~ 3,
+      expertise == "4" ~ 4,
+      expertise == "5" ~ 5,
+      expertise == "6" ~ 6,
+      expertise == "7" ~ 7,
+      expertise == "8" ~ 8,
+      expertise == "9" ~ 9,
+      expertise == "10" ~ 10
+    ),
+    favorite_abcd = case_when(
+      favorite_abcd == "Coffee A" ~ 1,
+      favorite_abcd == "Coffee B" ~ 2,
+      favorite_abcd == "Coffee C" ~ 3,
+      favorite_abcd == "Coffee D" ~ 4
+    )
+  )
+
+
+nona_noref_recode <- nona_noref |>
+  mutate(
+    across(
+      -favorite_abcd,
+      ~case_when(
+        .x == 0 ~ -1,
+        TRUE ~ .x
+      )
+    )
+  )
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+stan_allcat_list <- list(
+  J = nrow(nona_allcat[,-1]),
+  y_cat = count(nona_allcat, favorite_abcd) |> nrow(),
+  roast_preference_cat = count(nona_allcat, roast_preference) |> nrow(),
+  expert_cat = count(nona_allcat, expertise) |> nrow(),
+  cup_per_day_cat = count(nona_allcat, cup_per_day) |> nrow(),
+  favorite_coffee_drink_cat = count(nona_allcat, favorite_coffee_drink) |> nrow(),
+  gender_cat = count(nona_allcat, gender) |> nrow(),
+  age_cat = count(nona_allcat, age) |> nrow(),
+
+  Y = nona_allcat$favorite_abcd,
+  roast_preference = nona_allcat$roast_preference,
+  expert = nona_allcat$expertise,
+  favorite_coffee_drink = nona_allcat$favorite_coffee_drink,
+  cup_per_day = nona_allcat$cup_per_day,
+  home_brew_pourover = nona_allcat$home_brew_pour_over,
+  home_brew_french_press = nona_allcat$home_brew_french_press,
+  home_brew_espresso = nona_allcat$home_brew_espresso,
+  home_brew_mr_coffee = nona_allcat$home_brew_mr_coffee,
+  home_brew_pods = nona_allcat$home_brew_pods,
+  home_brew_instant = nona_allcat$home_brew_instant,
+  home_brew_bean2cup = nona_allcat$home_brew_bean2cup,
+  home_brew_cold_brew = nona_allcat$home_brew_cold_brew,
+  home_brew_cometeer = nona_allcat$home_brew_cometeer,
+  home_brew_other = nona_allcat$home_brew_other,
+  age = nona_allcat$age,
+  gender = nona_allcat$gender  
+)
+
+glimpse(stan_allcat_list)
+```
+
+```{r}
+stan_list <- list(
+  J = nrow(nona_noref_recode[,-1]),
+  I = ncol(nona_noref_recode[,-1]),
+  K = count(nona_noref_recode, favorite_abcd) |> nrow(),
+
+  female = nona_noref_recode$female,
+  gen_other = nona_noref_recode$gen_other,
+
+  thirty544 = nona_noref_recode$thirty544,
+  over44 = nona_noref_recode$over44,
+  under24 = nona_noref_recode$under24,
+
+
+  home_brew_french_press = nona_noref_recode$home_brew_french_press,
+  home_brew_espresso = nona_noref_recode$home_brew_espresso,
+  home_brew_mr_coffee = nona_noref_recode$home_brew_mr_coffee,
+  home_brew_pods = nona_noref_recode$home_brew_pods,
+  home_brew_instant = nona_noref_recode$home_brew_instant,
+  home_brew_bean2cup = nona_noref_recode$home_brew_bean2cup,
+  home_brew_cold_brew = nona_noref_recode$home_brew_cold_brew,
+  home_brew_cometeer = nona_noref_recode$home_brew_cometeer,
+  home_brew_other = nona_noref_recode$home_brew_other,
+  
+  latte = nona_noref_recode$latte,
+  otherdrink = nona_noref_recode$other,
+  drip = nona_noref_recode$drip,
+  cappuccino = nona_noref_recode$cappuccino,
+  espresso = nona_noref_recode$espresso,
+  cortado = nona_noref_recode$cortado,
+  americano = nona_noref_recode$americano,  
+
+  cup_1orless = nona_noref_recode$cup_1orless,
+  cup_3ormore = nona_noref_recode$cup_3ormore,
+
+
+  roast_light = nona_noref_recode$roast_light,
+  roast_dark = nona_noref_recode$roast_dark,
+
+  expert7 = nona_noref_recode$expert7,
+  expert6 = nona_noref_recode$expert6,
+  expert8 = nona_noref_recode$expert8,
+  expert4 = nona_noref_recode$expert4,
+  expert3 = nona_noref_recode$expert3,
+  expert2 = nona_noref_recode$expert2,
+  expert1 = nona_noref_recode$expert1,
+  expert9 = nona_noref_recode$expert9,
+  expert10 = nona_noref_recode$expert10,
+
+  Y = nona_noref_recode$favorite_abcd
+)
+
+glimpse(stan_list)
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+set.seed(12345)
+mod <- cmdstan_model(here::here("posts/2024-11-11-bayes-net-stan-us-coffee-tasting", "updated_stan_model.stan"))
+
+# mod$format(
+#   canonicalize = list("deprecations"),
+#   overwrite_file = TRUE,
+#   backup = FALSE
+# )
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+fit <- mod$sample(
+  data = stan_list,
+  seed = 12345,
+  # iter_warmup = 2000,
+  # iter_sampling = 2000,
+  # adapt_delta = .90,
+  chains = 4,
+  # step_size = .01,
+  parallel_chains = 10
+)
+
+saveRDS(fit, "coffee_tasting_bayes_net.RDS")
+
+# fit <- read_rds(here::here("random_data", "coffee_tasting_bayes_net.RDS"))
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+fit$output()[[1]]
+
+fit$diagnostic_summary()
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+bn_measure <- summarize_draws(fit$draws(), default_summary_measures())
+bn_converge <- summarize_draws(fit$draws(), default_convergence_measures())
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+bn_converge |>
+  arrange(rhat) |>
+  mutate(
+    across(
+      -variable,
+      ~round(.x, 2)
+    )
+  ) |>
+  reactable(
+    filterable = TRUE,
+    searchable = TRUE
+  )
+
+bn_measure |>
+  filter(
+    str_detect(
+      variable,
+      "theta"
+    )
+  ) |> 
+  mutate(
+    across(
+      -variable,
+      ~round(.x, 2)
+    )
+  ) |>
+  select(
+    variable,
+    mean,
+    sd
+  ) |>
+  reactable(
+    filterable = TRUE,
+    searchable = TRUE
+  )
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+bn_measure |>
+  filter(
+    str_detect(
+      variable,
+      "predictors"
+    )
+  )
+
+bn_measure |>
+  filter(
+    str_detect(
+      variable,
+      "^a_"
+    ) |
+    str_detect(
+      variable,
+      "^b_"
+    )
+  ) |> 
+  mutate(
+    across(
+      -variable,
+      ~exp(.x)
+    ),
+    across(
+      -variable,
+      ~round(.x, 2)
+    )
+  ) |>
+  select(
+    variable,
+    mean,
+    sd
+  ) |>
+  reactable(
+    filterable = TRUE,
+    searchable = TRUE
+  )
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+set.seed(12345)
+mod <- cmdstan_model(here::here("random_scripts", "all_category_model.stan"))
+
+fit <- mod$sample(
+  data = stan_allcat_list,
+  seed = 12345,
+  iter_warmup = 1000, #2000
+  iter_sampling = 1000, #2000
+  # adapt_delta = .90,
+  chains = 4,
+  # step_size = .01,
+  parallel_chains = 8
+)
+
+fit$diagnostic_summary()
+
+
+
+bn_converge <- summarize_draws(fit$draws(), default_convergence_measures())
+
+bn_converge |>
+  arrange(rhat) |>
+  mutate(
+    across(
+      -variable,
+      ~round(.x, 2)
+    )
+  ) |>
+  reactable(
+    filterable = TRUE,
+    searchable = TRUE
+  )
+
+bn_measure <- summarize_draws(fit$draws(), default_summary_measures())
+
+bn_measure |>
+  filter(
+    str_detect(
+      variable,
+      "^a_"
+    ) |
+    str_detect(
+      variable,
+      "^b_"
+    ) |
+    str_detect(
+      variable,
+      "log_lik"
+    )
+  ) |>
+  select(
+    variable,
+    log_odds = mean,
+    sd
+  ) |>
+  mutate(
+    prob_use = plogis(log_odds),
+    prob_notuse = 1 - prob_use,
+    #prob = exp(log_odds)/exp(1 + log_odds),
+    across(
+      -variable,
+      ~round(.x, 2)
+    )
+  )  |>
+  reactable(
+    filterable = TRUE,
+    searchable = TRUE
+  )
+```
+
+Interpretations for select parameters
+
+The alpha parameter for predicting participants' favorite coffee showed that participants who prefer medium roasted coffee and labeled themselves as a 5 on expertise had 1.14 times greater odds of enjoying coffee C than not enjoying it.
+
+alpha = compared to zero
+
+For example, b_roast_light_yb_roast_light_y is the change in log-odds for a given category when the roast level is light. Similarly, b_expert1_yb_expert1_y to b_expert10_yb_expert10_y represent the effects of being in each expert level on the log-odds of a particular category, again without any specific reference category.
+
+```{r}
+#| eval: false
+#| echo: true
+
+alphas <- c(
+"a_latte",
+"a_otherdrink",
+"a_drip",
+"a_cappuccino",
+"a_espresso",
+"a_cortado",
+"a_americano",
+"a_home_frenchpress",
+"a_home_espresso",
+"a_home_mrcoffee",
+"a_home_pods",
+"a_home_instant",
+"a_home_bean2cup",
+"a_home_coldbrew",
+"a_home_cometeer",
+"a_home_other",
+"a_cup_1orless",
+"a_cup_3ormore",
+"a_roast_light",
+"a_roast_dark",
+"a_expert1",
+"a_expert2",
+"a_expert3",
+"a_expert4",
+"a_expert6",
+"a_expert7",
+"a_expert8",
+"a_expert9",
+"a_expert10",
+"a_y[1]",
+"a_y[2]", 
+"a_y[3]",
+"a_y[4]"
+)
+
+b_latte <- c(
+  "b_female_latte",
+  "b_gen_other_latte",
+  "b_thirty544_latte",
+  "b_over44_latte",
+  "b_under24_latte",
+  "b_home_frenchpress_latte",
+  "b_home_espresso_latte",
+  "b_home_mrcoffee_latte",
+  "b_home_pods_latte",
+  "b_home_instant_latte",
+  "b_home_bean2cup_latte",
+  "b_home_coldbrew_latte",
+  "b_home_cometeer_latte",
+  "b_home_other_latte"
+)
+
+alphas <- fit$draws(alphas) |> as_draws_matrix()
+beta_var_latte <- fit$draws(b_latte) |> as_draws_matrix()
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+mcmc_trace(alphas)
+mcmc_trace(beta_var_latte)
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+mcmc_areas(alphas)
+mcmc_areas(beta_var_latte)
+```

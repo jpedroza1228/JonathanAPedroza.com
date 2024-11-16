@@ -1,0 +1,416 @@
+---
+title: "Data Manipulation in R & Python" 
+subtitle: |
+  Using dplyr, data.table, pandas, and polars
+image: puzzle.jpg
+categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table, polars]
+date: 2024-11-15
+# citation:
+  # url: 
+execute:
+    warning: false
+    message: false
+params:
+  slug: data-manipulation-R-python
+  date: 2024-11-15
+---
+
+![Photo by [Joseph Malone](https://unsplash.com/@jm2812?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-wooden-table-topped-with-lots-of-puzzle-pieces-appzhYEQHhU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](puzzle.jpg){fig-alt="An image of an incomplete puzzle." fig-align="left" width="6in"}
+
+One of my favorite posts is the comparison between data.table and the tidyverse's dplyr packages. [Here](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/) is the link to that post. I have used that when trying to build my competence in using data.table. Now I'm going to try and expand on that by creating this post that compares cases of using dplyr, data.table, pandas, and polars. Hopefully this can be as useful as the comparison between dplyr and data.table post was for me. This is not an extensive way of comparing them but just to get started for anyone that wants to use python more.
+
+```{r}
+#| include: false
+
+library(reticulate)
+use_python("C:/Users/Jonathan/Documents/github_projects/log-of-jandp/.venv/Scripts/python.exe")
+
+```
+
+# Packages & Data
+
+```{r}
+#| label: R set up
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(data.table)
+
+r_data <- tibble(
+  x = rnorm(n = 1000),
+  x2 = rnorm(n = 1000, sd = 3),
+  y = rbinom(n = 1000, size = 1, prob = .6)
+)
+
+print(r_data)
+```
+
+```{r}
+r_table <- data.table(
+  x = rnorm(n = 1000),
+  x2 = rnorm(n = 1000, sd = 3),
+  y = rbinom(n = 1000, size = 1, prob = .6)
+)
+
+print(r_table)
+```
+
+```{python}
+#| label: python set up
+import pandas as pd
+import numpy as np
+
+data = {
+    'x': np.random.normal(0, scale=1, size=1000),
+    'x2': np.random.normal(0, scale=3, size=1000),
+    'y': np.random.binomial(n=1, p=0.6, size=1000)
+}
+
+# Creating DataFrame
+py_data = pd.DataFrame(data)
+
+print(py_data)
+```
+
+```{python}
+import polars as pl
+
+pl_data = pl.DataFrame(data)
+
+print(pl_data)
+```
+
+# Basic Operations
+
+## Filtering (Integers)
+
+```{r}
+r_data |>
+  filter(
+    x > 1
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[x > 1]
+)
+```
+
+```{python}
+py_data[py_data["x"] > 1].head()
+```
+
+```{python}
+pl_data.filter(pl.col('x') > 1).head()
+```
+
+## Filtering (Categorical)
+
+```{r}
+r_data |>
+  filter(
+    y == 1
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[y == 1]
+)
+```
+
+```{python}
+py_data[py_data["y"] == 1].head()
+```
+
+```{python}
+pl_data.filter(pl.col('y') == 1).head()
+```
+
+## Filtering Multiple Columns
+
+```{r}
+r_data |>
+  filter(
+    y == 1 &
+    x2 < 0
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[
+    y == 1 &
+    x2 > 0
+  ]
+)
+```
+
+```{python}
+py_data[
+  (py_data["y"] == 1) & 
+  (py_data["x2"] > 0)
+    ].head()
+```
+
+```{python}
+pl_data.filter(pl.col('y') == 1, pl.col('x2') > 0).head()
+# uses a comma instead of using &
+```
+
+## Sorting Rows
+
+```{r}
+r_data |> 
+  arrange(y) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[order(y)]
+)
+```
+
+```{python}
+py_data.sort_values(by = "y").head()
+```
+
+```{python}
+pl_data.sort(pl.col('y')).head()
+```
+
+## Selecting Specific Columns
+
+```{r}
+r_data |>
+  select(
+    y
+  ) |>
+  head()
+```
+
+```{r}
+head(
+  r_table[,"y"]
+)
+```
+
+```{python}
+py_data["y"].head()
+
+# py_data.filter(items = "y").head()
+```
+
+```{python}
+pl_data.select(pl.col('y')).head()
+```
+
+## Selecting Multiple Columns
+
+```{r}
+r_data |> 
+  select(x, x2) |> 
+  head()
+```
+
+```{r}
+head(
+  r_table[,list(x, x2)]
+)
+```
+
+```{python}
+py_data[["x", "x2"]].head()
+# or
+py_data.filter(items = ["x", "x2"]).head()
+```
+
+```{python}
+pl_data.select(pl.col('x'), pl.col('x2')).head()
+```
+
+## Selecting Using Regex
+
+```{r}
+r_data |>
+  select(
+    matches("x")
+  ) |>
+  head()
+```
+
+```{r}
+cols <- grep("^x", names(r_table))
+
+head(
+  r_table[, ..cols]
+)
+```
+
+```{python}
+py_data.filter(regex = "x").head()
+```
+
+```{python}
+import polars.selectors as cs
+
+pl_data.select(cs.starts_with('x')).head()
+```
+
+## Summarize Data
+
+```{r}
+r_data |>
+  summarize(
+    avg = mean(x)
+  )
+
+  r_data |>
+  summarize(
+    total = sum(x)
+  )
+```
+
+```{r}
+r_table[, .(avg = mean(x))]
+
+r_table[, .(total = sum(x))]
+```
+
+```{python}
+py_data["x"].mean()
+
+py_data["x"].sum()
+```
+
+```{python}
+pl_data.select(pl.mean('x'))
+
+pl_data.select(pl.sum('x'))
+```
+
+## Adding/Updating/Deleting Columns
+
+```{r}
+r_data <- r_data |>
+  mutate(
+    x_mult = x*x2
+  )
+head(r_data)
+```
+
+```{r}
+r_table[, x_mult := x*x2]
+head(r_table[, "x_mult"])
+```
+
+```{python}
+py_data["x_mult"] = py_data["x"] * py_data["x2"]
+py_data["x_mult"].head()
+```
+
+```{python}
+pl_data.with_columns((pl.col('x') * pl.col('x2')).alias('x_mult'))
+```
+
+## Counting
+
+```{r}
+r_data |> count(y)
+```
+
+```{r}
+r_table[, .N, by = (y)]
+```
+
+```{python}
+py_data["y"].value_counts()
+```
+
+```{python}
+pl.Series(pl_data.select(pl.col('y'))).value_counts()
+```
+
+## Group By
+
+```{r}
+r_data |>
+  group_by(y) |>
+  summarize(
+    avg = mean(x)
+  )
+```
+
+```{r}
+r_table[, .(avg = mean(x)), by = "y"]
+```
+
+```{python}
+py_data.groupby("y")["x"].mean()
+```
+
+```{python}
+pl_data.group_by('y').agg(pl.col('x').mean())
+```
+
+## Chain Expressions
+
+```{r}
+r_data |>
+  group_by(y) |>
+  summarize(
+    avg = mean(x)
+  ) |>
+  filter(
+    y == 1
+  )
+```
+
+```{r}
+r_table[, 
+  by = y,
+  .(avg = mean(x))
+  ][
+    y == 1
+  ]
+```
+
+```{python}
+py_group = py_data.groupby("y")["x"].mean().reset_index()
+
+py_group.iloc[1:, ]
+```
+
+```{python}
+pl_group = pl_data.group_by('y').agg(pl.col('x').mean())
+
+pl_group.filter(pl.col('y') == 1)
+```
+
+## Pivot Data
+
+```{r}
+r_data |>
+  pivot_longer(
+    -y
+  ) |>
+  head()
+```
+
+```{r}
+head(melt(r_table, id.vars = "y"))
+```
+
+```{python}
+py_data.melt(id_vars = ['y'], value_vars = ['x', 'x2', 'x_mult']).head()
+```
+
+```{python}
+pl_data.unpivot(index = 'y').head()
+```

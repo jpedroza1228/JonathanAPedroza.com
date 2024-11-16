@@ -2,8 +2,8 @@
 title: "Tidy Tuesday Coffee Ratings" 
 subtitle: |
   Using TidyModels to Predict Washed/Not Washed (Natural) Coffees. 
-image: coffee_process.jpg
-categories: [ggplot2, Tidymodels, Tidy Tuesday, themis]
+image: raw_coffee.jpg
+categories: [ggplot2, tidymodels, Tidy Tuesday, themis]
 date: 2021-05-13
 # citation:
   # url: 
@@ -14,6 +14,8 @@ params:
   slug: Tidy-Tuesday-Coffee-Ratings
   date: 2021-05-13
 ---
+
+![Photo by [Rodrigo Flores](https://unsplash.com/@loucel?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/person-showing-bunch-of-seeds-T5qjs-63kqQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](raw_coffee.jpg){fig-alt="An image of raw coffee in a person's hands." fig-align="left" width="6in" height="6in"}
 
 ```{r packages, include = FALSE}
 library(tidyverse)
