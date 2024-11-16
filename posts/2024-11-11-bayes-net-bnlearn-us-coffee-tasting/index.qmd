@@ -545,6 +545,9 @@ coffee_drop |>
 Now for the [Bayesian Network](https://www.bayesserver.com/docs/introduction/bayesian-networks/)model. The code below shows the relationships that were modeled. These relationships were somewhat based on the video's content and what I thought would make sense to see what participants' favorite coffee was. While there are better methods for choosing the relationships modeled, this is a fun analysis for some fun data so I kept it simple.
 
 ```{r}
+#| fig-height: 12
+#| fig-width: 12
+
 model_dag <- dagitty('
 dag {
 "Age Range" [pos="-0.853,-0.673"]
