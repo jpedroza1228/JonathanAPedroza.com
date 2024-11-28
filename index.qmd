@@ -21,9 +21,17 @@ title-block-banner: true
 
 ## Shiny Examples
 
-[Prophet Stock Price Parameters Shiny App](https://jp-shinyapps.shinyapps.io/stock_price_parameters/)
+[Bayesian Network Model with Predictions](https://jp-shinyapps.shinyapps.io/bayes-net-app/)
+
+  - GitHub Repository: (https://github.com/jpedroza1228/bayes-net-app)
 
 [Neuropsychology Assessment Calculations](https://jp-shinyapps.shinyapps.io/neuropsych_calculations/)
+
+  - GitHub Repository: (https://github.com/jpedroza1228/neuropsych_calculations)
+
+[Prophet Stock Price Parameters Shiny App](https://jp-shinyapps.shinyapps.io/stock_price_parameters/)
+
+  - GitHub Repository: (https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R)
 
 ## Visualizations With Write Ups
 
