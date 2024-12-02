@@ -19,11 +19,13 @@ title-block-banner: true
 
 [University of Oregon Graduate School Dashboard](https://jpedroza1228.github.io/gradschool_dashboard/)
 
-## Shiny Examples
+## Docker Image
 
-[Bayesian Network Model with Predictions](https://jp-shinyapps.shinyapps.io/bayes-net-app/)
+[Shiny App for Bayesian Network](https://hub.docker.com/r/japedroza1228/bayesnetapp)
 
   - GitHub Repository: ([Link](https://github.com/jpedroza1228/bayes-net-app))
+
+## Shiny Examples
 
 [Neuropsychology Assessment Calculations](https://jp-shinyapps.shinyapps.io/neuropsych_calculations/)
 
