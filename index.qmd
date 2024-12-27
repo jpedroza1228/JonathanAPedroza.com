@@ -23,17 +23,17 @@ title-block-banner: true
 
 [Shiny App for Bayesian Network](https://hub.docker.com/r/japedroza1228/bayesnetapp)
 
-  - GitHub Repository: ([Link](https://github.com/jpedroza1228/bayes-net-app))
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/bayes-net-app))
 
 ## Shiny Examples
 
 [Neuropsychology Assessment Calculations](https://jp-shinyapps.shinyapps.io/neuropsych_calculations/)
 
-  - GitHub Repository: ([Link](https://github.com/jpedroza1228/neuropsych_calculations))
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/neuropsych_calculations))
 
 [Prophet Stock Price Parameters Shiny App](https://jp-shinyapps.shinyapps.io/stock_price_parameters/)
 
-  - GitHub Repository: ([Link](https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R))
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R))
 
 ## Visualizations With Write Ups
 

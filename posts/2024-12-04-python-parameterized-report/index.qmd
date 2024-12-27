@@ -1,0 +1,93 @@
+---
+title: "Creating Parameterized Reports" 
+subtitle: |
+  With Quarto & Python
+image: rollercoaster_loop.jpg
+categories: [Python, Quarto, Pandas, Plotnine, Great Tables, Plotly]
+date: 2024-12-05
+jupyter: python3
+execute:
+  enabled: true
+  warning: false
+  message: false
+editor_options: 
+  chunk_output_type: console
+params:
+  slug: python-parameterized-report
+  date: 2024-12-05
+---
+
+![Photo by [Jonny Gios](https://unsplash.com/@supergios?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/green-and-brown-roller-coaster-under-blue-sky-during-daytime-M6sDLz3MCmE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](rollercoaster_loop.jpg){fig-alt="An image of rollercoaster going through two loops." fig-align="left" width="6in"}
+
+I wanted to make a quick post about this topic because I could not find much online on this topic and it was something I realized I had not tried in Python. Below is the code for a parameterized report where I am filtering for data from the `palmerpenguins` package to only look at data from 2007. I decided on the `palmerpenguins` dataset because it is accessible and can showcase a simple for loop that renders a yearly report on penguin measurements. 
+
+The for loop script can be found [here]() and the actual files created are showcased [here](). This example will only show the template that was used for the Quarto document. Also, as I was creating this I came across a wonderful video explaining a more in-depth example of looping through a couple of parameters for Quarto documents in Python (video [here](https://www.youtube.com/watch?v=_kjs_u3Ctt4), Quarto document code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/parameterized-report.qmd), for loop code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/generate_all_reports.py)).
+
+```{r}
+library(reticulate)
+use_python("C:/Users/Jonathan/Documents/github_projects/JonathanAPedroza.com/blog/Scripts/python.exe")
+```
+
+```{python}
+import pandas as pd
+import plotnine as pn
+from matplotlib import rcParams
+from IPython.display import display, Markdown
+from great_tables import GT
+import plotly.express as px
+from palmerpenguins import load_penguins
+```
+
+### Parameter(s)
+
+```{python}
+#| tags: [parameters]
+
+year = 2007
+```
+
+```{python}
+penguins = load_penguins()
+```
+
+## EDA
+
+```{python}
+#| echo: false
+
+penguins.value_counts('year')
+
+penguin = penguins.loc[penguins['year'] == year]
+
+# pen = penguin.melt(id_vars = ['species', 'island', 'sex', 'year'], value_vars = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']).dropna()
+
+pen_table = penguin.groupby(['species', 'island', 'sex'])[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].mean().reset_index()
+
+pen_table = pen_table.round(2)
+
+pen = pen_table.melt(id_vars = ['species', 'island', 'sex'], value_vars = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g'])
+
+print(pen_table)
+print(pen)
+```
+
+```{python}
+(
+  pn.ggplot(pen, pn.aes('factor(species)', 'value'))
+  + pn.geom_col(pn.aes(fill = 'island'), position = pn.position_dodge())
+  + pn.facet_wrap('variable', scales = 'free')
+  + pn.theme(legend_position = 'bottom')
+)
+```
+
+```{python}
+display(Markdown(f"""
+## Average Measurements For Different Penguin Species By Island and Sex in the Year {year}
+"""))
+```
+
+```{python}
+(
+  GT(pen_table)
+)
+```
