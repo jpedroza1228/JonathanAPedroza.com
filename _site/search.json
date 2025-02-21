@@ -2,23 +2,23 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Home",
+    "title": "About Me",
     "section": "",
-    "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension\n\n\n\nUniversity of Oregon Graduate School Dashboard\n\n\n\nShiny App for Bayesian Network\n\nGitHub Repository: (Link)\n\n\n\n\nNeuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)\n\n\n\n\nReductions in Physical Activity in California Counties\nFunding for University of Oregon Teaching Assistants\nThe Importance of Including Variables in Models\n\n\n\nSuspension Levels for Students with Disabilities in California Districts"
+    "text": "Hi! I am Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a Prevention Scientist included training in program evaluation, implementation science, machine learning, inferential statistics, and survey design. I currently am a contractor for Posit as an academy mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with various datasets with my academy cohorts.\nMy research interests include:\n\n\nexamining health behaviors and health disparities through an socio-ecological framework in Latina/o populations\nexploring environmental factors that contributed to inequities in access to and engagement in health behaviors\nthe role of acculturation in helping to explain health behaviors in Latina/o populations\nthe link between mental and physical health in Latina/o populations\n\n\nMy posts often include using R and Python for data analyses and machine learning. I often include topics I have learned using Bayesian Statistics with Stan and tools I have created with some CSS/HTML, such as Shiny apps, interactive documents, and this site. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I’m currently on BlueSky for social media and infrequently check Mastodon. You can also email me at  jonpedroza1228@gmail.com with any inquires.\n\nData Science Colleagues"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About Me",
+    "title": "Resources",
     "section": "",
-    "text": "Hi! I am Jonathan Andrew Pedroza PhD, but I have gotten used to everyone just referring to me as JP. I am currently on the job market looking for any data scientist, data analyst, or psychometrician openings. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a Prevention Scientist included training in program evaluation, implementation science, machine learning, inferential statistics, and survey design. Currently I am a contractor for Posit (Previously RStudio) where I serve as an Academy Mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. Additionally, I provide resources, best coding practices, and examples for useful packages outside of the scope of Academy.\nSome of my research interests include: the examination of physical activity and sedentary behaviors, environmental factors that contribute to inequities of access and engagement in health behaviors, and educational interventions. I am open to learning more about a new field, especially since working with various datasets with my Academy cohorts.\nI am proficient in using R and Python for data analytics and machine learning, along with SQL for databases. I also have experience using Stan for Bayesian statistics and CSS/HTML for making changes in Shiny applications, interactive documents, and my website. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I’m currently on BlueSky for social media and infrequently check Mastodon. You can also email me  at jonpedroza1228@gmail.com with any inquires.\n\nData Science Colleagues"
+    "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension\n\n\n\nUniversity of Oregon Graduate School Dashboard\n\n\n\nShiny App for Bayesian Network\n\nGitHub Repository: (Link)\n\n\n\n\nNeuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)\n\n\n\n\nReductions in Physical Activity in California Counties\nFunding for University of Oregon Teaching Assistants\nThe Importance of Including Variables in Models\n\n\n\nSuspension Levels for Students with Disabilities in California Districts"
   },
   {
     "objectID": "posts.html",
     "href": "posts.html",
     "title": "My Posts",
     "section": "",
-    "text": "Creating Parameterized Reports\n\n\n\nPython\n\n\nQuarto\n\n\nPandas\n\n\nPlotnine\n\n\nGreat Tables\n\n\nPlotly\n\n\n\n\n\n\n\n\n\n\nDec 5, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing a Bayesian Network For Machine Learning\n\n\n\nbayes-net\n\n\nbayesian network\n\n\nmachine learning\n\n\nR\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayes Net Pt. 2\n\n\n\nBayesian\n\n\nInference\n\n\nBayesian Network\n\n\nbayes net\n\n\nR\n\n\nstan\n\n\ncmdstanr\n\n\nposterior\n\n\nbayesplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy submission to Posit’s Closeread Competition\n\n\n\ncloseread\n\n\nggplot2\n\n\nHTML\n\n\nquarto\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nData Manipulation in R & Python\n\n\n\ndata manipulation\n\n\ndplyr\n\n\npandas\n\n\nnumpy\n\n\npython\n\n\nR\n\n\ndata.table\n\n\npolars\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayes Nets\n\n\n\nbayesian\n\n\nbayesian network\n\n\nbayes net\n\n\nR\n\n\nstan\n\n\ncmdstanr\n\n\nggdag\n\n\ndagitty\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nProphet Model\n\n\n\nggplot2\n\n\nForecast\n\n\nTidyModels\n\n\nModeltime\n\n\nProphet\n\n\nR\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayesian Network for US Coffee Tasting Data\n\n\n\nBayesian\n\n\nBayesian Network\n\n\nbayes net\n\n\nR\n\n\nbnlearn\n\n\ndag\n\n\n\n\n\n\n\n\n\n\nNov 11, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGraduate Student Satisfaction Exit Surveys\n\n\n\nggplot2\n\n\nShiny\n\n\nEducation\n\n\n\n\n\n\n\n\n\n\nJun 19, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Tuesday Coffee Ratings\n\n\n\nggplot2\n\n\ntidymodels\n\n\nTidy Tuesday\n\n\nthemis\n\n\n\n\n\n\n\n\n\n\nMay 13, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwitter Conference Presentation\n\n\n\nR\n\n\nggplot2\n\n\nVisualizations\n\n\nAnalysis\n\n\n\n\n\n\n\n\n\n\nApr 30, 2021\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Creating Parameterized Reports\n\n\n\nPython\n\n\nQuarto\n\n\nPandas\n\n\nPlotnine\n\n\nGreat Tables\n\n\nPlotly\n\n\n\n\n\n\n\n\n\n\nDec 5, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing a Bayesian Network For Machine Learning\n\n\n\nbayes-net\n\n\nbayesian network\n\n\nmachine learning\n\n\nR\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayes Net Pt. 2\n\n\n\nBayesian\n\n\nInference\n\n\nBayesian Network\n\n\nbayes net\n\n\nR\n\n\nstan\n\n\ncmdstanr\n\n\nposterior\n\n\nbayesplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nData Manipulation in R & Python\n\n\n\ndata manipulation\n\n\ndplyr\n\n\npandas\n\n\nnumpy\n\n\npython\n\n\nR\n\n\ndata.table\n\n\npolars\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy submission to Posit’s Closeread Competition\n\n\n\ncloseread\n\n\nggplot2\n\n\nHTML\n\n\nquarto\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nProphet Model\n\n\n\nggplot2\n\n\nForecast\n\n\nTidyModels\n\n\nModeltime\n\n\nProphet\n\n\nR\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayes Nets\n\n\n\nbayesian\n\n\nbayesian network\n\n\nbayes net\n\n\nR\n\n\nstan\n\n\ncmdstanr\n\n\nggdag\n\n\ndagitty\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayesian Network for US Coffee Tasting Data\n\n\n\nBayesian\n\n\nBayesian Network\n\n\nbayes net\n\n\nR\n\n\nbnlearn\n\n\ndag\n\n\n\n\n\n\n\n\n\n\nNov 11, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGraduate Student Satisfaction Exit Surveys\n\n\n\nggplot2\n\n\nShiny\n\n\nEducation\n\n\n\n\n\n\n\n\n\n\nJun 19, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Tuesday Coffee Ratings\n\n\n\nggplot2\n\n\ntidymodels\n\n\nTidy Tuesday\n\n\nthemis\n\n\n\n\n\n\n\n\n\n\nMay 13, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwitter Conference Presentation\n\n\n\nR\n\n\nggplot2\n\n\nVisualizations\n\n\nAnalysis\n\n\n\n\n\n\n\n\n\n\nApr 30, 2021\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2022-06-02-prophet-model/index.html",
@@ -352,7 +352,7 @@
   {
     "objectID": "index.html#quarto-extensions",
     "href": "index.html#quarto-extensions",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension"
   },
@@ -723,35 +723,35 @@
   {
     "objectID": "index.html#dashboard-example",
     "href": "index.html#dashboard-example",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "University of Oregon Graduate School Dashboard"
   },
   {
     "objectID": "index.html#shiny-examples",
     "href": "index.html#shiny-examples",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "Neuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)"
   },
   {
     "objectID": "index.html#visualizations-with-write-ups",
     "href": "index.html#visualizations-with-write-ups",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "Reductions in Physical Activity in California Counties\nFunding for University of Oregon Teaching Assistants\nThe Importance of Including Variables in Models"
   },
   {
     "objectID": "index.html#current-projectsanalyses",
     "href": "index.html#current-projectsanalyses",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "Suspension Levels for Students with Disabilities in California Districts"
   },
   {
     "objectID": "index.html#docker-image",
     "href": "index.html#docker-image",
-    "title": "Home",
+    "title": "Resources",
     "section": "",
     "text": "Shiny App for Bayesian Network\n\nGitHub Repository: (Link)"
   },
@@ -823,7 +823,7 @@
     "href": "posts/2024-12-04-python-parameterized-report/index.html#eda",
     "title": "Creating Parameterized Reports",
     "section": "EDA",
-    "text": "EDA\n\n\n     species     island     sex  bill_length_mm  bill_depth_mm  \\\n0     Adelie     Biscoe  female           37.48          18.58   \n1     Adelie     Biscoe    male           39.16          18.30   \n2     Adelie      Dream  female           37.86          17.84   \n3     Adelie      Dream    male           40.38          19.43   \n4     Adelie  Torgersen  female           38.28          18.16   \n5     Adelie  Torgersen    male           39.90          20.49   \n6  Chinstrap      Dream  female           46.57          17.84   \n7  Chinstrap      Dream    male           50.88          19.13   \n8     Gentoo     Biscoe  female           45.06          13.99   \n9     Gentoo     Biscoe    male           49.00          15.36   \n\n   flipper_length_mm  body_mass_g  \n0             181.80      3470.00  \n1             181.60      3770.00  \n2             185.00      3269.44  \n3             188.60      4102.50  \n4             187.62      3475.00  \n5             192.29      4139.29  \n6             188.69      3569.23  \n7             196.15      3819.23  \n8             211.06      4618.75  \n9             218.88      5552.94  \n      species     island     sex           variable    value\n0      Adelie     Biscoe  female     bill_length_mm    37.48\n1      Adelie     Biscoe    male     bill_length_mm    39.16\n2      Adelie      Dream  female     bill_length_mm    37.86\n3      Adelie      Dream    male     bill_length_mm    40.38\n4      Adelie  Torgersen  female     bill_length_mm    38.28\n5      Adelie  Torgersen    male     bill_length_mm    39.90\n6   Chinstrap      Dream  female     bill_length_mm    46.57\n7   Chinstrap      Dream    male     bill_length_mm    50.88\n8      Gentoo     Biscoe  female     bill_length_mm    45.06\n9      Gentoo     Biscoe    male     bill_length_mm    49.00\n10     Adelie     Biscoe  female      bill_depth_mm    18.58\n11     Adelie     Biscoe    male      bill_depth_mm    18.30\n12     Adelie      Dream  female      bill_depth_mm    17.84\n13     Adelie      Dream    male      bill_depth_mm    19.43\n14     Adelie  Torgersen  female      bill_depth_mm    18.16\n15     Adelie  Torgersen    male      bill_depth_mm    20.49\n16  Chinstrap      Dream  female      bill_depth_mm    17.84\n17  Chinstrap      Dream    male      bill_depth_mm    19.13\n18     Gentoo     Biscoe  female      bill_depth_mm    13.99\n19     Gentoo     Biscoe    male      bill_depth_mm    15.36\n20     Adelie     Biscoe  female  flipper_length_mm   181.80\n21     Adelie     Biscoe    male  flipper_length_mm   181.60\n22     Adelie      Dream  female  flipper_length_mm   185.00\n23     Adelie      Dream    male  flipper_length_mm   188.60\n24     Adelie  Torgersen  female  flipper_length_mm   187.62\n25     Adelie  Torgersen    male  flipper_length_mm   192.29\n26  Chinstrap      Dream  female  flipper_length_mm   188.69\n27  Chinstrap      Dream    male  flipper_length_mm   196.15\n28     Gentoo     Biscoe  female  flipper_length_mm   211.06\n29     Gentoo     Biscoe    male  flipper_length_mm   218.88\n30     Adelie     Biscoe  female        body_mass_g  3470.00\n31     Adelie     Biscoe    male        body_mass_g  3770.00\n32     Adelie      Dream  female        body_mass_g  3269.44\n33     Adelie      Dream    male        body_mass_g  4102.50\n34     Adelie  Torgersen  female        body_mass_g  3475.00\n35     Adelie  Torgersen    male        body_mass_g  4139.29\n36  Chinstrap      Dream  female        body_mass_g  3569.23\n37  Chinstrap      Dream    male        body_mass_g  3819.23\n38     Gentoo     Biscoe  female        body_mass_g  4618.75\n39     Gentoo     Biscoe    male        body_mass_g  5552.94\n\n\n\n\nCode\n(\n  pn.ggplot(pen, pn.aes('factor(species)', 'value'))\n  + pn.geom_col(pn.aes(fill = 'island'), position = pn.position_dodge())\n  + pn.facet_wrap('variable', scales = 'free')\n  + pn.theme(legend_position = 'bottom')\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\ndisplay(Markdown(f\"\"\"\n## Average Measurements For Different Penguin Species By Island and Sex in the Year {year}\n\"\"\"))\n\n\nAverage Measurements For Different Penguin Species By Island and Sex in the Year 2007\n\n\n\n\nCode\n(\n  GT(pen_table)\n)\n\n\n\n\n\n\n\n\n\nspecies\nisland\nsex\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\n\n\n\n\nAdelie\nBiscoe\nfemale\n37.48\n18.58\n181.8\n3470.0\n\n\nAdelie\nBiscoe\nmale\n39.16\n18.3\n181.6\n3770.0\n\n\nAdelie\nDream\nfemale\n37.86\n17.84\n185.0\n3269.44\n\n\nAdelie\nDream\nmale\n40.38\n19.43\n188.6\n4102.5\n\n\nAdelie\nTorgersen\nfemale\n38.28\n18.16\n187.62\n3475.0\n\n\nAdelie\nTorgersen\nmale\n39.9\n20.49\n192.29\n4139.29\n\n\nChinstrap\nDream\nfemale\n46.57\n17.84\n188.69\n3569.23\n\n\nChinstrap\nDream\nmale\n50.88\n19.13\n196.15\n3819.23\n\n\nGentoo\nBiscoe\nfemale\n45.06\n13.99\n211.06\n4618.75\n\n\nGentoo\nBiscoe\nmale\n49.0\n15.36\n218.88\n5552.94"
+    "text": "EDA\n\n\n     species     island     sex  bill_length_mm  bill_depth_mm  \\\n0     Adelie     Biscoe  female           37.48          18.58   \n1     Adelie     Biscoe    male           39.16          18.30   \n2     Adelie      Dream  female           37.86          17.84   \n3     Adelie      Dream    male           40.38          19.43   \n4     Adelie  Torgersen  female           38.28          18.16   \n5     Adelie  Torgersen    male           39.90          20.49   \n6  Chinstrap      Dream  female           46.57          17.84   \n7  Chinstrap      Dream    male           50.88          19.13   \n8     Gentoo     Biscoe  female           45.06          13.99   \n9     Gentoo     Biscoe    male           49.00          15.36   \n\n   flipper_length_mm  body_mass_g  \n0             181.80      3470.00  \n1             181.60      3770.00  \n2             185.00      3269.44  \n3             188.60      4102.50  \n4             187.62      3475.00  \n5             192.29      4139.29  \n6             188.69      3569.23  \n7             196.15      3819.23  \n8             211.06      4618.75  \n9             218.88      5552.94  \n      species     island     sex           variable    value\n0      Adelie     Biscoe  female     bill_length_mm    37.48\n1      Adelie     Biscoe    male     bill_length_mm    39.16\n2      Adelie      Dream  female     bill_length_mm    37.86\n3      Adelie      Dream    male     bill_length_mm    40.38\n4      Adelie  Torgersen  female     bill_length_mm    38.28\n5      Adelie  Torgersen    male     bill_length_mm    39.90\n6   Chinstrap      Dream  female     bill_length_mm    46.57\n7   Chinstrap      Dream    male     bill_length_mm    50.88\n8      Gentoo     Biscoe  female     bill_length_mm    45.06\n9      Gentoo     Biscoe    male     bill_length_mm    49.00\n10     Adelie     Biscoe  female      bill_depth_mm    18.58\n11     Adelie     Biscoe    male      bill_depth_mm    18.30\n12     Adelie      Dream  female      bill_depth_mm    17.84\n13     Adelie      Dream    male      bill_depth_mm    19.43\n14     Adelie  Torgersen  female      bill_depth_mm    18.16\n15     Adelie  Torgersen    male      bill_depth_mm    20.49\n16  Chinstrap      Dream  female      bill_depth_mm    17.84\n17  Chinstrap      Dream    male      bill_depth_mm    19.13\n18     Gentoo     Biscoe  female      bill_depth_mm    13.99\n19     Gentoo     Biscoe    male      bill_depth_mm    15.36\n20     Adelie     Biscoe  female  flipper_length_mm   181.80\n21     Adelie     Biscoe    male  flipper_length_mm   181.60\n22     Adelie      Dream  female  flipper_length_mm   185.00\n23     Adelie      Dream    male  flipper_length_mm   188.60\n24     Adelie  Torgersen  female  flipper_length_mm   187.62\n25     Adelie  Torgersen    male  flipper_length_mm   192.29\n26  Chinstrap      Dream  female  flipper_length_mm   188.69\n27  Chinstrap      Dream    male  flipper_length_mm   196.15\n28     Gentoo     Biscoe  female  flipper_length_mm   211.06\n29     Gentoo     Biscoe    male  flipper_length_mm   218.88\n30     Adelie     Biscoe  female        body_mass_g  3470.00\n31     Adelie     Biscoe    male        body_mass_g  3770.00\n32     Adelie      Dream  female        body_mass_g  3269.44\n33     Adelie      Dream    male        body_mass_g  4102.50\n34     Adelie  Torgersen  female        body_mass_g  3475.00\n35     Adelie  Torgersen    male        body_mass_g  4139.29\n36  Chinstrap      Dream  female        body_mass_g  3569.23\n37  Chinstrap      Dream    male        body_mass_g  3819.23\n38     Gentoo     Biscoe  female        body_mass_g  4618.75\n39     Gentoo     Biscoe    male        body_mass_g  5552.94\n\n\n\n\nCode\n(\n  pn.ggplot(pen, pn.aes('factor(species)', 'value'))\n  + pn.geom_col(pn.aes(fill = 'island'), position = pn.position_dodge())\n  + pn.facet_wrap('variable', scales = 'free')\n  + pn.theme(legend_position = 'bottom')\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\ndisplay(Markdown(f\"\"\"\n## Average Measurements For Different Penguin Species By Island and Sex in the Year {year}\n\"\"\"))\n\n\nAverage Measurements For Different Penguin Species By Island and Sex in the Year 2007\n\n\n\n\nCode\n(\n  GT(pen_table)\n)\n\n\n\n\n\n\n\n\nspecies\nisland\nsex\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\n\n\n\n\nAdelie\nBiscoe\nfemale\n37.48\n18.58\n181.8\n3470.0\n\n\nAdelie\nBiscoe\nmale\n39.16\n18.3\n181.6\n3770.0\n\n\nAdelie\nDream\nfemale\n37.86\n17.84\n185.0\n3269.44\n\n\nAdelie\nDream\nmale\n40.38\n19.43\n188.6\n4102.5\n\n\nAdelie\nTorgersen\nfemale\n38.28\n18.16\n187.62\n3475.0\n\n\nAdelie\nTorgersen\nmale\n39.9\n20.49\n192.29\n4139.29\n\n\nChinstrap\nDream\nfemale\n46.57\n17.84\n188.69\n3569.23\n\n\nChinstrap\nDream\nmale\n50.88\n19.13\n196.15\n3819.23\n\n\nGentoo\nBiscoe\nfemale\n45.06\n13.99\n211.06\n4618.75\n\n\nGentoo\nBiscoe\nmale\n49.0\n15.36\n218.88\n5552.94"
   },
   {
     "objectID": "posts/2024-12-04-python-parameterized-report/index.html#average-measurements-for-different-penguin-species-by-island-and-sex-in-the-year-2007",
@@ -831,5 +831,96 @@
     "title": "Creating Parameterized Reports",
     "section": "Average Measurements For Different Penguin Species By Island and Sex in the Year 2007",
     "text": "Average Measurements For Different Penguin Species By Island and Sex in the Year 2007"
+  },
+  {
+    "objectID": "about.html#quarto-extensions",
+    "href": "about.html#quarto-extensions",
+    "title": "Resources",
+    "section": "",
+    "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension"
+  },
+  {
+    "objectID": "about.html#dashboard-example",
+    "href": "about.html#dashboard-example",
+    "title": "Resources",
+    "section": "",
+    "text": "University of Oregon Graduate School Dashboard"
+  },
+  {
+    "objectID": "about.html#docker-image",
+    "href": "about.html#docker-image",
+    "title": "Resources",
+    "section": "",
+    "text": "Shiny App for Bayesian Network\n\nGitHub Repository: (Link)"
+  },
+  {
+    "objectID": "about.html#shiny-examples",
+    "href": "about.html#shiny-examples",
+    "title": "Resources",
+    "section": "",
+    "text": "Neuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)"
+  },
+  {
+    "objectID": "about.html#visualizations-with-write-ups",
+    "href": "about.html#visualizations-with-write-ups",
+    "title": "Resources",
+    "section": "",
+    "text": "Reductions in Physical Activity in California Counties\nFunding for University of Oregon Teaching Assistants\nThe Importance of Including Variables in Models"
+  },
+  {
+    "objectID": "about.html#current-projectsanalyses",
+    "href": "about.html#current-projectsanalyses",
+    "title": "Resources",
+    "section": "",
+    "text": "Suspension Levels for Students with Disabilities in California Districts"
+  },
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "Resources",
+    "section": "",
+    "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension"
+  },
+  {
+    "objectID": "resources.html#quarto-extensions",
+    "href": "resources.html#quarto-extensions",
+    "title": "Resources",
+    "section": "",
+    "text": "Link to invoice Quarto Extension\nLink to Resume Quarto Extension\nLink to Cover Letter Quarto Extension"
+  },
+  {
+    "objectID": "resources.html#dashboard-example",
+    "href": "resources.html#dashboard-example",
+    "title": "Resources",
+    "section": "Dashboard Example",
+    "text": "Dashboard Example\nUniversity of Oregon Graduate School Dashboard"
+  },
+  {
+    "objectID": "resources.html#docker-image",
+    "href": "resources.html#docker-image",
+    "title": "Resources",
+    "section": "Docker Image",
+    "text": "Docker Image\nShiny App for Bayesian Network\n\nGitHub Repository: (Link)"
+  },
+  {
+    "objectID": "resources.html#shiny-examples",
+    "href": "resources.html#shiny-examples",
+    "title": "Resources",
+    "section": "Shiny Examples",
+    "text": "Shiny Examples\nNeuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)"
+  },
+  {
+    "objectID": "resources.html#visualizations-with-write-ups",
+    "href": "resources.html#visualizations-with-write-ups",
+    "title": "Resources",
+    "section": "Visualizations With Write Ups",
+    "text": "Visualizations With Write Ups\nReductions in Physical Activity in California Counties\nFunding for University of Oregon Teaching Assistants\nThe Importance of Including Variables in Models"
+  },
+  {
+    "objectID": "resources.html#current-projectsanalyses",
+    "href": "resources.html#current-projectsanalyses",
+    "title": "Resources",
+    "section": "Current Projects/Analyses",
+    "text": "Current Projects/Analyses\nSuspension Levels for Students with Disabilities in California Districts"
   }
 ]
