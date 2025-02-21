@@ -1,0 +1,45 @@
+---
+title: "Resources"
+page-layout: full
+title-block-banner: true
+---
+
+## Quarto Extensions
+
+[Link to invoice Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/invoice)
+
+[Link to Resume Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/Resume)
+
+[Link to Cover Letter Quarto Extension](https://github.com/jpedroza1228/quarto_extensions/tree/main/CoverLetter)
+
+## Dashboard Example
+
+[University of Oregon Graduate School Dashboard](https://jpedroza1228.github.io/gradschool_dashboard/)
+
+## Docker Image
+
+[Shiny App for Bayesian Network](https://hub.docker.com/r/japedroza1228/bayesnetapp)
+
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/bayes-net-app))
+
+## Shiny Examples
+
+[Neuropsychology Assessment Calculations](https://jp-shinyapps.shinyapps.io/neuropsych_calculations/)
+
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/neuropsych_calculations))
+
+[Prophet Stock Price Parameters Shiny App](https://jp-shinyapps.shinyapps.io/stock_price_parameters/)
+
+-   GitHub Repository: ([Link](https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R))
+
+## Visualizations With Write Ups
+
+[Reductions in Physical Activity in California Counties](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization1.pdf)
+
+[Funding for University of Oregon Teaching Assistants](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization2.pdf)
+
+[The Importance of Including Variables in Models](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization3.pdf)
+
+## Current Projects/Analyses
+
+[Suspension Levels for Students with Disabilities in California Districts](https://html-preview.github.io/?url=https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/student_suspensions/ca_student_suspension.html)
