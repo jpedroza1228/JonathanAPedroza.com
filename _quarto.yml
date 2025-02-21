@@ -5,10 +5,11 @@ website:
   title: "Jonathan A. Pedroza"
   navbar:
     left:
+      - href: about.qmd
+        tex: About Me
       - href: index.qmd
-        text: Home
-      - about.qmd
-      - posts.qmd
+        text: Resources
+      - href: posts.qmd
 
 format:
   html:
