@@ -29,14 +29,33 @@ about:
 
 Hi! I am Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a [Prevention Scientist](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit as an academy mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with various datasets with my academy cohorts.
 
-My research interests include:
+```{r}
+#| echo: false
+#| eval: true
 
-::: {}
--   examining health behaviors and health disparities through an socio-ecological framework in Latina/o populations
--   exploring environmental factors that contributed to inequities in access to and engagement in health behaviors
--   the role of acculturation in helping to explain health behaviors in Latina/o populations
--   the link between mental and physical health in Latina/o populations
-:::
+interests <- c(
+  "examining health disparities through a socio-ecological framework in Latina/o populations",
+  "exploring environmental factors that contributed to inequities in access to and engagement in health behaviors",
+  "the role of acculturation in helping to explain health disparities in Latina/o populations",
+  "the link between mental and physical health in Latina/o populations"
+) |> 
+  tibble::as_tibble() |> 
+  dplyr::rename(
+  `My Research Interests` = value
+  ) |> 
+  dplyr::mutate(
+    `My Research Interests` = stringr::str_to_title(`My Research Interests`),
+    `My Research Interests` = stringr::str_replace(
+      `My Research Interests`,
+      "Latina/O",
+      "Latina/o"
+    )
+  )
+
+reactable::reactable(
+  interests
+)
+```
 
 My posts often include using R and Python for data analyses and machine learning. I often include topics I have learned using Bayesian Statistics with Stan and tools I have created with some CSS/HTML, such as Shiny apps, interactive documents, and this site. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I'm currently on [BlueSky](https://bsky.app/profile/jonathanpedroza.bsky.social) for social media and infrequently check [Mastodon](https://fosstodon.org/@jpedroza). You can also email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires.
 
