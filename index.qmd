@@ -29,9 +29,9 @@ about:
 
 Hi! I am Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a [Prevention Scientist](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit as an academy mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with various datasets with my academy cohorts.
 
-My research interests include:
-
 ```{r}
+#| echo: false
+#| eval: true
 
 interests <- c(
   "examining health disparities through a socio-ecological framework in Latina/o populations",
@@ -39,14 +39,14 @@ interests <- c(
   "the role of acculturation in helping to explain health disparities in Latina/o populations",
   "the link between mental and physical health in Latina/o populations"
 ) |> 
-  as_tibble() |> 
-  rename(
-  `Research Interests` = value
+  tibble::as_tibble() |> 
+  dplyr::rename(
+  `My Research Interests` = value
   ) |> 
-  mutate(
-    `Research Interests` = str_to_title(`Research Interests`),
-    `Research Interests` = str_replace(
-      `Research Interests`,
+  dplyr::mutate(
+    `My Research Interests` = stringr::str_to_title(`My Research Interests`),
+    `My Research Interests` = stringr::str_replace(
+      `My Research Interests`,
       "Latina/O",
       "Latina/o"
     )
