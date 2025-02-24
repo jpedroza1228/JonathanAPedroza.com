@@ -31,12 +31,31 @@ Hi! I am Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my Ph
 
 My research interests include:
 
-::: {}
--   examining health behaviors and health disparities through an socio-ecological framework in Latina/o populations
--   exploring environmental factors that contributed to inequities in access to and engagement in health behaviors
--   the role of acculturation in helping to explain health behaviors in Latina/o populations
--   the link between mental and physical health in Latina/o populations
-:::
+```{r}
+
+interests <- c(
+  "examining health disparities through a socio-ecological framework in Latina/o populations",
+  "exploring environmental factors that contributed to inequities in access to and engagement in health behaviors",
+  "the role of acculturation in helping to explain health disparities in Latina/o populations",
+  "the link between mental and physical health in Latina/o populations"
+) |> 
+  as_tibble() |> 
+  rename(
+  `Research Interests` = value
+  ) |> 
+  mutate(
+    `Research Interests` = str_to_title(`Research Interests`),
+    `Research Interests` = str_replace(
+      `Research Interests`,
+      "Latina/O",
+      "Latina/o"
+    )
+  )
+
+reactable::reactable(
+  interests
+)
+```
 
 My posts often include using R and Python for data analyses and machine learning. I often include topics I have learned using Bayesian Statistics with Stan and tools I have created with some CSS/HTML, such as Shiny apps, interactive documents, and this site. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I'm currently on [BlueSky](https://bsky.app/profile/jonathanpedroza.bsky.social) for social media and infrequently check [Mastodon](https://fosstodon.org/@jpedroza). You can also email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires.
 
