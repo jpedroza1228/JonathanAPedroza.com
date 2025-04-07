@@ -27,7 +27,7 @@ about:
       href: https://drive.google.com/file/d/1pAQndjttUR4NPQVz2k9mRsvU-OFC6mbJ/view?usp=sharing
 ---
 
-Hi! I am Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My training as a [Prevention Scientist](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit as an academy mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with various datasets with my academy cohorts.
+Hi! My name is Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My education in [Prevention Science](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.
 
 ```{r}
 #| echo: false
@@ -57,7 +57,7 @@ reactable::reactable(
 )
 ```
 
-My posts often include using R and Python for data analyses and machine learning. I often include topics I have learned using Bayesian Statistics with Stan and tools I have created with some CSS/HTML, such as Shiny apps, interactive documents, and this site. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I'm currently on [BlueSky](https://bsky.app/profile/jonathanpedroza.bsky.social) for social media and infrequently check [Mastodon](https://fosstodon.org/@jpedroza). You can also email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires.
+My posts often include using R and Python for data analyses and machine learning. Some of these topics include Bayesian statistics with Stan, interactive documents, and shiny apps. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I'm currently on [BlueSky](https://bsky.app/profile/jonathanpedroza.bsky.social) for social media and infrequently check [Mastodon](https://fosstodon.org/@jpedroza). You can also email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires.
 
 # Data Science Colleagues
 
