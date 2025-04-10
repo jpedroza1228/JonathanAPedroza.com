@@ -24,7 +24,7 @@ about:
       href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
     - icon: cv
       text: CV
-      href: https://drive.google.com/file/d/1uhNHA5gCpL8Cl8IZwX0D4gd6T0o8m-eF/view?usp=sharing
+      href: https://drive.google.com/file/d/1WghX0C6AXlMbLBaeKrpERGgBKCW0wGNl/view?usp=sharing
 ---
 
 Hi! My name is Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My education in [Prevention Science](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.
