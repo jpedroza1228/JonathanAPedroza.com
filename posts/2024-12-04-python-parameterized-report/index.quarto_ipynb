@@ -1,0 +1,172 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Creating Parameterized Reports\" \n",
+        "subtitle: |\n",
+        "  With Quarto & Python\n",
+        "image: rollercoaster_loop.jpg\n",
+        "categories: [Python, Quarto, Pandas, Plotnine, Great Tables, Plotly]\n",
+        "date: 2024-12-05\n",
+        "jupyter: python3\n",
+        "execute:\n",
+        "  enabled: true\n",
+        "  warning: false\n",
+        "  message: false\n",
+        "editor_options: \n",
+        "  chunk_output_type: console\n",
+        "params:\n",
+        "  slug: python-parameterized-report\n",
+        "  date: 2024-12-05\n",
+        "---\n",
+        "\n",
+        "\n",
+        "![Photo by [Jonny Gios](https://unsplash.com/@supergios?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/green-and-brown-roller-coaster-under-blue-sky-during-daytime-M6sDLz3MCmE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](rollercoaster_loop.jpg){fig-alt=\"An image of rollercoaster going through two loops.\" fig-align=\"left\" width=\"6in\"}\n",
+        "\n",
+        "I wanted to make a quick post about this topic because I could not find much online on this topic and it was something I realized I had not tried in Python. Below is the code for a parameterized report where I am filtering for data from the `palmerpenguins` package to only look at data from 2007. I decided on the `palmerpenguins` dataset because it is accessible and can showcase a simple for loop that renders a yearly report on penguin measurements. \n",
+        "\n",
+        "The for loop script can be found [here]() and the actual files created are showcased [here](). This example will only show the template that was used for the Quarto document. Also, as I was creating this I came across a wonderful video explaining a more in-depth example of looping through a couple of parameters for Quarto documents in Python (video [here](https://www.youtube.com/watch?v=_kjs_u3Ctt4), Quarto document code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/parameterized-report.qmd), for loop code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/generate_all_reports.py)).\n",
+        "\n",
+        "\n",
+        "```{r}\n",
+        "library(reticulate)\n",
+        "use_python(\"C:/Users/Jonathan/Documents/github_projects/JonathanAPedroza.com/blog/Scripts/python.exe\")\n",
+        "```"
+      ],
+      "id": "aa7c284e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import pandas as pd\n",
+        "import plotnine as pn\n",
+        "from matplotlib import rcParams\n",
+        "from IPython.display import display, Markdown\n",
+        "from great_tables import GT\n",
+        "import plotly.express as px\n",
+        "from palmerpenguins import load_penguins"
+      ],
+      "id": "ade9e0c8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Parameter(s)\n"
+      ],
+      "id": "d125cdf9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "tags": [
+          "parameters"
+        ]
+      },
+      "source": [
+        "year = 2007"
+      ],
+      "id": "f925bd74",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "penguins = load_penguins()"
+      ],
+      "id": "d29a6d7f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## EDA\n"
+      ],
+      "id": "d319e9ba"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "penguins.value_counts('year')\n",
+        "\n",
+        "penguin = penguins.loc[penguins['year'] == year]\n",
+        "\n",
+        "# pen = penguin.melt(id_vars = ['species', 'island', 'sex', 'year'], value_vars = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']).dropna()\n",
+        "\n",
+        "pen_table = penguin.groupby(['species', 'island', 'sex'])[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].mean().reset_index()\n",
+        "\n",
+        "pen_table = pen_table.round(2)\n",
+        "\n",
+        "pen = pen_table.melt(id_vars = ['species', 'island', 'sex'], value_vars = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g'])\n",
+        "\n",
+        "print(pen_table)\n",
+        "print(pen)"
+      ],
+      "id": "d6690146",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "(\n",
+        "  pn.ggplot(pen, pn.aes('factor(species)', 'value'))\n",
+        "  + pn.geom_col(pn.aes(fill = 'island'), position = pn.position_dodge())\n",
+        "  + pn.facet_wrap('variable', scales = 'free')\n",
+        "  + pn.theme(legend_position = 'bottom')\n",
+        ")"
+      ],
+      "id": "e0a903bb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "display(Markdown(f\"\"\"\n",
+        "## Average Measurements For Different Penguin Species By Island and Sex in the Year {year}\n",
+        "\"\"\"))"
+      ],
+      "id": "c78d87bb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "(\n",
+        "  GT(pen_table)\n",
+        ")"
+      ],
+      "id": "915a0119",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/home/jon/.local/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
