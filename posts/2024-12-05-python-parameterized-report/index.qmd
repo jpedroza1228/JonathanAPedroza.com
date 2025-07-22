@@ -1,0 +1,151 @@
+---
+title: "Looping Through Parameterized Reports" 
+subtitle: |
+  With Quarto & Python
+image: rollercoaster_loop.jpg
+categories: [Python, Quarto, Pandas, Plotnine, Great Tables, Plotly]
+date: 2024-12-05
+# jupyter: python3
+execute:
+  enabled: true
+  warning: false
+  message: false
+params:
+  slug: python-parameterized-report
+  date: 2024-12-05
+---
+
+![Photo by [Jonny Gios](https://unsplash.com/@supergios?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/green-and-brown-roller-coaster-under-blue-sky-during-daytime-M6sDLz3MCmE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](rollercoaster_loop.jpg){fig-alt="An image of rollercoaster going through two loops." fig-align="left" width="6in"}
+
+I wanted to make a quick post about looping through a parameterized report using Quarto and Python because I could not find much information on this topic using Python. When I was creating this, I came across a wonderful video explaining a more in-depth example of looping through a couple of parameters for Quarto documents in Python (video [here](https://www.youtube.com/watch?v=_kjs_u3Ctt4), Quarto document code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/parameterized-report.qmd), for loop code [here](https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/generate_all_reports.py)).
+
+```{r}
+#| eval: true
+#| echo: false
+#| include: false
+
+library(reticulate)
+use_python(here::here("website_venv/bin/python3"))
+# use_virtualenv(here::here("website_venv"))
+```
+
+```{python}
+#| eval: true
+#| echo: true
+
+import pandas as pd
+import numpy as np
+import plotnine as pn
+from matplotlib import rcParams
+from IPython.display import display, Markdown
+from great_tables import GT
+import plotly.express as px
+from palmerpenguins import load_penguins
+```
+
+## Parameter(s)
+
+In order to prepare a Quarto document to have parameters for individual reports, we need to include a `tags` evaluation option as `#\ tags: [parameters]`. I have set up my year parameter for 2007. I usually run the parameterized report to make sure that the report renders correctly. When everything works like it should, I move forward with the for loop to render multiple reports.
+
+```{python}
+#| eval: true
+#| echo: true
+#| tags: [parameters]
+
+year = 2007
+```
+
+```{python}
+#| eval: true
+#| echo: false
+penguins = load_penguins() 
+```
+
+## Exploratory Data Analysis
+
+Below I am doing some basic calculations to have for a visualization and a great tables output table. To render reports based on the year's data, I filtered the data as `penguin` so it stratified the plot and table for each year within each parameterized report.
+
+### Finding Number of Years
+
+```{python}
+#| eval: true
+#| echo: false
+
+penguins['year'].value_counts()
+```
+
+### Filtering by Year
+
+```{python}
+#| eval: true
+#| echo: false
+
+penguin = penguins.loc[penguins['year'] == year]
+
+pen_table = (
+  penguin
+  .groupby(['species', 'island', 'sex'])[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']]
+  .mean()
+  .reset_index()
+)
+
+pen_table = pen_table.round(2)
+
+pen = (pen_table
+       .melt(id_vars = ['species', 'island', 'sex'],
+             value_vars = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g'])
+      )
+```
+
+### Visualization of Species Characteristics
+
+```{python}
+#| eval: true
+#| echo: false
+
+pn.ggplot.show(
+  pn.ggplot(pen, pn.aes('factor(species)', 'value'))
+  + pn.geom_col(pn.aes(fill = 'island'), position = pn.position_dodge())
+  + pn.facet_wrap('variable', scales = 'free')
+  + pn.theme(legend_position = 'bottom')
+)
+```
+
+### Table of Species Characteristics
+
+```{python}
+#| eval: true
+#| echo: false
+
+(
+  GT(pen_table)
+)
+```
+
+## Looping Through Years
+
+To render the report above, we are going to create a python file (`.py`) to house our for loop for the reports. Rather than link to an additional file, I have the code below of what would be on the .py file. The only package we'll need is the `os` package. Since this is a simple example, I'm going to loop through one parameter (year) and since I already went through the palmerpenguins dataset, I know there are three years of data. For this example, I hard coded the years into a list to loop through, but I could have also used `unique()` functions from pandas or numpy to get the unique values for the years, which would be more beneficial if the data would be updated in the future.
+
+The for loop then calls for each value in the `year_list` list. I also included the year in the final html file to make it easier to distinguish which report belongs to what data. Then I like to organize the command argument into the separate components of the quarto command with the name of the parameterized report template first followed by the parameter I'm looping over and then the output file name. This should render three reports, one for each year, with the first name being `penguin_report_2007.html`.
+
+```{python}
+#| eval: false
+#| echo: false
+
+import os
+
+# Define the list of states
+# np.unique(penguins['year'])
+# penguins['year'].unique()
+year_list = [2007, 2008, 2009]
+
+# Loop through each state and render the Quarto document
+for i in year_list:
+    output_file = f'penguin_report_{i}.html'
+    command = (
+        f'quarto render index.qmd '
+        f'-P year:"{i}" '
+        f'--output "{output_file}"'
+    )
+    os.system(command)
+```
