@@ -25,7 +25,7 @@ I wanted to make a quick post about looping through a parameterized report using
 #| include: false
 
 library(reticulate)
-use_python(here::here("do_not_push/website_venv/bin/python3"))
+use_python(here::here("website_venv/bin/python3"))
 # use_virtualenv(here::here("website_venv"))
 ```
 
@@ -130,7 +130,7 @@ The for loop then calls for each value in the `year_list` list. I also included 
 
 ```{python}
 #| eval: false
-#| echo: false
+#| echo: true
 
 import os
 
