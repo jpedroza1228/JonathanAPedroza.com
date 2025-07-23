@@ -25,7 +25,7 @@ I wanted to make a quick post about looping through a parameterized report using
 #| include: false
 
 library(reticulate)
-use_python(here::here("website_venv/bin/python3"))
+use_python(here::here("do_not_push/website_venv/bin/python3"))
 # use_virtualenv(here::here("website_venv"))
 ```
 
@@ -45,7 +45,7 @@ from palmerpenguins import load_penguins
 
 ## Parameter(s)
 
-In order to prepare a Quarto document to have parameters for individual reports, we need to include a `tags` evaluation option as `#\ tags: [parameters]`. I have set up my year parameter for 2007. I usually run the parameterized report to make sure that the report renders correctly. When everything works like it should, I move forward with the for loop to render multiple reports.
+In order to prepare a Quarto document to have parameters for individual reports, we need to include a `tags` evaluation option as `#| tags: [parameters]`. I have set up my year parameter for 2007. I usually run the parameterized report to make sure that the report renders correctly. When everything works like it should, I move forward with the for loop to render multiple reports.
 
 ```{python}
 #| eval: true
