@@ -3,7 +3,7 @@ title: "Data Manipulation in R & Python"
 subtitle: |
   Using dplyr, data.table, pandas, and polars
 image: puzzle.jpg
-categories: [data manipulation, dplyr, pandas, numpy, python, R, data.table, polars]
+categories: [Data Manipulation, dplyr, pandas, numpy, Python, R, data.table, polars, Data Wrangling]
 date: 2024-11-15
 # citation:
   # url: 
@@ -23,8 +23,7 @@ One of my favorite posts is the comparison between data.table and the tidyverse'
 #| include: false
 
 library(reticulate)
-use_python("C:/Users/Jonathan/Documents/github_projects/log-of-jandp/.venv/Scripts/python.exe")
-
+use_python(here::here("website_venv/bin/python3.12"))
 ```
 
 # Packages & Data

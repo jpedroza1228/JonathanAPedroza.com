@@ -3,7 +3,7 @@ title: "Tidy Tuesday Coffee Ratings"
 subtitle: |
   Using TidyModels to Predict Washed/Not Washed (Natural) Coffees. 
 image: raw_coffee.jpg
-categories: [ggplot2, tidymodels, Tidy Tuesday, themis]
+categories: [ggplot2, tidymodels, Tidy Tuesday, themis, Machine Learning]
 date: 2021-05-13
 # citation:
   # url: 

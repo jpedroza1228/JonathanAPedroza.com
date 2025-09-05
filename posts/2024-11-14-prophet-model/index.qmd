@@ -3,7 +3,7 @@ title: "Prophet Model"
 subtitle: |
   Creation of a Prophet model to forecast stock prices.
 image: newspaper_stocks.jpg
-categories: [ggplot2, Forecast, TidyModels, Modeltime, Prophet, R]
+categories: [ggplot2, forecast, tidymodels, modeltime, prophet, R]
 date: 2024-11-14
 # citation:
   # url: 

@@ -3,7 +3,7 @@ title: "Using a Bayesian Network For Machine Learning"
 subtitle: |
   "Predicting the probability of Loan Approval"
 image: yes.jpg
-categories: [bayes-net, bayesian network, machine learning, R]
+categories: [Bayes Net, Bayesian Network, Machine Learning, R, bnlearn]
 date: 2024-11-15
 execute:
   warning: false

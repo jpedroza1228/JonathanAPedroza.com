@@ -3,7 +3,7 @@ title: "Looping Through Parameterized Reports"
 subtitle: |
   With Quarto & Python
 image: rollercoaster_loop.jpg
-categories: [Python, Quarto, Pandas, Plotnine, Great Tables, Plotly]
+categories: [Python, Quarto, pandas, plotnine, great_tables, plotly]
 date: 2024-12-05
 # jupyter: python3
 execute:
@@ -25,7 +25,7 @@ I wanted to make a quick post about looping through a parameterized report using
 #| include: false
 
 library(reticulate)
-use_python(here::here("website_venv/bin/python3"))
+use_python(here::here("website_venv/bin/python3.12"))
 # use_virtualenv(here::here("website_venv"))
 ```
 
