@@ -49,3 +49,6 @@ po/*~
 rsconnect/
 
 /.quarto/
+
+# virtual environment
+website_venv/
