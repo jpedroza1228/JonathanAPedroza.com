@@ -3,7 +3,7 @@ title: "Bayesian Network for US Coffee Tasting Data"
 subtitle: |
   Estimation Using Bnlearn Package
 image: pourover.jpg
-categories: [Bayesian, Bayesian Network, bayes net, R, bnlearn, dag]
+categories: [Bayesian, Bayesian Network, Bayes Net, R, bnlearn, DAG]
 date: 2024-11-11
 # citation:
   # url: 

@@ -1,0 +1,1222 @@
+---
+title: "Bayes Net Pt. 2" 
+subtitle: |
+  Estimation of a Three Latent Attribute Model
+image: whole_spider_web.jpg
+categories: [Bayesian, Inference, Bayesian Network, Bayes Net, R, Stan, rstan, cmdstanr, posterior, bayesplot, ggplot2]
+date: 2025-08-25
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: Bayes-Net-part-2
+  date: 2025-08-25
+---
+
+![Photo by [Nan Zhou](https://unsplash.com/@zzzzzzn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-spider-web-hanging-from-a-tree-in-a-forest-cpmZQRQdk9o?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](whole_spider_web.jpg){fig-alt="An image of a spider web." fig-align="left" width="6in" height="6in"}
+
+This post is an extension from the last post on the types of Bayesian networks that I'll be conducting. See [here]() for the introduction post. The first model I'll be running is a Log-Linear Cognitive Diagnostic Model (LCDM), which is a general purpose model that allows for different probabilities between the latent classes.
+
+```{python}
+#| label: loading in data
+#| eval: true
+#| echo: true
+
+import os
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib
+from cmdstanpy import CmdStanModel
+import arviz as az
+import matplotlib.pyplot as plt
+import plotnine as pn
+# import pickle
+import joblib
+from pyhere import here
+from janitor import clean_names
+
+os.environ['QT_API'] = 'PyQt6'
+
+pd.set_option('display.max_columns', None)
+pd.options.mode.copy_on_write = True
+matplotlib.rcParams.update({'savefig.bbox': 'tight'}) # Keeps plotnine legend from being cut off
+
+# ecpe dataset
+y = pd.read_csv('https://raw.githubusercontent.com/jpedroza1228/projects_portfolio_and_practice/refs/heads/main/projects/dcm/lcdm_py/ecpe_data.csv').clean_names(case_type = 'snake')
+q = pd.read_csv('https://raw.githubusercontent.com/jpedroza1228/projects_portfolio_and_practice/refs/heads/main/projects/dcm/lcdm_py/ecpe_qmatrix.csv').clean_names(case_type = 'snake')
+
+y.columns.tolist()
+q.columns.tolist()
+
+y.columns = y.columns.str.replace('item0', 'item')
+```
+
+First, I'll load in my ECPE dataset and the Q-matrix. I'm also going to remove the leading zeros from items 1 through item 9.
+
+```{python}
+# attribute mastery matrix
+alpha = pd.DataFrame([(x, y, z) for x in np.arange(2) for y in np.arange(2) for z in np.arange(2)])
+alpha = alpha.rename(columns = {0: 'trait1', 1: 'trait2', 2: 'trait3'})
+
+alpha
+```
+
+Similar to the creation of the attribute mastery matrix in R from the last post, I'm also going to create a dataframe with the latent classes the mastery of each attribute.
+
+```{python}
+# stan dictionary data
+stan_dict = {
+  'J': y.shape[0],
+  'I': y.shape[1],
+  'K': q.shape[1],
+  'C': alpha.shape[0],
+  'Y': np.array(y),
+  'Q': np.array(q), 
+  'alpha': np.array(alpha)
+}
+```
+
+Then, similar to the creation of the stan data block in Stan using a list in R, I'll be using a dictionary in Python to house the Stan data section. Here I'm going to take the ecpe dataframe, the Q-matrix, and the attribute mastery profile to prepare the Bayesian Network. I'll get the rows from our ecpe dataframe for the number of students (**J**), the columns from the ecpe dataframe for the number of item (**I**), the columns of the Q-matrix for the latent attributes (**K**), and the rows from the alpha dataframe for the number of latent classes (**C**). Then I'll include the ecpe dataset (**Y**), the Q-matrix (**Q**), and the alpha dataframe (**alpha**) as arrays.
+
+```{stan}
+#| label: "stan lcdm data section"
+#| eval: false
+#| echo: true
+
+data {
+  int<lower=1> J; // number of students
+  int<lower=1> I; // number of items
+  int<lower=1> K; // number of latent attributes
+  int<lower=1> C; // number of latent classes
+  matrix[J, I] Y; // response matrix [student, item]
+  matrix[I, K] Q; // Q matrix [item, attribute]
+  matrix[C, K] alpha; // attribute pattern for each class [class, attribute]
+}
+```
+
+The next section is for the LCDM parameters. 
+
+```{stan}
+#| label: "stan lcdm parameters section"
+#| eval: false
+#| echo: true
+
+parameters {
+  ordered[C] raw_nu_ordered; // strictly increasing latent values to keep order of classes
+  
+  // coefficients for latent variable proficiency
+  
+  //initial proficiency/mastery
+  // real<lower=0, upper=1> lambda10;
+  // real<lower=0, upper=1> lambda11;
+  // real<lower=0, upper=1> lambda20;
+  // real<lower=0, upper=1> lambda21;
+  // real<lower=0, upper=1> lambda30;
+  // real<lower=0, upper=1> lambda31; 
+  // real<lower=0>theta2_b; 
+  // real<lower=0>theta3_b;
+
+  //coefficients for items in pi matrix
+  real item1_0;
+  real item2_0;
+  real item3_0;
+  real item4_0;
+  real item5_0;
+  real item6_0;
+  real item7_0;
+  real item8_0;
+  real item9_0;
+  real item10_0;
+  real item11_0;
+  real item12_0;
+  real item13_0;
+  real item14_0;
+  real item15_0;
+  real item16_0;
+  real item17_0;
+  real item18_0;
+  real item19_0;
+  real item20_0;
+  real item21_0;
+  real item22_0;
+  real item23_0;
+  real item24_0;
+  real item25_0;
+  real item26_0;
+  real item27_0;
+  real item28_0;
+
+  real<lower=0> item1_11;
+  real<lower=0> item1_12;
+  real<lower=0> item2_12;
+  real<lower=0> item3_11;
+  real<lower=0> item3_13;
+  real<lower=0> item4_13;
+  real<lower=0> item5_13;
+  real<lower=0> item6_13;
+  real<lower=0> item7_11;
+  real<lower=0> item7_13;
+  real<lower=0> item8_12;
+  real<lower=0> item9_13;
+  real<lower=0> item10_11;
+  real<lower=0> item11_11;
+  real<lower=0> item11_13;
+  real<lower=0> item12_11;
+  real<lower=0> item12_13;
+  real<lower=0> item13_11;
+  real<lower=0> item14_11;
+  real<lower=0> item15_13;
+  real<lower=0> item16_11;
+  real<lower=0> item16_13;
+  real<lower=0> item17_12;
+  real<lower=0> item17_13;
+  real<lower=0> item18_13;
+  real<lower=0> item19_13;
+  real<lower=0> item20_11;
+  real<lower=0> item20_13;
+  real<lower=0> item21_11;
+  real<lower=0> item21_13;
+  real<lower=0> item22_13;
+  real<lower=0> item23_12;
+  real<lower=0> item24_12;
+  real<lower=0> item25_11;
+  real<lower=0> item26_13;
+  real<lower=0> item27_11;
+  real<lower=0> item28_13;
+
+  real<lower=-1 * min([item1_11, item1_12])> item1_212;
+  real<lower=-1 * min([item3_11, item3_13])> item3_213;
+  real<lower=-1 * min([item7_11, item7_13])> item7_213;
+  real<lower=-1 * min([item11_11, item11_13])> item11_213;
+  real<lower=-1 * min([item12_11, item12_13])> item12_213;
+  real<lower=-1 * min([item16_11, item16_13])> item16_213;
+  real<lower=-1 * min([item17_12, item17_13])> item17_223;
+  real<lower=-1 * min([item20_11, item20_13])> item20_213;
+  real<lower=-1 * min([item21_11, item21_13])> item21_213;
+}
+```
+
+```{stan}
+#| label: 'stan transformed parameters section'
+#| echo: true
+#| eval: false
+
+transformed parameters{
+  simplex[C] nu; // probability of class membership
+  vector[C] theta1;
+  vector[C] theta2;
+  vector[C] theta3;
+  matrix[I, C] pi;
+  
+  nu = softmax(raw_nu_ordered); // transforms ordered vector into simplex
+  // nu = softmax(raw_nu_ordered - max(raw_nu_ordered));
+  // nu = raw_nu_ordered/sum(raw_nu_ordered);
+
+  vector[C] log_nu = log(nu);
+      
+  pi[1,1] = inv_logit(item1_0);
+  pi[2,1] = inv_logit(item2_0);
+  pi[3,1] = inv_logit(item3_0);
+  pi[4,1] = inv_logit(item4_0);
+  pi[5,1] = inv_logit(item5_0);
+  pi[6,1] = inv_logit(item6_0);
+  pi[7,1] = inv_logit(item7_0);
+  pi[8,1] = inv_logit(item8_0);
+  pi[9,1] = inv_logit(item9_0);
+  pi[10,1] = inv_logit(item10_0);
+  pi[11,1] = inv_logit(item11_0);
+  pi[12,1] = inv_logit(item12_0);
+  pi[13,1] = inv_logit(item13_0);
+  pi[14,1] = inv_logit(item14_0);
+  pi[15,1] = inv_logit(item15_0);
+  pi[16,1] = inv_logit(item16_0);
+  pi[17,1] = inv_logit(item17_0);
+  pi[18,1] = inv_logit(item18_0);
+  pi[19,1] = inv_logit(item19_0);
+  pi[20,1] = inv_logit(item20_0);
+  pi[21,1] = inv_logit(item21_0);
+  pi[22,1] = inv_logit(item22_0);
+  pi[23,1] = inv_logit(item23_0);
+  pi[24,1] = inv_logit(item24_0);
+  pi[25,1] = inv_logit(item25_0);
+  pi[26,1] = inv_logit(item26_0);
+  pi[27,1] = inv_logit(item27_0);
+  pi[28,1] = inv_logit(item28_0);
+
+  pi[1,2] = inv_logit(item1_0 + item1_11);
+  pi[2,2] = inv_logit(item2_0);
+  pi[3,2] = inv_logit(item3_0 + item3_11);
+  pi[4,2] = inv_logit(item4_0);
+  pi[5,2] = inv_logit(item5_0);
+  pi[6,2] = inv_logit(item6_0);
+  pi[7,2] = inv_logit(item7_0 + item7_11);
+  pi[8,2] = inv_logit(item8_0);
+  pi[9,2] = inv_logit(item9_0);
+  pi[10,2] = inv_logit(item10_0 + item10_11);
+  pi[11,2] = inv_logit(item11_0 + item11_11);
+  pi[12,2] = inv_logit(item12_0 + item12_11);
+  pi[13,2] = inv_logit(item13_0 + item13_11);
+  pi[14,2] = inv_logit(item14_0 + item14_11);
+  pi[15,2] = inv_logit(item15_0);
+  pi[16,2] = inv_logit(item16_0 + item16_11);
+  pi[17,2] = inv_logit(item17_0);
+  pi[18,2] = inv_logit(item18_0);
+  pi[19,2] = inv_logit(item19_0);
+  pi[20,2] = inv_logit(item20_0 + item20_11);
+  pi[21,2] = inv_logit(item21_0 + item21_11);
+  pi[22,2] = inv_logit(item22_0);
+  pi[23,2] = inv_logit(item23_0);
+  pi[24,2] = inv_logit(item24_0);
+  pi[25,2] = inv_logit(item25_0 + item25_11);
+  pi[26,2] = inv_logit(item26_0);
+  pi[27,2] = inv_logit(item27_0 + item27_11);
+  pi[28,2] = inv_logit(item28_0);
+
+  pi[1,3] = inv_logit(item1_0 + item1_12);
+  pi[2,3] = inv_logit(item2_0 + item2_12);
+  pi[3,3] = inv_logit(item3_0);
+  pi[4,3] = inv_logit(item4_0);
+  pi[5,3] = inv_logit(item5_0);
+  pi[6,3] = inv_logit(item6_0);
+  pi[7,3] = inv_logit(item7_0);
+  pi[8,3] = inv_logit(item8_0 + item8_12);
+  pi[9,3] = inv_logit(item9_0);
+  pi[10,3] = inv_logit(item10_0);
+  pi[11,3] = inv_logit(item11_0);
+  pi[12,3] = inv_logit(item12_0);
+  pi[13,3] = inv_logit(item13_0);
+  pi[14,3] = inv_logit(item14_0);
+  pi[15,3] = inv_logit(item15_0);
+  pi[16,3] = inv_logit(item16_0);
+  pi[17,3] = inv_logit(item17_0 + item17_12);
+  pi[18,3] = inv_logit(item18_0);
+  pi[19,3] = inv_logit(item19_0);
+  pi[20,3] = inv_logit(item20_0);
+  pi[21,3] = inv_logit(item21_0);
+  pi[22,3] = inv_logit(item22_0);
+  pi[23,3] = inv_logit(item23_0 + item23_12);
+  pi[24,3] = inv_logit(item24_0 + item24_12);
+  pi[25,3] = inv_logit(item25_0);
+  pi[26,3] = inv_logit(item26_0);
+  pi[27,3] = inv_logit(item27_0);
+  pi[28,3] = inv_logit(item28_0);
+
+  pi[1,4] = inv_logit(item1_0 + item1_11 + item1_12 + item1_212);
+  pi[2,4] = inv_logit(item2_0 + item2_12);
+  pi[3,4] = inv_logit(item3_0 + item3_11);
+  pi[4,4] = inv_logit(item4_0);
+  pi[5,4] = inv_logit(item5_0);
+  pi[6,4] = inv_logit(item6_0);
+  pi[7,4] = inv_logit(item7_0 + item7_11);
+  pi[8,4] = inv_logit(item8_0 + item8_12);
+  pi[9,4] = inv_logit(item9_0);
+  pi[10,4] = inv_logit(item10_0 + item10_11);
+  pi[11,4] = inv_logit(item11_0 + item11_11);
+  pi[12,4] = inv_logit(item12_0 + item12_11);
+  pi[13,4] = inv_logit(item13_0 + item13_11);
+  pi[14,4] = inv_logit(item14_0 + item14_11);
+  pi[15,4] = inv_logit(item15_0);
+  pi[16,4] = inv_logit(item16_0 + item16_11);
+  pi[17,4] = inv_logit(item17_0 + item17_12);
+  pi[18,4] = inv_logit(item18_0);
+  pi[19,4] = inv_logit(item19_0);
+  pi[20,4] = inv_logit(item20_0 + item20_11);
+  pi[21,4] = inv_logit(item21_0 + item21_11);
+  pi[22,4] = inv_logit(item22_0);
+  pi[23,4] = inv_logit(item23_0 + item23_12);
+  pi[24,4] = inv_logit(item24_0 + item24_12);
+  pi[25,4] = inv_logit(item25_0 + item25_11);
+  pi[26,4] = inv_logit(item26_0);
+  pi[27,4] = inv_logit(item27_0 + item27_11);
+  pi[28,4] = inv_logit(item28_0);
+
+  pi[1,5] = inv_logit(item1_0);
+  pi[2,5] = inv_logit(item2_0);
+  pi[3,5] = inv_logit(item3_0 + item3_13);
+  pi[4,5] = inv_logit(item4_0 + item4_13);
+  pi[5,5] = inv_logit(item5_0 + item5_13);
+  pi[6,5] = inv_logit(item6_0 + item6_13);
+  pi[7,5] = inv_logit(item7_0 + item7_13);
+  pi[8,5] = inv_logit(item8_0);
+  pi[9,5] = inv_logit(item9_0 + item9_13);
+  pi[10,5] = inv_logit(item10_0);
+  pi[11,5] = inv_logit(item11_0 + item11_13);
+  pi[12,5] = inv_logit(item12_0 + item12_13);
+  pi[13,5] = inv_logit(item13_0);
+  pi[14,5] = inv_logit(item14_0);
+  pi[15,5] = inv_logit(item15_0 + item15_13);
+  pi[16,5] = inv_logit(item16_0 + item16_13);
+  pi[17,5] = inv_logit(item17_0 + item17_13);
+  pi[18,5] = inv_logit(item18_0 + item18_13);
+  pi[19,5] = inv_logit(item19_0 + item19_13);
+  pi[20,5] = inv_logit(item20_0 + item20_13);
+  pi[21,5] = inv_logit(item21_0 + item21_13);
+  pi[22,5] = inv_logit(item22_0 + item22_13);
+  pi[23,5] = inv_logit(item23_0);
+  pi[24,5] = inv_logit(item24_0);
+  pi[25,5] = inv_logit(item25_0);
+  pi[26,5] = inv_logit(item26_0 + item26_13);
+  pi[27,5] = inv_logit(item27_0);
+  pi[28,5] = inv_logit(item28_0 + item28_13);
+
+  pi[1,6] = inv_logit(item1_0 + item1_11);
+  pi[2,6] = inv_logit(item2_0);
+  pi[3,6] = inv_logit(item3_0 + item3_11 + item3_13 + item3_213);
+  pi[4,6] = inv_logit(item4_0 + item4_13);
+  pi[5,6] = inv_logit(item5_0 + item5_13);
+  pi[6,6] = inv_logit(item6_0 + item6_13);
+  pi[7,6] = inv_logit(item7_0 + item7_11 + item7_13 + item7_213);
+  pi[8,6] = inv_logit(item8_0);
+  pi[9,6] = inv_logit(item9_0 + item9_13);
+  pi[10,6] = inv_logit(item10_0 + item10_11);
+  pi[11,6] = inv_logit(item11_0 + item11_11 + item11_13 + item11_213);
+  pi[12,6] = inv_logit(item12_0 + item12_11 + item12_13 + item12_213);
+  pi[13,6] = inv_logit(item13_0 + item13_11);
+  pi[14,6] = inv_logit(item14_0 + item14_11);
+  pi[15,6] = inv_logit(item15_0 + item15_13);
+  pi[16,6] = inv_logit(item16_0 + item16_11 + item16_13 + item16_213);
+  pi[17,6] = inv_logit(item17_0 + item17_13);
+  pi[18,6] = inv_logit(item18_0 + item18_13);
+  pi[19,6] = inv_logit(item19_0 + item19_13);
+  pi[20,6] = inv_logit(item20_0 + item20_11 + item20_13 + item20_213);
+  pi[21,6] = inv_logit(item21_0 + item21_11 + item21_13 + item21_213);
+  pi[22,6] = inv_logit(item22_0 + item22_13);
+  pi[23,6] = inv_logit(item23_0);
+  pi[24,6] = inv_logit(item24_0);
+  pi[25,6] = inv_logit(item25_0 + item25_11);
+  pi[26,6] = inv_logit(item26_0 + item26_13);
+  pi[27,6] = inv_logit(item27_0 + item27_11);
+  pi[28,6] = inv_logit(item28_0 + item28_13);
+
+  pi[1,7] = inv_logit(item1_0 + item1_12);
+  pi[2,7] = inv_logit(item2_0 + item2_12);
+  pi[3,7] = inv_logit(item3_0 + item3_13);
+  pi[4,7] = inv_logit(item4_0 + item4_13);
+  pi[5,7] = inv_logit(item5_0 + item5_13);
+  pi[6,7] = inv_logit(item6_0 + item6_13);
+  pi[7,7] = inv_logit(item7_0 + item7_13);
+  pi[8,7] = inv_logit(item8_0 + item8_12);
+  pi[9,7] = inv_logit(item9_0 + item9_13);
+  pi[10,7] = inv_logit(item10_0);
+  pi[11,7] = inv_logit(item11_0 + item11_13);
+  pi[12,7] = inv_logit(item12_0 + item12_13);
+  pi[13,7] = inv_logit(item13_0);
+  pi[14,7] = inv_logit(item14_0);
+  pi[15,7] = inv_logit(item15_0 + item15_13);
+  pi[16,7] = inv_logit(item16_0 + item16_13);
+  pi[17,7] = inv_logit(item17_0 + item17_12 + item17_13 + item17_223);
+  pi[18,7] = inv_logit(item18_0 + item18_13);
+  pi[19,7] = inv_logit(item19_0 + item19_13);
+  pi[20,7] = inv_logit(item20_0 + item20_13);
+  pi[21,7] = inv_logit(item21_0 + item21_13);
+  pi[22,7] = inv_logit(item22_0 + item22_13);
+  pi[23,7] = inv_logit(item23_0 + item23_12);
+  pi[24,7] = inv_logit(item24_0 + item24_12);
+  pi[25,7] = inv_logit(item25_0);
+  pi[26,7] = inv_logit(item26_0 + item26_13);
+  pi[27,7] = inv_logit(item27_0);
+  pi[28,7] = inv_logit(item28_0 + item28_13);
+
+  pi[1,8] = inv_logit(item1_0 + item1_11 + item1_12 + item1_212);
+  pi[2,8] = inv_logit(item2_0 + item2_12);
+  pi[3,8] = inv_logit(item3_0 + item3_11 + item3_13 + item3_213); 
+  pi[4,8] = inv_logit(item4_0 + item4_13);
+  pi[5,8] = inv_logit(item5_0 + item5_13);
+  pi[6,8] = inv_logit(item6_0 + item6_13);
+  pi[7,8] = inv_logit(item7_0 + item7_11 + item7_13 + item7_213);
+  pi[8,8] = inv_logit(item8_0 + item8_12);
+  pi[9,8] = inv_logit(item9_0 + item9_13);
+  pi[10,8] = inv_logit(item10_0 + item10_11);
+  pi[11,8] = inv_logit(item11_0 + item11_11 + item11_13 + item11_213);
+  pi[12,8] = inv_logit(item12_0 + item12_11 + item12_13 + item12_213);
+  pi[13,8] = inv_logit(item13_0 + item13_11);
+  pi[14,8] = inv_logit(item14_0 + item14_11);
+  pi[15,8] = inv_logit(item15_0 + item15_13);
+  pi[16,8] = inv_logit(item16_0 + item16_11 + item16_13 + item16_213);
+  pi[17,8] = inv_logit(item17_0 + item17_12 + item17_13 + item17_223);
+  pi[18,8] = inv_logit(item18_0 + item18_13);
+  pi[19,8] = inv_logit(item19_0 + item19_13);
+  pi[20,8] = inv_logit(item20_0 + item20_11 + item20_13 + item20_213);
+  pi[21,8] = inv_logit(item21_0 + item21_11 + item21_13 + item21_213);
+  pi[22,8] = inv_logit(item22_0 + item22_13);
+  pi[23,8] = inv_logit(item23_0 + item23_12);
+  pi[24,8] = inv_logit(item24_0 + item24_12);
+  pi[25,8] = inv_logit(item25_0 + item25_11);
+  pi[26,8] = inv_logit(item26_0 + item26_13);
+  pi[27,8] = inv_logit(item27_0 + item27_11);
+  pi[28,8] = inv_logit(item28_0 + item28_13);    
+}
+```
+
+```{stan}
+#| label: 'stan model section'
+#| eval: false
+#| echo: true
+
+model {
+  array[C] real ps;
+  array[I] real log_item;
+  row_vector[C] log_lik;
+
+  //priors
+  raw_nu_ordered ~ normal(0, 1);
+  // priors for latent variable proficiency
+  // lambda10 ~ beta(5,20);
+  // lambda11 ~ beta(20,5);
+  // lambda20 ~ beta(5,20);
+  // lambda21 ~ beta(20,5);
+  // lambda30 ~ beta(5,20);
+  // lambda31 ~ beta(20,5);
+  // theta2_b ~ normal(0,2);
+  // theta3_b ~ normal(0,2);
+
+  //priors for associations between latent variables and items
+  item1_0 ~ normal(0, 2);
+  item2_0 ~ normal(0, 2);
+  item3_0 ~ normal(0, 2);
+  item4_0 ~ normal(0, 2);
+  item5_0 ~ normal(0, 2);
+  item6_0 ~ normal(0, 2);
+  item7_0 ~ normal(0, 2);
+  item8_0 ~ normal(0, 2);
+  item9_0 ~ normal(0, 2);
+  item10_0 ~ normal(0, 2);
+  item11_0 ~ normal(0, 2);
+  item12_0 ~ normal(0, 2);
+  item13_0 ~ normal(0, 2);
+  item14_0 ~ normal(0, 2);
+  item15_0 ~ normal(0, 2);
+  item16_0 ~ normal(0, 2);
+  item17_0 ~ normal(0, 2);
+  item18_0 ~ normal(0, 2);
+  item19_0 ~ normal(0, 2);
+  item20_0 ~ normal(0, 2);
+  item21_0 ~ normal(0, 2);
+  item22_0 ~ normal(0, 2);
+  item23_0 ~ normal(0, 2);
+  item24_0 ~ normal(0, 2);
+  item25_0 ~ normal(0, 2);
+  item26_0 ~ normal(0, 2);
+  item27_0 ~ normal(0, 2);
+  item28_0 ~ normal(0, 2);
+  
+  item1_11 ~ normal(0, 2);
+  item1_12 ~ normal(0, 2);
+  item2_12 ~ normal(0, 2);
+  item3_11 ~ normal(0, 2);
+  item3_13 ~ normal(0, 2);
+  item4_13 ~ normal(0, 2);
+  item5_13 ~ normal(0, 2);
+  item6_13 ~ normal(0, 2);
+  item7_11 ~ normal(0, 2);
+  item7_13 ~ normal(0, 2);
+  item8_12 ~ normal(0, 2);
+  item9_13 ~ normal(0, 2);
+  item10_11 ~ normal(0, 2);
+  item11_11 ~ normal(0, 2);
+  item11_13 ~ normal(0, 2);
+  item12_11 ~ normal(0, 2);
+  item12_13 ~ normal(0, 2);
+  item13_11 ~ normal(0, 2);
+  item14_11 ~ normal(0, 2);
+  item15_13 ~ normal(0, 2);
+  item16_11 ~ normal(0, 2);
+  item16_13 ~ normal(0, 2);
+  item17_12 ~ normal(0, 2);
+  item17_13 ~ normal(0, 2);
+  item18_13 ~ normal(0, 2);
+  item19_13 ~ normal(0, 2);
+  item20_11 ~ normal(0, 2);
+  item20_13 ~ normal(0, 2);
+  item21_11 ~ normal(0, 2);
+  item21_13 ~ normal(0, 2);
+  item22_13 ~ normal(0, 2);
+  item23_12 ~ normal(0, 2);
+  item24_12 ~ normal(0, 2);
+  item25_11 ~ normal(0, 2);
+  item26_13 ~ normal(0, 2);
+  item27_11 ~ normal(0, 2);
+  item28_13 ~ normal(0, 2);
+  
+  item1_212 ~ normal(0, 2)T[fmax(-item1_11, -item1_12), ];
+  item3_213 ~ normal(0, 2)T[fmax(-item3_11, -item3_13), ];
+  item7_213 ~ normal(0, 2)T[fmax(-item7_11, -item7_13), ];
+  item11_213 ~ normal(0, 2)T[fmax(-item11_11, -item11_13), ];
+  item12_213 ~ normal(0, 2)T[fmax(-item12_11, -item12_13), ];
+  item16_213 ~ normal(0, 2)T[fmax(-item16_11, -item16_13), ];
+  item17_223 ~ normal(0, 2)T[fmax(-item17_12, -item17_13), ];
+  item20_213 ~ normal(0, 2)T[fmax(-item20_11, -item20_13), ];
+  item21_213 ~ normal(0, 2)T[fmax(-item21_11, -item21_13), ];
+
+
+  for (j in 1:J){
+    for (c in 1:C){
+      for (i in 1:I){
+        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
+        log_item[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+      }
+      ps[c] = log_nu[c] + sum(log_item);  
+    }
+    target += log_sum_exp(ps);
+  }
+}
+```
+
+```{stan}
+#| label: "stan generated quantities section"
+#| eval: false
+#| echo: true
+
+generated quantities {
+  matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c 
+  matrix[J,K] prob_resp_attr;       // posterior probabilities of respondent j being a master of attribute k 
+  array[I] real log_item;
+  row_vector[C] prob_joint;
+  array[C] real prob_attr_class;
+  matrix[J,I] Y_rep;
+
+  for (j in 1:J){
+    for (c in 1:C){
+      for (i in 1:I){
+        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
+        log_item[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+      }
+      prob_joint[c] = exp(log_nu[c]) * exp(sum(log_item));
+    }
+    prob_resp_class[j] = prob_joint/sum(prob_joint);
+  }
+  for (j in 1:J){
+    for (k in 1:K){
+      for (c in 1:C){
+        prob_attr_class[c] = prob_resp_class[j,c] * alpha[c,k];
+      }     
+      prob_resp_attr[j,k] = sum(prob_attr_class);
+    }
+  }
+  
+  for (j in 1:J) {
+    int z = categorical_rng(nu);  // sample class for person j
+    for (i in 1:I) {
+      Y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+    }
+  }
+}
+```
+
+```{python}
+# LCDM
+stanfile = os.path.join(here('path-to-your-stan-model'))
+stan_model = CmdStanModel(stan_file = stanfile, cpp_options = {'STAN_THREADS': 'TRUE'})
+
+np.random.seed(81425)
+fit = stan_model.sample(data = stan_dict, show_console = True, chains = 4)
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+set.seed(12345)
+mod <- cmdstan_model(here::here("posts/2024-11-15-bayes-net-part2-estimation/simple_bayes_net.stan"))
+
+fit <- mod$sample(
+  data = stan_file,
+  seed = 12345,
+  iter_warmup = 2000,
+  iter_sampling = 2000
+)
+
+# fit$save_object("simple_bayes_net.RDS")
+```
+
+This next part will be different depending on whether or not you are using `RStan` or like in this case `cmdstanR`. If you look up the RStan documentation, I am sure you can find a beginner-friendly tutorial that shows how you would conduct the analysis. For `cmdstanR`, you call on your Stan file. Below is the Stan code or if you'd like to see it side-by-side, the Stan file can be found [here](https://raw.githubusercontent.com/jpedroza1228/log-of-jandp/main/posts/2024-07-10-bayes-net-part2-estimation/simple_bayes_net.stan). I have kept the defaults and I always include the arguments for the number of warmup iterations and the sampling iterations, just in case I want to make changes to the number of iterations.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+data {
+  int<lower=1> J; // number of examinees
+  int<lower=1> I; // number of items
+  int<lower=1> K; // number of latent variables
+  int<lower=1> C; // number of classes
+  matrix[J, I] X; // response matrix
+  matrix[I, K] Q; // Q matrix
+  matrix[C, K] alpha; // attribute profile matrix
+}
+parameters {
+  simplex[C] nu; // class probabilities
+  vector<lower=0, upper=1>[I] false_pos;
+  vector<lower=0, upper=1>[I] true_pos;
+  real<lower=0, upper=1> lambda1;
+  real<lower=0, upper=1> lambda20;
+  real<lower=0, upper=1> lambda21;
+  real<lower=0, upper=1> lambda30;
+  real<lower=0, upper=1> lambda31;
+}
+transformed parameters{
+  vector[C] log_nu;
+  vector[2] theta_log1;
+  vector[2] theta_log2;
+  vector[2] theta_log3;
+  vector[C] theta1;
+  vector[C] theta2;
+  vector[C] theta3;
+  matrix[I, C] delta;
+
+  log_nu = log(nu);
+
+  theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1);
+  theta_log1[2] = bernoulli_lpmf(1 | lambda1);
+  
+  theta_log2[1] = bernoulli_lpmf(1 | lambda20);
+  theta_log2[2] = bernoulli_lpmf(1 | lambda21);
+  
+  theta_log3[1] = bernoulli_lpmf(1 | lambda30);
+  theta_log3[2] = bernoulli_lpmf(1 | lambda31);
+  
+  for (c in 1 : C) {
+    if (alpha[c, 1] > 0) {
+      theta1[c] = theta_log1[2];
+    } else {
+      theta1[c] = theta_log1[1];
+    }
+    if (alpha[c, 2] > 0) {
+      theta2[c] = theta_log2[2];
+    } else {
+      theta2[c] = theta_log2[1];
+    }
+    if (alpha[c, 3] > 0) {
+      theta3[c] = theta_log3[2];
+    } else {
+      theta3[c] = theta_log3[1];
+    }
+  }
+
+  for(c in 1:C){
+    for(i in 1:I){
+      delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2])
+                      * pow(exp(theta3[c]), Q[i, 3]);
+    }
+  }
+}
+model {
+  real pie;
+  vector[I] log_item;
+  vector[C] log_lik;
+  
+  // Priors
+  lambda1 ~ beta(2, 1);
+  lambda20 ~ beta(1, 2);
+  lambda21 ~ beta(2, 1);
+  lambda30 ~ beta(1, 2);
+  lambda31 ~ beta(2, 1);
+  
+  for (i in 1 : I) {
+    false_pos[i] ~ beta(1, 2);
+    true_pos[i] ~ beta(2, 1);
+  }
+  
+  //Likelihood
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+      log_lik[c] = log_nu[c] + sum(log_item);
+    }
+    target += log_sum_exp(log_lik);
+  }
+}
+generated quantities {
+  real pie;
+  vector[I] log_item;
+  matrix[J, C] prob_resp_class; // posterior probabilities of respondent j being in latent class c 
+  matrix[J, K] prob_resp_attr; // posterior probabilities of respondent j being a master of attribute k 
+  row_vector[C] prob_joint;
+  vector[C] prob_attr_class;
+  
+  matrix[J, I] x_rep;
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {        
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+        }
+      prob_joint[c] = nu[c] * exp(sum(log_item)); //here is where the problem starts with trying to correctly classify students with proficiency mastery
+    }
+    prob_resp_class[j] = prob_joint / sum(prob_joint);
+  }
+  
+  for (j in 1 : J) {
+    for (k in 1 : K) {
+      for (c in 1 : C) {
+        // Calculate the probability of mastering attribute k given class c
+        prob_attr_class[c] = prob_resp_class[j, c] * alpha[c, k];
+      }
+      // Sum the probabilities to get the posterior probability of mastering attribute k
+      prob_resp_attr[j, k] = sum(prob_attr_class);
+    }
+  }
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        x_rep[j, i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+    }
+  }
+}
+"
+```
+
+Looking over the Stan code, there is a lot here. I'll break down each section, but will not be spending an extensive amount of time for each.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+data {
+  int<lower=1> J; // number of examinees
+  int<lower=1> I; // number of items
+  int<lower=1> K; // number of latent variables
+  int<lower=1> C; // number of classes
+  matrix[J, I] X; // response matrix
+  matrix[I, K] Q; // Q matrix
+  matrix[C, K] alpha; // attribute profile matrix
+}
+"
+```
+
+The data section of stan code is including what you called the components of the `stan_file`list object. If you deviate from what you named the components in your list, then your model will show an error. While not entirely necessary, you may want to put constraints on these values. For instance, I know that I have more than 1 student, item, latent variable, and class, so I will put a constraint that the lowest possible value is 1.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+parameters {
+  simplex[C] nu; // class probabilities
+  vector<lower=0, upper=1>[I] false_pos;
+  vector<lower=0, upper=1>[I] true_pos;
+  real<lower=0, upper=1> lambda1;
+  real<lower=0, upper=1> lambda20;
+  real<lower=0, upper=1> lambda21;
+  real<lower=0, upper=1> lambda30;
+  real<lower=0, upper=1> lambda31;
+}
+"
+```
+
+The parameters section includes any parameters that are being included in your model. For instance, if creating a Bayesian linear regression, you would include the alpha and beta parameters in this section. For these models, I have the class probabilities for each latent class (to read more about the simplex function see [here](https://mc-stan.org/docs/reference-manual/transforms.html#simplex-transform.section)). Then I will have the probabilities of a student being either a true or false positive mastery case for the latent classes. These are vectors due to there being a true and false positive parameter for each item. The last parameters are the lambda parameters, which are the probabilities for mastery of the three latent attributes. These often require expert domain knowledge to specify informative priors.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+transformed parameters{
+  vector[C] log_nu;
+  vector[2] theta_log1;
+  vector[2] theta_log2;
+  vector[2] theta_log3;
+  vector[C] theta1;
+  vector[C] theta2;
+  vector[C] theta3;
+  matrix[I, C] delta;
+
+  log_nu = log(nu);
+
+  theta_log1[1] = bernoulli_lpmf(1 | 1 - lambda1);
+  theta_log1[2] = bernoulli_lpmf(1 | lambda1);
+  
+  theta_log2[1] = bernoulli_lpmf(1 | lambda20);
+  theta_log2[2] = bernoulli_lpmf(1 | lambda21);
+  
+  theta_log3[1] = bernoulli_lpmf(1 | lambda30);
+  theta_log3[2] = bernoulli_lpmf(1 | lambda31);
+  
+  for (c in 1 : C) {
+    if (alpha[c, 1] > 0) {
+      theta1[c] = theta_log1[2];
+    } else {
+      theta1[c] = theta_log1[1];
+    }
+    if (alpha[c, 2] > 0) {
+      theta2[c] = theta_log2[2];
+    } else {
+      theta2[c] = theta_log2[1];
+    }
+    if (alpha[c, 3] > 0) {
+      theta3[c] = theta_log3[2];
+    } else {
+      theta3[c] = theta_log3[1];
+    }
+  }
+
+  for(c in 1:C){
+    for(i in 1:I){
+      delta[i, c] = pow(exp(theta1[c]), Q[i, 1]) * pow(exp(theta2[c]), Q[i, 2])
+                      * pow(exp(theta3[c]), Q[i, 3]);
+    }
+  }
+}
+"
+```
+
+While this section is optional, I like to include it because I use this section to do many of my calculations. For instance, in this section I like to use the prior lambda values to get the log probabilities of `theta_log` values, which are the log probabilities based on the level of mastery from the `lambda` values. I looped through the latent classes so when a latent class' value is 1, then it takes the greater log probability, and when the value is 0, then it takes the lower log probability. I also did my `delta` calculations in this section. The `delta` calculation takes `theta` values based on the latent classes values and it uses the Q-matrix for each item. Then by multiplying the `theta` values raised to the power of the Q-matrix gets the probability of mastery for each item within each latent class. This value indicates whether a given student will have mastery over all of the latent attributes.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+model {
+  real pie;
+  vector[I] log_item;
+  vector[C] log_lik;
+  
+  // Priors
+  lambda1 ~ beta(2, 1);
+  lambda20 ~ beta(1, 2);
+  lambda21 ~ beta(2, 1);
+  lambda30 ~ beta(1, 2);
+  lambda31 ~ beta(2, 1);
+  
+  for (i in 1 : I) {
+    false_pos[i] ~ beta(1, 2);
+    true_pos[i] ~ beta(2, 1);
+  }
+  
+  //Likelihood
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+      log_lik[c] = log_nu[c] + sum(log_item);
+    }
+    target += log_sum_exp(log_lik);
+  }
+}
+"
+```
+
+For the model section, which is necessary, I always start with declaring any new variables, followed by priors for my `lambda` values and the true and false positive probabilities for each item. Lastly, this section is always where you will do your calculations for each item and for each latent class. Finally, the target calculation at the end is for the target log density.
+
+```{r}
+#| eval: false
+#| echo: true
+
+"
+generated quantities {
+  real pie;
+  vector[I] log_item;
+  matrix[J, C] prob_resp_class; // posterior probabilities of respondent j being in latent class c 
+  matrix[J, K] prob_resp_attr; // posterior probabilities of respondent j being a master of attribute k 
+  row_vector[C] prob_joint;
+  vector[C] prob_attr_class;
+  
+  matrix[J, I] x_rep;
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {        
+        pie = pow(true_pos[i], delta[i, c]) * pow(false_pos[i], (1 - delta[i, c]));
+        log_item[i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+        }
+      prob_joint[c] = nu[c] * exp(sum(log_item)); 
+    }
+    prob_resp_class[j] = prob_joint / sum(prob_joint);
+  }
+  
+  for (j in 1 : J) {
+    for (k in 1 : K) {
+      for (c in 1 : C) {
+        // Calculate the probability of mastering attribute k given class c
+        prob_attr_class[c] = prob_resp_class[j, c] * alpha[c, k];
+      }
+      // Sum the probabilities to get the posterior probability of mastering attribute k
+      prob_resp_attr[j, k] = sum(prob_attr_class);
+    }
+  }
+  
+  for (j in 1 : J) {
+    for (c in 1 : C) {
+      for (i in 1 : I) {
+        x_rep[j, i] = X[j, i] * log(pie) + (1 - X[j, i]) * log(1 - pie);
+      }
+    }
+  }
+}
+"
+```
+
+The last section, the generated quantities, is "generate additional quantities of interest from a fitted model without re-running the sampler" ([Stan](https://mc-stan.org/docs/cmdstan-guide/generate_quantities_config.html)). For this series, I am using this section to calculate posterior probabilities, such as the probability of a student being in a specific latent class and the probability that students have mastered the attributes.
+
+```{r}
+fit <- read_rds(here::here("posts/2024-11-15-bayes-net-part2-estimation/simple_bayes_net.RDS"))
+
+fit$diagnostic_summary()
+
+bn_converge <- summarize_draws(fit$draws(), default_convergence_measures())
+bn_measure <- summarize_draws(fit$draws(), default_summary_measures())
+
+bn_converge |> arrange(desc(rhat)) |> head()
+bn_measure |> mutate(across(-variable, ~round(.x, 3))) |> react_table()
+```
+
+I also included the summarized convergence measures and summary statistics for all of the draws. I also will create an interactive table to look over the posterior draws of each parameter.
+
+```{r}
+bn_measure |> 
+  mutate(across(-variable, ~round(.x, 3))) |> 
+  filter(str_detect(variable, "prob_resp_attr")) |>
+  react_table()
+```
+
+I decided to filter in on the probabilities for students to have mastery over the attributes. The first index in the square brackets indicates the student and then the second index value indicates the three attributes. Obviously for something more thought out this would line up for meaningful attributes, but for this example, the values align with arbitrary values.
+
+```{r}
+y_rep <- fit$draws("x_rep") |> as_draws_matrix()
+stu_resp_attr <- fit$draws("prob_resp_attr") |> as_draws_matrix()
+```
+
+I decided to extract the replicated values for the items and the probabilities of each student's mastery of each of the three latent attributes.
+
+```{r}
+#| fig.height: 8
+#| fig.width: 8
+
+mcmc_trace(exp(y_rep[,seq(1, 450, 30)])) +
+  scale_y_continuous(limits = c(0, 1))
+
+y |> react_table()
+```
+
+Next, I decided to compare the probabilities of each item for one student by having a sequence going from 1 to 450 (end of the columns in the matrix) to get the draws for the first student. As we can see from the traceplots for the first student and the original data, the original responses and the probabilities with a probability threshold of 0.5 match one another.
+
+```{r}
+#| fig.height: 8
+#| fig.width: 8
+
+mcmc_intervals(exp(y_rep[,seq(1, 450, 30)]))
+
+mcmc_areas(exp(y_rep[,seq(1, 450, 30)]))
+
+ppc_intervals(
+  y = y |> pull(y1) |> as.vector(),
+  yrep = exp(y_rep[, 1:30])
+) +
+geom_hline(yintercept = .5, color = "black", linetype = 2) +
+coord_flip()
+```
+
+I enjoy using traceplots just to see how the iterations are doing and that they look like radio static. If we do not wish to use traceplots, we can also use intervals or areas. Both of which show the credible intervals of our probabilities. Lastly, there is the option to use the posterior predictive check intervals where we can compare the probabilities to the actual responses in the same plot. At least for the first student we can see that the replicated data matches the actual data well.
+
+```{r}
+#| fig.height: 8
+#| fig.width: 8
+#| eval: false
+#| echo: false
+
+library(loo)
+
+loo(y_rep)
+waic(y_rep)
+
+bn_resid <- y[,-1] - exp(y_rep)
+
+bn_resid^2 |> 
+  as_tibble() |>
+  rowid_to_column() |>
+  ggplot(
+    aes(
+      rowid,
+      y2
+    )
+  ) +
+  geom_point(
+    alpha = .7
+  )
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+y_pred_mean <- exp(y_rep) |>
+  as_tibble() |>
+  summarize(
+    across(
+      everything(),
+      ~mean(.x)
+      )
+  )
+
+y_pred_class <- y_pred_mean |>
+  mutate(
+    across(
+      everything(),
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+y_pred_class <- y_pred_class |>
+  pivot_longer(
+    everything()
+  ) |>
+  separate(
+    name,
+    into = c("stu", "item"),
+    sep = ","
+  ) |>
+  mutate(
+    stu = str_remove(stu, "\\["),
+    item = str_remove(item, "\\]"),
+    item = paste0("item", item),
+    stu = str_remove(stu, "x_rep")
+  ) |>
+  pivot_wider(
+    names_from = item,
+    values_from = value
+  )
+
+map2(
+  y_pred_class[,-1],
+  y[,-1],
+  ~table(.x, .y)
+)
+
+map2(
+  y_pred_class[,-1],
+  y[,-1],
+  ~prop.table(
+    table(.x, .y)
+  )
+)
+
+y_pred_long <- y_pred_class |>
+  pivot_longer(-stu)
+
+y_long <- y |>
+  pivot_longer(-studentid)
+
+accuracy <- mean(y_pred_long$value == y_long$value)
+accuracy
+
+precision <- sum(y_pred_long$value == 1 & y_long == 1) / sum(y_pred_long$value == 1)
+recall <- sum(y_pred_long$value == 1 & y_long == 1) / sum(y_long == 1)
+f1_score <- 2 * (precision * recall) / (precision + recall)
+
+round(precision, 2)
+round(recall, 2)
+round(f1_score, 2)
+
+library(pROC)
+
+# Have to make 
+# roc_curve <- roc(y, y_pred_mean)
+# auc_value <- auc(roc_curve)
+
+# print(paste("AUC: ", auc_value))
+# plot(roc_curve, main = "ROC Curve")
+```
+
+```{r}
+actual_stu_resp_attr <- tibble(
+  studentid = 1:nrow(y),
+  att1 = runif(nrow(y), 0, 1),
+  att2 = runif(nrow(y), 0, 1),
+  att3 = runif(nrow(y), 0, 1)
+) |>
+  mutate(
+    across(
+      -studentid,
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+```
+
+The last thing I thought to do for this analysis was to create an artificial dataset of all the student attribute mastery responses. I will use this to compare the accuracy of our model in correctly classifying if students had mastery on all of the attributes.
+
+```{r}
+stu_resp_attr_mean <- stu_resp_attr |>
+  as_tibble() |>
+  summarize(
+    across(
+      everything(),
+      ~mean(.x)
+      )
+  )
+
+stu_resp_attr_class <- stu_resp_attr_mean |>
+  mutate(
+    across(
+      everything(),
+      ~if_else(.x > .5, 1, 0)
+    )
+  )
+
+stu_resp_attr_class <- stu_resp_attr_class |>
+  pivot_longer(
+    everything()
+  ) |>
+  separate(
+    name,
+    into = c("stu", "att"),
+    sep = ","
+  ) |>
+  mutate(
+    stu = str_remove(stu, "\\["),
+    att = str_remove(att, "\\]"),
+    att = paste0("att", att),
+    stu = str_remove(stu, "prob_resp_attr")
+  ) |>
+  pivot_wider(
+    names_from = att,
+    values_from = value
+  )
+```
+
+For the probabilities, first I will get the average of the draws for each student and their probability of mastery for each of the three attributes. I again used a threshold of 0.5 for classifying whether a student met mastery of each attribute and then did some manipulation to get the data into a wide format where each attribute is its own column and each student is a row. We can how see how well the model classifies these students into mastery of each attribute.
+
+```{r}
+map2(
+  stu_resp_attr_class[,2:4],
+  actual_stu_resp_attr[,2:4],
+  ~table(.x, .y)
+)
+
+map2(
+ stu_resp_attr_class[,2:4],
+  actual_stu_resp_attr[,2:4],
+  ~prop.table(
+    table(.x, .y)
+  )
+)
+```
+
+As shown above, we can see the counts and percentages for the classification of each attribute. We can see that the problem is that the model is predicting that students are mastering each attribute when they have not mastered the attribute. This is resulting in several false positives for the model.
+
+```{r}
+stu_resp_attr_long <- stu_resp_attr_class |>
+  pivot_longer(-stu)
+
+actual_stu_resp_attr_long <- actual_stu_resp_attr |>
+  pivot_longer(-studentid)
+
+accuracy_att <- mean(stu_resp_attr_long$value == actual_stu_resp_attr_long$value)
+accuracy_att
+```
+
+Finally, I pivoted the data to be long so I could compare the values for the actual responses and the posterior draws to show the accuracy of this model. The accuracy value shows that this model was not that accurate with a value of `r round(accuracy_att, 2)*100`%. This is a good starting point, but this may indicate that the model needs better defined priors and may require the edges between the attributes to show latent relationships. The low accuracy value may also be indicative of the importance of domain knowledge in building a latent bayes net.

@@ -3,7 +3,7 @@ title: "My submission to Posit's Closeread Competition"
 subtitle: |
   Crocheting a Temperature Blanket with JP
 image: crochet.jpg
-categories: [closeread, ggplot2, HTML, quarto]
+categories: [Closeread, ggplot2, HTML, Quarto]
 date: 2024-11-15
 execute:
   warning: false
