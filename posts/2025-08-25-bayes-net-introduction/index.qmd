@@ -21,7 +21,7 @@ I will be the first to state that I am not an expert in the field of conducting 
 
 To get started, make sure you follow the detailed instructions on installing [RStan](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) or [PyStan](https://pystan.readthedocs.io/en/latest/installation.html). I know if using Mac, make sure to also download Xcode so that Stan will work correctly. For posts having to do with Bayes Net, I will be doing my programming in either R or Python, while calling on Stan to conduct the Markov Chain Monte Carlo (MCMC) sampling.\
 \
-For these models, I'll be using the ECPE dataset from the [edmdata package in R](https://github.com/tmsalab/edmdata/). This dataset has 28 items for 2,922 students with 3 latent attributes/variables. A 1 on for each item indicates whether a student got the item correct and a 0 indicates they got the item incorrect.
+For these models, I'll be using the ECPE dataset from the [edmdata package in R](https://github.com/tmsalab/edmdata/). This dataset has 28 items for 2,922 students with 3 latent attributes/variables. A 1 for each item indicates whether a student got the item correct and a 0 indicates they got the item incorrect.
 
 While I will be discussing bayes net through an educational measurement lens, bayes net can be used outside of education to show that individuals have skills that are not directly measured. Instead of items on an assessment, tasks that capture each skill can be assessed. Before walking through some bayes net terminology, it is important to note that this model is simply for educational purposes. Components of the psychometric models I will be writing about require expert opinion and domain knowledge. For example, bayes net models require expert opinions on the assignment of items to skills. Additionally, bayes net models require expert opinion on the priors for the lambda ($\lambda$) parameters.
 
@@ -210,6 +210,8 @@ ggdag(lcdm_dag) + theme_dag()
 
 ## Linear LCDM-like Bayes Net
 
+The next model is going to extend from the previous model with edges between the latent attributes in a linear pattern. So attribute 1 will be the parent to attribute 2 and then attribute 2 will be the parent to attribute 3.
+
 ```{r}
 linear_lcdm <- dagitty('dag {
 Att1 [latent,pos="-0.533,-0.496"]
@@ -299,6 +301,8 @@ ggdag(linear_lcdm) + theme_dag()
 ```
 
 ## Convergent LCDM-like Bayes Net
+
+A convergent bayes net will have different edges between the latent attributes. Instead of attribute 3 having one parent, like with the linear bayes net example, a convergent bayes net will have both attribute 1 and attribute 2 as parents.
 
 ```{r}
 convergent_lcdm <- dagitty('
@@ -391,6 +395,8 @@ ggdag(convergent_lcdm) + theme_dag()
 ```
 
 ## Divergent LCDM-like Bayes Net
+
+The parent and child nodes for a divergent bayes net will differ from the two previous models, where attribute 1 will now be the parent to both attribute 2 and attribute 3.
 
 ```{r}
 divergent_lcdm <- dagitty('
@@ -489,7 +495,9 @@ ggdag(divergent_lcdm) + theme_dag()
 
 ## Deterministic Inputs, Noisy "And" Gate (DINA)
 
-Below are DINA models through a Bayesian Network framework. Essentially, the model assumes that each student has mastered all skills in order to correctly respond to an assessment item. See [here](https://mc-stan.org/documentation/case-studies/dina_independent.html) for an excellent post about the DINA model.
+Below are DINA models through a Bayesian Network framework. The DINA model assumes that each student has mastered all skills in order to correctly respond to an assessment item. See [here](https://mc-stan.org/learn-stan/case-studies/dina_independent.html) for an excellent post about the DINA model. This model can also be expanded on to model as a bayes net. The main difference for the bayes net is that we will be creating a delta parameter from priors on student mastery of each attribute. In the post highlighting a DINA model, a similar matrix is created outside of stan (included in the `data` argument in the stan code referred to as `xi`) that is the global attribute mastery indicator.
+
+Similar to the LCDM models, the DINA models can also include parent-child edges between the latent attributes, which will have an impact on the delta parameter. The other models are listed below.
 
 ```{r}
 dina_dag <- dagitty('

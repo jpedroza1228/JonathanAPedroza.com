@@ -49,3 +49,6 @@ po/*~
 rsconnect/
 
 /.quarto/
+
+# Google Drive Authorization Stuff
+client_secrets.json
