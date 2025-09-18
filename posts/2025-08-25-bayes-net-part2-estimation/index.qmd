@@ -5,6 +5,7 @@ subtitle: |
 image: whole_spider_web.jpg
 categories: [Bayesian, Inference, Bayesian Network, Bayes Net, R, Stan, rstan, cmdstanr, posterior, bayesplot, ggplot2]
 date: 2025-08-25
+draft: true
 # citation:
   # url: 
 execute:
@@ -17,7 +18,17 @@ params:
 
 ![Photo by [Nan Zhou](https://unsplash.com/@zzzzzzn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-spider-web-hanging-from-a-tree-in-a-forest-cpmZQRQdk9o?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)](whole_spider_web.jpg){fig-alt="An image of a spider web." fig-align="left" width="6in" height="6in"}
 
-This post is an extension from the last post on the types of Bayesian networks that I'll be conducting. See [here]() for the introduction post. The first model I'll be running is a Log-Linear Cognitive Diagnostic Model (LCDM), which is a general purpose model that allows for different probabilities between the latent classes.
+This post will be part two of the my series on Bayesian Networks, or bayes net as I'll refer to them for the rest of this post. As stated in the introduction post (see \[here\]()), I'll be starting off with a Log-Linear Cognitive Diagnostic Model (LCDM), which is a general purpose model that allows for different probabilities between the latent classes. The stan code included in this post will be for a LCDM. At the end of this blog post, I'll also be including more in-depth information with the inclusion of formulas.
+
+```{r}
+#| eval: true
+#| echo: false
+#| include: false
+
+library(reticulate)
+use_python(here::here("website_venv/bin/python3.12"))
+# use_virtualenv(here::here("website_venv"))
+```
 
 ```{python}
 #| label: loading in data
@@ -97,7 +108,7 @@ data {
 }
 ```
 
-The next section is for the LCDM parameters. 
+The next section is for the LCDM parameters.
 
 ```{stan}
 #| label: "stan lcdm parameters section"

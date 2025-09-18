@@ -50,5 +50,8 @@ rsconnect/
 
 /.quarto/
 
+# Google Drive Authorization Stuff
+client_secrets.json
+
 # virtual environment
 website_venv/
