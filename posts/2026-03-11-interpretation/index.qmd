@@ -1,0 +1,305 @@
+---
+title: "Let's Talk Regression Coefficients" 
+subtitle: |
+  Using Kaggle Student Education Data
+image: scale.jpg
+categories: []
+date: 2026-03-15
+draft: true
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: regression-coefficient-interpretation
+  date: 2025-08-25
+---
+
+![Photo by [Piret Ilver](https://unsplash.com/@saltsup?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/brown-and-beige-weighing-scale-98MbUldcDJY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](scale.jpg){fig-alt="A vintage scale with two slightly different trays for weighing objects." fig-align="left" width="6in" height="6in"}
+
+I told myself late last year that I would spend more time writing posts on topics I think are interesting. Similar to EVERY one of my new year resolutions, I didn't really stick with it. So after some thought, I wanted to focus on something that I am seeing often at UC Berkeley, a desire to focus strictly on *p* values rather than interest in regression coefficients. 
+
+I am not sure why this is the case, but I think it may be due to different fields or coming at research projects through a machine learning lens. 
+
+# Loading in the Data
+
+For this post, I will use Python, but the same can easily be accmoplished using R. Below I will be loading in the Python packages I will be using; however, the same could be accomplished with only `pandas`, `numpy`, and `statsmodels`.
+
+```{python}
+#| label: loading in data
+#| eval: true
+#| echo: true
+
+import numpy as np
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+import plotnine as pn
+import joblib
+from pyhere import here
+from janitor import clean_names
+
+pd.set_option('display.max_columns', None)
+pd.options.mode.copy_on_write = True
+
+df = pd.read_csv(here('posts/2026-03-11-interpretation/StudentPerformanceFactors.csv')).clean_names(case_type = 'snake')
+print(df.head())
+
+print(df.columns.tolist())
+```
+
+Since I am interested in inference rather than prediction, I am going to be focusing on individual predictors/features rather than looking at my model overall. The following predictors made the most conceptual sense to me as being associated with exam scores. 
+
+```{python}
+# subset of data
+sub = df[['gender', 'exam_score', 'teacher_quality', 'previous_scores', 'sleep_hours', 'parental_involvement', 'attendance', 'hours_studied']]
+```
+
+While there are better methods for creating dummy coded variables, for simplicity I got a quick look at distributions for the categorical variables to then split them into binary variables. I also dropped the original variables since they won't be needed for the models. I also decided to use the low categories for the `teacher_quality` and the `parental_involvement` as reference groups for my models.
+
+```{python}
+print(sub['gender'].value_counts(), '\n')
+print(sub['parental_involvement'].value_counts(), '\n')
+print(sub['teacher_quality'].value_counts(), '\n')
+
+# dummy coding variables
+sub['high_teach_qual'] = np.where(sub['teacher_quality'] == 'High', 1, 0)
+sub['med_teach_qual'] = np.where(sub['teacher_quality'] == 'Medium', 1, 0)
+sub['high_parent'] = np.where(sub['parental_involvement'] == 'High', 1, 0)
+sub['med_parent'] = np.where(sub['parental_involvement'] == 'Medium', 1, 0)
+sub['male'] = np.where(sub['gender'] == 'Male', 1, 0)
+
+sub = sub.drop(columns = ['gender', 'teacher_quality', 'parental_involvement'])
+```
+
+# Quick Visualizations
+
+I craeted some scatterplots to get a general understanding of the associations between students' previous scores, attendance, and the number of hours of sleep they are getting 
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(sub, pn.aes('previous_scores', 'exam_score'))
+  + pn.geom_point(alpha = .25, color = 'seagreen')
+  + pn.geom_smooth(method = 'lm', se = True)
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(sub, pn.aes('attendance', 'exam_score'))
+  + pn.geom_point(alpha = .25, color = 'seagreen')
+  + pn.geom_smooth(method = 'lm', se = True)
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(sub, pn.aes('hours_studied', 'exam_score'))
+  + pn.geom_point(alpha = .25, color = 'seagreen')
+  + pn.geom_smooth(method = 'lm', se = True)
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(sub, pn.aes('sleep_hours', 'exam_score'))
+  + pn.geom_point(alpha = .25, color = 'seagreen')
+  + pn.geom_smooth(method = 'lm', se = True)
+  + pn.theme_light()
+)
+```
+
+We could see a slight positive association between previous exame scores and current exame scores. Interestingly, attendance and hours studied seem to have steeper positive associations, while hours of sleep appear to have no association with exam scores.
+
+We could look at how our dummy-coded predictors differ on exam scores to see if there is any differences between being in that group and not being in that group. If we look at the first dummy-coded variable (`high_parent`), we are comparing students that have high parental involvement and those without high parental involvement.
+
+```{python}
+long = sub.melt(id_vars = ['exam_score',
+                           'previous_scores',
+                           'sleep_hours',
+                           'attendance',
+                           'hours_studied'],
+                value_vars = ['high_teach_qual',
+                              'med_teach_qual',
+                              'high_parent',
+                              'med_parent',
+                              'male'])
+
+pn.ggplot.show(
+  pn.ggplot(long, pn.aes('value', 'exam_score'))
+  + pn.geom_boxplot(pn.aes(fill = 'factor(value)'))
+  + pn.facet_wrap('variable')
+  + pn.theme_light()
+  + pn.theme(legend_position = 'none')
+)
+```
+
+From a quick glance, there doesn't seem to be much difference for our dummy-coded variables. So we could now move on to linear regression models and the interpretations for the coefficients. 
+
+# Modeling
+
+We will test 
+
+```{python}
+import statsmodels.api as sm
+
+def standard_coef(b, x, y):
+  value = b * (x.std()/y.std())
+  return round(value, 2)
+
+def center_var(x):
+  return x - x.mean()
+
+def z_transform(x):
+  num = x - x.mean()
+  dem = x.std()
+  return round(num/dem, 2)
+
+sub[['zprevious_scores', 'zsleep_hours', 'zattendance', 'zhours_studied']] = z_transform(sub[['previous_scores', 'sleep_hours', 'attendance', 'hours_studied']])
+
+sub[['cprevious_scores', 'csleep_hours', 'cattendance', 'chours_studied']] = center_var(sub[['previous_scores', 'sleep_hours', 'attendance', 'hours_studied']])
+```
+
+## Simple Regression
+
+```{python}
+y = sub['exam_score']
+x = sub['previous_scores']
+x = sm.add_constant(x)
+
+simple_model = sm.OLS(y, x)
+simple_fit = simple_model.fit()
+
+simple_fit.summary()
+standard_coef(b = simple_fit.params[1],
+              x = sub['previous_scores'],
+              y = sub['exam_score'])
+```
+
+```{python}
+
+xc = sub['cprevious_scores']
+xc = sm.add_constant(xc)
+
+simplec_model = sm.OLS(y, xc)
+simplec_fit = simplec_model.fit()
+
+simplec_fit.summary()
+standard_coef(b = simplec_fit.params[1],
+              x = sub['cprevious_scores'],
+              y = sub['exam_score'])
+
+```
+
+```{python}
+
+xz = sub['zprevious_scores']
+xz = sm.add_constant(xz)
+
+simplez_model = sm.OLS(y, xz)
+simplez_fit = simplez_model.fit()
+
+simplez_fit.summary()
+standard_coef(b = simplez_fit.params[1],
+              x = sub['zprevious_scores'],
+              y = sub['exam_score'])
+```
+
+## Multiple Regression
+
+```{python}
+
+x_main = sub.loc[:, 'previous_scores':'med_parent']
+x_main = sm.add_constant(x_main)
+
+main_model = sm.OLS(y, x_main)
+main_fit = main_model.fit()
+
+main_fit.summary()
+
+main_beta = []
+for i in np.arange(0, x_main.shape[1], 1):
+  beta_values = standard_coef(b = main_fit.params[i],
+                x = x_main.iloc[:, i],
+                y = y)
+  main_beta.append(beta_values)
+
+main_param = main_fit.params.reset_index()
+main_fit_param = pd.DataFrame({'b': main_param.iloc[:, 1],
+                               'beta': pd.Series(main_beta)}).round(2)
+main_fit_param['coef'] = main_param.iloc[:, 0]
+main_fit_param = main_fit_param[['coef', 'b', 'beta']]
+main_fit_param
+```
+
+```{python}
+
+z_main = sub[sub.filter(regex = r'^z').columns.tolist() + sub[['male', 'high_teach_qual', 'med_teach_qual', 'high_parent', 'med_parent']].columns.tolist()]
+z_main = sm.add_constant(z_main)
+
+mainz_model = sm.OLS(y, z_main)
+mainz_fit = mainz_model.fit()
+
+mainz_fit.summary()
+
+mainz_beta = []
+for i in np.arange(0, z_main.shape[1], 1):
+  beta_values = standard_coef(b = mainz_fit.params[i],
+                x = z_main.iloc[:, i],
+                y = y)
+  mainz_beta.append(beta_values)
+
+mainz_param = mainz_fit.params.reset_index()
+mainz_fit_param = pd.DataFrame({'b': mainz_param.iloc[:, 1],
+                               'beta': pd.Series(mainz_beta)}).round(2)
+mainz_fit_param['coef'] = mainz_param['index']
+mainz_fit_param = mainz_fit_param[['coef', 'b', 'beta']]
+mainz_fit_param
+```
+
+## Interaction Model
+
+```{python}
+
+sub['study_x_attend'] = sub['hours_studied'] * sub['attendance']
+
+print(sub[['hours_studied', 'attendance', 'study_x_attend']].corr())
+```
+
+Our correlation matrix shows that there is a .89 correlation between our interaction and hours studied. This is problematic for linear models due to multicollinearity. This is where centering our predictors becomes crucial because my centering our predictors we remove this issue of multicollinearity.
+
+```{python}
+c_int = sub[sub.filter(regex = r'^c').columns.tolist() + sub[['male', 'high_teach_qual', 'med_teach_qual', 'high_parent', 'med_parent']].columns.tolist()]
+c_int['study_x_attend'] = c_int['chours_studied'] * c_int['cattendance']
+print(c_int.head())
+```
+
+```{python}
+c_int = sm.add_constant(c_int)
+
+c_int_model = sm.OLS(y, c_int)
+c_int_fit = c_int_model.fit()
+
+print(c_int_fit.summary())
+```
+
+```{python}
+c_int_beta = []
+for i in np.arange(0, c_int.shape[1], 1):
+  beta_values = standard_coef(b = c_int_fit.params[i],
+                x = c_int.iloc[:, i],
+                y = y)
+  c_int_beta.append(beta_values)
+
+c_int_param = c_int_fit.params.reset_index()
+c_int_fit_param = pd.DataFrame({'b': c_int_param.iloc[:, 1],
+                               'beta': pd.Series(c_int_beta)}).round(2)
+c_int_fit_param['coef'] = c_int_param['index']
+c_int_fit_param = c_int_fit_param[['coef', 'b', 'beta']]
+
+print(c_int_fit_param)
+```

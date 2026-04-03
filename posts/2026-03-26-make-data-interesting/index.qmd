@@ -1,0 +1,639 @@
+---
+title: "Diving into Data:" 
+subtitle: |
+  Examining O-rings from NASA's Challenger Testing
+# image: 
+categories: []
+date: 2026-03-30
+draft: true
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: o-rings
+  date: 2025-08-25
+---
+
+[Dataset Link](https://archive.ics.uci.edu/dataset/92/challenger+usa+space+shuttle+o+ring)
+
+```{python}
+#| label: loading in data
+#| eval: true
+#| echo: true
+
+import numpy as np
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+import plotnine as pn
+import joblib
+from pyhere import here
+from janitor import clean_names
+from great_tables import GT as gt
+import os
+import arviz as az
+import joblib
+from cmdstanpy import CmdStanModel
+
+jpcolor = 'seagreen'
+
+pd.set_option('display.max_columns', None)
+pd.options.mode.copy_on_write = True
+
+# ero_path = '/Users/jp/Documents/github_projects/My Projects/JonathanAPedroza.com/posts/2026-03-26-make-data-interesting/o-ring-erosion-only.data'
+# ero_blow_path = '/Users/jp/Documents/github_projects/My Projects/JonathanAPedroza.com/posts/2026-03-26-make-data-interesting/o-ring-erosion-or-blowby.data'
+
+# ero = pd.read_csv(ero_path,
+#                   # delimiter = ' ',
+#                   header = None)
+# ero_blow = pd.read_csv(ero_blow_path,
+#                       #  delimiter = ' ',
+#                        header = None)
+
+# ero[0] = ero[0].str.replace('  ', ' ')
+# ero[['num_oring',
+#      'num_thermal_distress',
+#      'launch_temp',
+#      'leak_check_pressure',
+#      'temporal_order']] = ero[0].str.split(' ', expand = True)
+# ero = ero.drop(columns = 0)
+
+# ero_blow[0] = ero_blow[0].str.replace('  ', ' ')
+# ero_blow[['num_oring',
+#      'num_thermal_distress',
+#      'launch_temp',
+#      'leak_check_pressure',
+#      'temporal_order']] = ero_blow[0].str.split(' ', expand = True)
+# ero_blow = ero_blow.drop(columns = 0)
+
+# ero = ero.astype(int)
+# ero_blow = ero_blow.astype(int)
+```
+
+Originally written down incorrectly. SR-12 was not the rocket set with erosion. It was SR-13.
+
+```{python}
+space = pd.DataFrame({'flight_number': ['51-C', '41-B', '61-C', '41-C', '1', '6', '51-A', '51-D', '5', '3', '2', '9', '41-D', '51-G', '7', '8', '51-B', '61-A', '51-I', '61-B', '41-G', '51-J', '4', '51-F'],
+                      'date': ['01-24-85', '02-03-84', '01-12-86', '04-06-84', '04-12-81', '04-04-83', '11-08-84', '04-12-85', '11-11-82', '03-22-82', '11-12-81', '11-28-83', '08-30-84', '06-17-85', '06-18-83', '08-30-83', '04-29-85', '10-30-85', '08-27-85', '11-26-85', '10-05-84', '10-03-85', '06-27-82', '07-29-85'],
+                      'temp': [53, 57, 58, 63, 66, 67, 67, 67, 68, 69, 70, 70, 70, 70, 72, 73, 75, 75, 76, 76, 78, 79, 80, 81],
+                      'erosion': [3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                      'blow_by': [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+                      'damage_index': [11, 4, 4, 2, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, np.nan, 0],
+                      'comments': ['Most erosion any flight; blow-by; back-up rings heated', 'Deep, extensive erosion', 'O-ring erosion on launch two weeks before Challenger', 'O-rings showed signs of heating, but no damage', 'Coolest (66 degrees) launch without O-ring problems', np.nan, np.nan, np.nan, np.nan, np.nan, 'Extent of erosion not fully known', np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, 'No erosion. Soot found behind two primary O-rings', np.nan, np.nan, np.nan, np.nan, 'O-ring condition unknown; rocket casing lost at sea', np.nan]})
+
+space['date'] = pd.to_datetime(space['date'])
+space = space.sort_values('date', ascending = True)
+
+space['srm_num'] = ['SRM-1', 'SRM-2', 'SRM-3', 'SRM-4', 'SRM-5', 'SRM-6', 'SRM-7', 'SRM-8', 'SRM-9', 'SRM-10', 'SRM-11', 'SRM-12', 'SRM-13', 'SRM-14', 'SRM-15', 'SRM-16', 'SRM-17', 'SRM-18', 'SRM-19', 'SRM-20', 'SRM-21', 'SRM-22', 'SRM-23', 'SRM-24']
+
+space.head()
+```
+
+```{python}
+# correct the article's table information to be accurate
+# based on diagrams
+
+space.loc[(space['srm_num'] == 'SRM-13'), 'temp'] = 70
+space.loc[(space['srm_num'] == 'SRM-13'), 'erosion'] = 1
+space.loc[(space['srm_num'] == 'SRM-13'), 'damage_index'] = 4
+
+space.loc[(space['srm_num'] == 'SRM-12'), 'temp'] = 78
+space.loc[(space['srm_num'] == 'SRM-12'), 'erosion'] = 0
+space.loc[(space['srm_num'] == 'SRM-12'), 'damage_index'] = 0
+```
+
+```{python}
+space['srm_num'] = pd.Categorical(space['srm_num'], categories = ['SRM-1', 'SRM-2', 'SRM-3', 'SRM-4', 'SRM-5', 'SRM-6', 'SRM-7', 'SRM-8', 'SRM-9', 'SRM-10', 'SRM-11', 'SRM-12', 'SRM-13', 'SRM-14', 'SRM-15', 'SRM-16', 'SRM-17', 'SRM-18', 'SRM-19', 'SRM-20', 'SRM-21', 'SRM-22', 'SRM-23', 'SRM-24'], ordered = True)
+```
+
+```{python}
+spaced = space.loc[space.index.repeat(2)].reset_index(drop = True)
+
+spaced['rocket'] = ['A', 'B'] * (len(spaced) // 2)
+
+spaced.head()
+```
+
+```{python}
+spaced.loc[spaced['erosion'] != 0]
+```
+
+```{python}
+# could probably change damage index to only rocket with o-ring degradation, but will keep
+
+spaced.loc[(spaced['srm_num'] == 'SRM-2') & (spaced['rocket'] == 'A'), 'erosion'] = 0 # SRM-2 A did not have erosion
+spaced.loc[(spaced['srm_num'] == 'SRM-10') & (spaced['rocket'] == 'B'), 'erosion'] = 0 # SRM-10 B did not have erosion
+spaced.loc[(spaced['srm_num'] == 'SRM-11') & (spaced['rocket'] == 'B'), 'erosion'] = 0 # SRM-11 B did not have erosion
+spaced.loc[(spaced['srm_num'] == 'SRM-13') & (spaced['rocket'] == 'A'), 'erosion'] = 0 # SRM-13 A did not have erosion
+spaced.loc[(spaced['srm_num'] == 'SRM-24') & (spaced['rocket'] == 'B'), 'erosion'] = 0 # SRM-24 A did not have erosion
+```
+
+# Investigation
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('srm_num', 'temp'))
+  + pn.geom_col(pn.aes(fill = 'factor(erosion)'), color = 'white')
+  + pn.labs(title = 'Rocket Number and Tempature at Launch',
+  subtitle = 'By Level of Erosion',
+  x = '',
+  y = 'Temperature',
+  fill = 'Level of Erosion')
+  + pn.theme_light()
+  + pn.theme(axis_text_x = pn.element_text(rotation = 90))
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('srm_num', 'damage_index'))
+  + pn.geom_col(pn.aes(fill = 'factor(erosion)'), color = 'white')
+  + pn.labs(title = 'Rocket Number and Damage Index',
+  subtitle = 'By Level of Erosion',
+  x = '',
+  y = 'Temperature',
+  fill = 'Level of Erosion')
+  + pn.theme_light()
+  + pn.theme(axis_text_x = pn.element_text(rotation = 90))
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('temp', 'damage_index'))
+  + pn.geom_point(color = jpcolor)
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index'
+  )
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('srm_num', 'damage_index'))
+  + pn.geom_point(color = jpcolor)
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index'
+  )
+  + pn.theme_light()
+  + pn.theme(axis_text_x = pn.element_text(rotation = 90))
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('temp', 'damage_index'))
+  + pn.geom_point(color = jpcolor)
+  + pn.geom_smooth(method = 'lm')
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index'
+  )
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space.loc[space['damage_index'] > 0], pn.aes('temp', 'damage_index'))
+  + pn.geom_text(pn.aes(label = 'srm_num', color = 'factor(erosion)'), position = pn.position_jitter(height = 1))
+  # + pn.scale_color_discrete(limits = space['srm_num'].unique())
+  + pn.scale_x_continuous(limits = [50, 80])
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index')
+  + pn.theme_light()
+  # + pn.theme(legend_position = 'none')
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('srm_num', 'damage_index'))
+  + pn.geom_tile(pn.aes(fill = 'temp'), color = 'white')
+  + pn.coord_flip()
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('temp', 'damage_index'))
+  + pn.geom_point(pn.aes(color = 'factor(erosion)'))
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index'
+  )
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('temp', 'damage_index'))
+  + pn.geom_point(color = jpcolor)
+  + pn.geom_smooth(method = 'lm', formula = 'y ~ x + I(x**2)')
+  + pn.labs(title = 'Temperature at Launch & O-Ring Damage Index'
+  )
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('date', 'damage_index'))
+  + pn.geom_line(group = 1, alpha = .7, linetype = 'dashed', color = 'gray')
+  + pn.geom_point(pn.aes(color = 'factor(erosion)'))
+  + pn.labs(title = 'O-Ring Damage Index For Challenger')
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('date', 'temp'))
+  + pn.geom_line(group = 1, alpha = .7, linetype = 'dashed', color = 'gray')
+  + pn.geom_point(pn.aes(color = 'factor(damage_index)'))
+  + pn.labs(title = 'Temperature for Launch Location')
+  + pn.theme_light()
+)
+```
+
+```{python}
+space['damage_index'] = np.where(space['damage_index'].isna(), space['damage_index'].median().round(), space['damage_index'])
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+
+import statsmodels.api as sm
+
+y = space['damage_index']
+x = space['temp']
+x = sm.add_constant(x)
+
+line_model = sm.OLS(y, x)
+line_fit = line_model.fit()
+
+line_fit.summary()
+# as temperature decreases, 
+
+# predict at 36 degrees
+new_data = pd.DataFrame({'temp': [36]})
+new_data = sm.add_constant(new_data)
+
+line_fit.predict(new_data.reset_index())
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+
+y = space['damage_index']
+x2 = space[['temp', 'erosion', 'blow_by']]
+x2 = sm.add_constant(x2)
+
+line_mult_model = sm.OLS(y, x2)
+line_mult_fit = line_mult_model.fit()
+
+line_mult_fit.summary()
+
+new_mult_data = pd.DataFrame({'temp': [36, 36, 36, 36, 36, 36],
+                              'erosion': [0, 1, 3, 0, 1, 3],
+                              'blow_by': [0, 0, 0, 2, 2, 2]})
+new_mult_data = sm.add_constant(new_mult_data, has_constant = 'add')
+
+pd.Series(line_mult_fit.predict(new_mult_data)).round()
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+y = space['damage_index']
+x3 = space[['temp', 'erosion', 'blow_by']]
+x3['temp_curve'] = np.power(x3['temp'], 2)
+x3 = sm.add_constant(x3)
+
+curve_mult_model = sm.OLS(y, x3)
+curve_mult_fit = curve_mult_model.fit()
+
+new_curve_data = pd.DataFrame({'temp': [36, 36, 36, 36, 36, 36],
+                              'erosion': [0, 1, 3, 0, 1, 3],
+                              'blow_by': [0, 0, 0, 2, 2, 2]})
+new_curve_data['temp_curve'] = np.power(new_curve_data['temp'], 2)
+new_curve_data = sm.add_constant(new_curve_data, has_constant = 'add')
+
+curve_mult_fit.summary()
+
+pd.Series(curve_mult_fit.predict(new_curve_data)).round()
+```
+
+```{python}
+stan_dict = {
+  'N': space.shape[0],
+  'x': space['temp'].astype(int).to_numpy(),
+  'y': space['damage_index'].astype(int).to_numpy()
+}
+
+stan_dict
+```
+
+```{python}
+line_file = os.path.join(here('posts/2026-03-26-make-data-interesting/linear.stan'))
+line_model = CmdStanModel(stan_file = line_file,
+                         cpp_options = {'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+line_fit = line_model.sample(data = stan_dict,
+                            show_console = True,
+                            chains = 4,
+                            parallel_chains = 4,
+                            # adapt_delta = .95,
+                            iter_warmup = 2000,
+                            iter_sampling = 2000)
+
+line_diagnose = pd.DataFrame(line_fit.summary())
+print(line_diagnose.sort_values('R_hat', ascending = False).head())
+
+line_prior_file = os.path.join(here('posts/2026-03-26-make-data-interesting/linear_prior.stan'))
+line_prior_model = CmdStanModel(stan_file = line_prior_file,
+                         cpp_options = {'STAN_THREADS': 'TRUE'})
+
+line_prior = line_prior_model.sample(data = stan_dict,
+                                     show_console = True,
+                                     chains = 4,
+                                     parallel_chains = 4,
+                                     # adapt_delta = .95,
+                                     iter_warmup = 2000,
+                                     iter_sampling = 2000)
+```
+
+```{python}
+iline = az.from_cmdstanpy(
+    posterior = line_fit,
+    prior = line_prior,
+    posterior_predictive = ['y_rep'],
+    prior_predictive = ['y_rep'],
+    observed_data = {'y_rep': stan_dict['y']},
+    log_likelihood = 'log_lik'
+    )
+```
+
+```{python}
+import arviz_plots as azp
+
+azp.plot_dist(
+    iline,
+    kind = 'ecdf',
+    col_wrap = 1,
+    var_names = ['a', 'b', 'sigma']
+)
+```
+
+```{python}
+azp.plot_dist(
+    iline,
+    kind = 'kde',
+    col_wrap = 1,
+    var_names = ['a', 'b', 'sigma']
+)
+```
+
+The damage index when temperature is zero, 2.4
+
+The association between tempature and damage index. For a 1 degree increase in temperature, there is a -0.16 decrease in damage index
+
+```{python}
+azp.plot_forest(
+    iline,
+    var_names=['a', 'b', 'sigma']
+)
+```
+
+```{python}
+azp.plot_prior_posterior(
+    iline,
+    var_names = ['a'],
+    kind = 'kde'
+)
+
+azp.plot_prior_posterior(
+    iline,
+    var_names = ['b'],
+    kind = 'kde'
+)
+
+azp.plot_prior_posterior(
+    iline,
+    var_names = ['sigma'],
+    kind = 'kde'
+)
+```
+
+```{python}
+azp.plot_ppc_dist(iline, kind = 'kde', group = 'prior_predictive')
+```
+
+```{python}
+azp.plot_ppc_dist(iline, kind = 'ecdf', group = 'prior_predictive')
+```
+
+```{python}
+azp.plot_ppc_dist(iline, kind = 'kde', num_samples = 500)
+```
+
+```{python}
+azp.plot_ppc_tstat(iline, t_stat = 'mean')
+azp.plot_ppc_tstat(iline, t_stat = 'median')
+azp.plot_ppc_tstat(iline, t_stat = 'std')
+```
+
+```{python}
+# azp.plot_trace(iline)
+
+azp.plot_trace_dist(iline)
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+linedf = line_fit.draws_pd()
+
+linedf.head()
+
+line_long = linedf.filter(regex = r'y_rep').melt()
+
+line_long[['drop', 'id']] = line_long['variable'].str.split('[', expand = True)
+
+line_long = line_long[['id', 'value']]
+line_long['id'] = line_long['id'].str.replace(']', '')
+line_long['id'] = line_long['id'].astype(int)
+line_long = line_long[['variable', 'id', 'value']]
+
+line_long_avg = line_long.groupby('id')['value'].mean().reset_index()
+
+pn.ggplot.show(
+  pn.ggplot(line_long_avg, pn.aes('id', 'value'))
+  + pn.geom_point()
+  + pn.scale_y_continuous(limits = [0, 12])
+  + pn.theme_light()
+)
+
+pn.ggplot.show(
+  pn.ggplot(space, pn.aes('srm_num', 'damage_index'))
+  + pn.geom_point()
+  + pn.scale_y_continuous(limits = [0, 12])
+  + pn.theme_light()
+)
+```
+
+```{python}
+count_file = os.path.join(here('posts/2026-03-26-make-data-interesting/count.stan'))
+count_model = CmdStanModel(stan_file = count_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+count_fit = count_model.sample(data = stan_dict,
+                               show_console = True,
+                               chains = 4,
+                               parallel_chains = 4,
+                               # adapt_delta = .95,
+                               iter_warmup = 2000,
+                               iter_sampling = 2000)
+
+count_diagnose = pd.DataFrame(count_fit.summary())
+print(count_diagnose.sort_values('R_hat', ascending = False).head())
+
+count_prior_file = os.path.join(here('posts/2026-03-26-make-data-interesting/count_prior.stan'))
+count_prior_model = CmdStanModel(stan_file = count_prior_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+count_prior_fit = count_prior_model.sample(data = stan_dict,
+                               show_console = True,
+                               chains = 4,
+                               parallel_chains = 4,
+                               # adapt_delta = .95,
+                               iter_warmup = 2000,
+                               iter_sampling = 2000)
+```
+
+```{python}
+icount = az.from_cmdstanpy(
+    posterior = count_fit,
+    prior = count_prior_fit,
+    posterior_predictive = ['y_rep'],
+    prior_predictive = ['y_rep'],
+    observed_data = {'y_rep': stan_dict['y']},
+    log_likelihood = 'log_lik'
+    )
+```
+
+```{python}
+azp.plot_dist(
+    icount,
+    kind = 'ecdf',
+    col_wrap = 1
+)
+```
+
+```{python}
+azp.plot_dist(
+    icount,
+    kind = 'kde',
+    col_wrap = 1
+)
+```
+
+$/psi$: Probability of 0 damage index. The probability of no damage index is 68%
+
+$/lambda$: The expected damage index for 
+
+```{python}
+azp.plot_forest(
+    icount
+)
+```
+
+```{python}
+azp.plot_prior_posterior(
+    icount,
+    var_names = ['alpha_psi', 'beta_psi'],
+    kind = 'kde'
+)
+
+azp.plot_prior_posterior(
+    icount,
+    var_names = ['alpha_lam', 'beta_lam'],
+    kind = 'kde'
+)
+```
+
+```{python}
+azp.plot_ppc_dist(icount, kind = 'kde', group = 'prior_predictive')
+```
+
+```{python}
+azp.plot_ppc_dist(icount, kind = 'ecdf', group = 'prior_predictive')
+```
+
+```{python}
+azp.plot_ppc_dist(icount, kind = 'kde', num_samples = 500)
+```
+
+```{python}
+azp.plot_ppc_tstat(icount, t_stat = 'mean')
+azp.plot_ppc_tstat(icount, t_stat = 'median')
+azp.plot_ppc_tstat(icount, t_stat = 'std')
+```
+
+```{python}
+# azp.plot_trace(iline)
+
+azp.plot_trace_dist(icount)
+```
+
+```{python}
+
+```
+
+
+
+
+
+
+
+
+
+
+```{python}
+curve_file = os.path.join(here('posts/2026-03-26-make-data-interesting/curve.stan'))
+curve_model = CmdStanModel(stan_file = curve_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+curve_fit = curve_model.sample(data = stan_dict,
+                        show_console = True,
+                        chains = 4,
+                        parallel_chains = 4,
+                        # adapt_delta = .95,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+curve_diagnose = pd.DataFrame(curve_fit.summary())
+print(curve_diagnose.sort_values('R_hat', ascending = False).head())
+```
+
+```{python}
+icurve = az.from_cmdstanpy(
+    posterior = curve_fit,
+    posterior_predictive = ['y_rep'],
+    observed_data = {'y': space['damage_index']}
+    )
+# now datatree, no more inference dataframe
+```
+
+```{python}
+az.plot_trace(icurve, var_names = ['a', 'b', 'c', 'sigma'])
+```
+

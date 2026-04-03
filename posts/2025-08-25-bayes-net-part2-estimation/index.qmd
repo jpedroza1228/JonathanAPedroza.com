@@ -9,6 +9,7 @@ draft: true
 # citation:
   # url: 
 execute:
+    freeze: auto
     message: false
     warning: false
 params:
