@@ -756,9 +756,9 @@ azp.plot_dist(
 
 While there are several parameters from the zero-inflated and poisson models, I am going to focus on the following two parameters because they are the most applicable to our SRBs and O-ring damage. 
 
-$/psi$: Probability of zero damage index.
+$\psi$: Probability of zero damage index.
 
-$/lambda$: The expected damage index when the observations are not zero.
+$\lambda$: The expected damage index when the observations are not zero.
 
 The average posterior probability of no damage index is 70%, so it is more likely for zeros to be present. When observations are not zero, the average damage index would be 4.7.
 
