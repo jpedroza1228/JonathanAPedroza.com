@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -34,14 +34,15 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d59c0ca85c41d7ed92007e46c9170f28.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-83ab5fd6f0f827b2561b8b57e1eef234.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -113,7 +114,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -170,7 +171,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div><div class="category" data-category="QmF5ZXMlMjBOZXQ=">Bayes Net <span class="quarto-category-count">(4)</span></div><div class="category" data-category="QmF5ZXNpYW4=">Bayesian <span class="quarto-category-count">(3)</span></div><div class="category" data-category="QmF5ZXNpYW4lMjBOZXR3b3Jr">Bayesian Network <span class="quarto-category-count">(4)</span></div><div class="category" data-category="YmF5ZXNwbG90">bayesplot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ym5sZWFybg==">bnlearn <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Q2xvc2VyZWFk">Closeread <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y21kc3RhbnB5">cmdstanpy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y21kc3RhbnI=">cmdstanr <span class="quarto-category-count">(2)</span></div><div class="category" data-category="REFH">DAG <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGFnaXR0eQ==">dagitty <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyME1hbmlwdWxhdGlvbg==">Data Manipulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFdyYW5nbGluZw==">Data Wrangling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YS50YWJsZQ==">data.table <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZHBseXI=">dplyr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RWR1Y2F0aW9u">Education <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Zm9yZWNhc3Q=">forecast <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dkYWc=">ggdag <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dwbG90Mg==">ggplot2 <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Z3JlYXRfdGFibGVz">great_tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGllcmFyY2hpY2FsJTIwTGluZWFyJTIwTW9kZWxpbmc=">Hierarchical Linear Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SFRNTA==">HTML <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SW5mZXJlbmNl">Inference <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TW9kZWxpbmc=">Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bW9kZWx0aW1l">modeltime <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TXVsdGlsZXZlbCUyME1vZGVsaW5n">Multilevel Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bnVtcHk=">numpy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGFuZGFz">pandas <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdG5pbmU=">plotnine <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cG9sYXJz">polars <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cG9zdGVyaW9y">posterior <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvcGhldA==">prophet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHlzdGFu">pystan <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(3)</span></div><div class="category" data-category="UXVhcnRv">Quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(7)</span></div><div class="category" data-category="cnN0YW4=">rstan <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3Rhbg==">Stan <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGhlbWlz">themis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGlkeSUyMFR1ZXNkYXk=">Tidy Tuesday <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGlkeW1vZGVscw==">tidymodels <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(10)</span></div><div class="category" data-category="QmF5ZXMlMjBOZXQ=">Bayes Net <span class="quarto-category-count">(2)</span></div><div class="category" data-category="QmF5ZXNpYW4=">Bayesian <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QmF5ZXNpYW4lMjBOZXR3b3Jr">Bayesian Network <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ym5sZWFybg==">bnlearn <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Q2xvc2VyZWFk">Closeread <span class="quarto-category-count">(1)</span></div><div class="category" data-category="REFH">DAG <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyME1hbmlwdWxhdGlvbg==">Data Manipulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFdyYW5nbGluZw==">Data Wrangling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGF0YS50YWJsZQ==">data.table <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZHBseXI=">dplyr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RWR1Y2F0aW9u">Education <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Zm9yZWNhc3Q=">forecast <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dwbG90Mg==">ggplot2 <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Z3JlYXRfdGFibGVz">great_tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SGllcmFyY2hpY2FsJTIwTGluZWFyJTIwTW9kZWxpbmc=">Hierarchical Linear Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SFRNTA==">HTML <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TW9kZWxpbmc=">Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bW9kZWx0aW1l">modeltime <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TXVsdGlsZXZlbCUyME1vZGVsaW5n">Multilevel Modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bnVtcHk=">numpy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGFuZGFz">pandas <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGxvdGx5">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGxvdG5pbmU=">plotnine <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cG9sYXJz">polars <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvcGhldA==">prophet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UXVhcnRv">Quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(5)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGhlbWlz">themis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGlkeSUyMFR1ZXNkYXk=">Tidy Tuesday <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGlkeW1vZGVscw==">tidymodels <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -199,107 +200,32 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="QmF5ZXNpYW4lMkNJbmZlcmVuY2UlMkNCYXllc2lhbiUyME5ldHdvcmslMkNCYXllcyUyME5ldCUyQ1IlMkNTdGFuJTJDcnN0YW4lMkNjbWRzdGFuciUyQ3Bvc3RlcmlvciUyQ2JheWVzcGxvdCUyQ2dncGxvdDI=" data-listing-date-sort="1756105200000" data-listing-file-modified-sort="1756176594324" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3914">
-<a href="./posts/2025-08-25-bayes-net-part2-estimation/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="" data-listing-date-sort="1777014000000" data-listing-file-modified-sort="1777097348046" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="36" data-listing-word-count-sort="7094">
+<a href="./posts/2026-04-24-make-data-interesting/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/2025-08-25-bayes-net-part2-estimation/whole_spider_web.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="posts/2026-04-24-make-data-interesting/index_files/figure-html/cell-7-output-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Bayes Net Pt. 2
+Diving into Data:
 </h5>
 <div class="listing-categories">
 
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXNpYW4='); return false;">Bayesian</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('SW5mZXJlbmNl'); return false;">Inference</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXNpYW4lMjBOZXR3b3Jr'); return false;">Bayesian Network</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXMlMjBOZXQ='); return false;">Bayes Net</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('U3Rhbg=='); return false;">Stan</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cnN0YW4='); return false;">rstan</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y21kc3RhbnI='); return false;">cmdstanr</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cG9zdGVyaW9y'); return false;">posterior</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmF5ZXNwbG90'); return false;">bayesplot</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90Mg=='); return false;">ggplot2</div>
-
 </div>
 <div class="card-text listing-description delink">
-
+I have been in some discussions recently about datasets that spark interest in data science students where they can learn statistics and data science skills. This got me…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
 
 </div>
 <div class="listing-date">
-Aug 25, 2025
+Apr 24, 2026
 </div>
 </div>
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="QmF5ZXNpYW4lMkNCYXllc2lhbiUyME5ldHdvcmslMkNCYXllcyUyME5ldCUyQ1IlMkNQeXRob24lMkNTdGFuJTJDcnN0YW4lMkNjbWRzdGFuciUyQ3B5c3RhbiUyQ2NtZHN0YW5weSUyQ2dnZGFnJTJDZGFnaXR0eQ==" data-listing-date-sort="1756105200000" data-listing-file-modified-sort="1756176793213" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2554">
-<a href="./posts/2025-08-25-bayes-net-introduction/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./posts/2025-08-25-bayes-net-introduction/wet_spiderweb.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Bayes Nets
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXNpYW4='); return false;">Bayesian</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXNpYW4lMjBOZXR3b3Jr'); return false;">Bayesian Network</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXMlMjBOZXQ='); return false;">Bayes Net</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('U3Rhbg=='); return false;">Stan</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cnN0YW4='); return false;">rstan</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y21kc3RhbnI='); return false;">cmdstanr</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHlzdGFu'); return false;">pystan</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y21kc3RhbnB5'); return false;">cmdstanpy</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dkYWc='); return false;">ggdag</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGFnaXR0eQ=='); return false;">dagitty</div>
-
-</div>
-<div class="card-text listing-description delink">
-I will be the first to state that I am not an expert in the field of conducting psychometric models, Bayesian networks, Bayesian analyses, <strong>but</strong> I have been struggling to find…
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
-Aug 25, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="UHl0aG9uJTJDUXVhcnRvJTJDcGFuZGFzJTJDcGxvdG5pbmUlMkNncmVhdF90YWJsZXMlMkNwbG90bHk=" data-listing-date-sort="1733385600000" data-listing-file-modified-sort="1756154321631" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
+<div class="g-col-1" data-index="1" data-categories="UHl0aG9uJTJDUXVhcnRvJTJDcGFuZGFzJTJDcGxvdG5pbmUlMkNncmVhdF90YWJsZXMlMkNwbG90bHk=" data-listing-date-sort="1733385600000" data-listing-file-modified-sort="1764902726795" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
 <a href="./posts/2024-12-05-python-parameterized-report/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -338,7 +264,7 @@ Dec 5, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="QmF5ZXMlMjBOZXQlMkNCYXllc2lhbiUyME5ldHdvcmslMkNNYWNoaW5lJTIwTGVhcm5pbmclMkNSJTJDYm5sZWFybg==" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1756154424031" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4353">
+<div class="g-col-1" data-index="2" data-categories="QmF5ZXMlMjBOZXQlMkNCYXllc2lhbiUyME5ldHdvcmslMkNNYWNoaW5lJTIwTGVhcm5pbmclMkNSJTJDYm5sZWFybg==" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1764902726770" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4353">
 <a href="./posts/2024-11-15-bayes-net-loan-approval/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -375,7 +301,7 @@ Nov 15, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="RGF0YSUyME1hbmlwdWxhdGlvbiUyQ2RwbHlyJTJDcGFuZGFzJTJDbnVtcHklMkNQeXRob24lMkNSJTJDZGF0YS50YWJsZSUyQ3BvbGFycyUyQ0RhdGElMjBXcmFuZ2xpbmc=" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1756154216952" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="581">
+<div class="g-col-1" data-index="3" data-categories="RGF0YSUyME1hbmlwdWxhdGlvbiUyQ2RwbHlyJTJDcGFuZGFzJTJDbnVtcHklMkNQeXRob24lMkNSJTJDZGF0YS50YWJsZSUyQ3BvbGFycyUyQ0RhdGElMjBXcmFuZ2xpbmc=" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1764902726789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="581">
 <a href="./posts/2024-11-15-dplyr-datatable-python/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -420,7 +346,7 @@ Nov 15, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="Q2xvc2VyZWFkJTJDZ2dwbG90MiUyQ0hUTUwlMkNRdWFydG8=" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1756154382289" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3309">
+<div class="g-col-1" data-index="4" data-categories="Q2xvc2VyZWFkJTJDZ2dwbG90MiUyQ0hUTUwlMkNRdWFydG8=" data-listing-date-sort="1731657600000" data-listing-file-modified-sort="1764902726788" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3309">
 <a href="./posts/2024-11-15-closeread-temp-blanket/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -455,7 +381,7 @@ Nov 15, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="Z2dwbG90MiUyQ2ZvcmVjYXN0JTJDdGlkeW1vZGVscyUyQ21vZGVsdGltZSUyQ3Byb3BoZXQlMkNS" data-listing-date-sort="1731571200000" data-listing-file-modified-sort="1756151948460" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4698">
+<div class="g-col-1" data-index="5" data-categories="Z2dwbG90MiUyQ2ZvcmVjYXN0JTJDdGlkeW1vZGVscyUyQ21vZGVsdGltZSUyQ3Byb3BoZXQlMkNS" data-listing-date-sort="1731571200000" data-listing-file-modified-sort="1764902726742" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4698">
 <a href="./posts/2024-11-14-prophet-model/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -494,7 +420,7 @@ Nov 14, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="7" data-categories="QmF5ZXNpYW4lMkNCYXllc2lhbiUyME5ldHdvcmslMkNCYXllcyUyME5ldCUyQ1IlMkNibmxlYXJuJTJDREFH" data-listing-date-sort="1731312000000" data-listing-file-modified-sort="1756151122331" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="47" data-listing-word-count-sort="9274">
+<div class="g-col-1" data-index="6" data-categories="QmF5ZXNpYW4lMkNCYXllc2lhbiUyME5ldHdvcmslMkNCYXllcyUyME5ldCUyQ1IlMkNibmxlYXJuJTJDREFH" data-listing-date-sort="1731312000000" data-listing-file-modified-sort="1764902726700" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="47" data-listing-word-count-sort="9274">
 <a href="./posts/2024-11-11-bayes-net-bnlearn-us-coffee-tasting/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -533,7 +459,7 @@ Nov 11, 2024
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="8" data-categories="Z2dwbG90MiUyQ1NoaW55JTJDRWR1Y2F0aW9u" data-listing-date-sort="1624086000000" data-listing-file-modified-sort="1756149446859" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2109">
+<div class="g-col-1" data-index="7" data-categories="Z2dwbG90MiUyQ1NoaW55JTJDRWR1Y2F0aW9u" data-listing-date-sort="1624086000000" data-listing-file-modified-sort="1764902726691" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2109">
 <a href="./posts/2021-06-19-grad-student-exit-surveys/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -566,7 +492,7 @@ Jun 19, 2021
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="9" data-categories="Z2dwbG90MiUyQ3RpZHltb2RlbHMlMkNUaWR5JTIwVHVlc2RheSUyQ3RoZW1pcyUyQ01hY2hpbmUlMjBMZWFybmluZw==" data-listing-date-sort="1620889200000" data-listing-file-modified-sort="1756149356839" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2102">
+<div class="g-col-1" data-index="8" data-categories="Z2dwbG90MiUyQ3RpZHltb2RlbHMlMkNUaWR5JTIwVHVlc2RheSUyQ3RoZW1pcyUyQ01hY2hpbmUlMjBMZWFybmluZw==" data-listing-date-sort="1620889200000" data-listing-file-modified-sort="1764902726685" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2102">
 <a href="./posts/2021-05-13-tidy-tuesday-coffee-ratings/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -603,7 +529,7 @@ May 13, 2021
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="10" data-categories="UiUyQ2dncGxvdDIlMkNIaWVyYXJjaGljYWwlMjBMaW5lYXIlMjBNb2RlbGluZyUyQ011bHRpbGV2ZWwlMjBNb2RlbGluZyUyQ01vZGVsaW5n" data-listing-date-sort="1619766000000" data-listing-file-modified-sort="1756138063734" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2621">
+<div class="g-col-1" data-index="9" data-categories="UiUyQ2dncGxvdDIlMkNIaWVyYXJjaGljYWwlMjBMaW5lYXIlMjBNb2RlbGluZyUyQ011bHRpbGV2ZWwlMjBNb2RlbGluZyUyQ01vZGVsaW5n" data-listing-date-sort="1619766000000" data-listing-file-modified-sort="1764902726667" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2621">
 <a href="./posts/2021-04-30-twitter-conference-presentation/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -694,13 +620,14 @@ Apr 30, 2021
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
