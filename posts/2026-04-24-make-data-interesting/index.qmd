@@ -585,7 +585,7 @@ azp.plot_ppc_tstat(iline2, t_stat = 'std')
 Similar findings are also seen with our posterior predictive checks 
 
 ```{python}
-azp.plot_trace_dist(iline2)
+azp.plot_trace(iline2)
 ```
 
 # Curvilinear Model
