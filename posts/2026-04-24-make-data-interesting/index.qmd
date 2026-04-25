@@ -365,6 +365,8 @@ We will start off with our non-informative linear model.
 ```{python}
 #| include: false
 
+np.random.seed(12345)
+
 line_file = os.path.join(here('posts/2026-04-24-make-data-interesting/linear.stan'))
 line_model = CmdStanModel(stan_file = line_file,
                          cpp_options = {'STAN_THREADS': 'TRUE'})
@@ -485,6 +487,8 @@ Finally, our trace plots overall look acceptable.
 ```{python}
 #| include: false
 
+np.random.seed(12345)
+
 line_file2 = os.path.join(here('posts/2026-04-24-make-data-interesting/linear2.stan'))
 line_model2 = CmdStanModel(stan_file = line_file2,
                          cpp_options = {'STAN_THREADS': 'TRUE'})
@@ -595,6 +599,8 @@ Even though the model looked like it might have overfit in the visuals. We'll tr
 ```{python}
 #| include: false
 
+np.random.seed(12345)
+
 curve_file = os.path.join(here('posts/2026-04-24-make-data-interesting/curve.stan'))
 curve_model = CmdStanModel(stan_file = curve_file,
                          cpp_options={'STAN_THREADS': 'TRUE'})
@@ -690,6 +696,8 @@ Let's now do all the same things for a zero-inflated model. This model would tre
 
 ```{python}
 #| include: false
+
+np.random.seed(12345)
 
 count_file = os.path.join(here('posts/2026-04-24-make-data-interesting/count.stan'))
 count_model = CmdStanModel(stan_file = count_file,
@@ -813,7 +821,7 @@ compare_df = azs.compare({'linear_model': iline,
 azp.plot_compare(compare_df)
 ```
 
-Comparing the models indicates that a zero-inflated poisson model and the informed priors linear regresion are comparable models. So while those may be the better models, we'll calculate predictions for each of the models to see what the average posterior damage index, standard deviation, and 95% credible intervals would be.
+Comparing the models indicates that a zero-inflated poisson model seems like the most accurate model. So while it may be the better model, we'll calculate predictions for each of the models to see what the average posterior damage index, standard deviation, and 95% credible intervals would be.
 
 # Predictions at 26°F-29°F
 
