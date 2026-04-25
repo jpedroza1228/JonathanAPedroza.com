@@ -899,7 +899,11 @@ count_temp_df.columns = [[f'temp{i}' for i in new_temp]]
 gt.show(gt(pd.DataFrame({'avg': count_temp_df.mean().round(),
               'std': count_temp_df.std().round(2),
               'lower_95_ci': count_temp_df.quantile(.025).round(2),
-              'upper_95_ci': count_temp_df.quantile(.975).round(2)})).tab_header(title = 'Zero-Inflated Poisson Regression - Predictions'))
+              'upper_95_ci': count_temp_df.quantile(.975).round(2),
+              'non_zero_avg_damage': count_temp_df[(count_temp_df != 0).all(axis = 1)].mean().round(),
+              'non_zero_lower_95_ci': count_temp_df[(count_temp_df != 0).all(axis = 1)].quantile(.025).round(),
+              'non_zero_upper_95_ci': count_temp_df[(count_temp_df != 0).all(axis = 1)].quantile(.975).round(),
+              })).tab_header(title = 'Zero-Inflated Poisson Regression - Predictions'))
 ```
 
 ```{python}
