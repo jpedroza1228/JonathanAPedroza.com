@@ -24,7 +24,7 @@ website:
       - icon: mortarboard
         # text: Google Scholar
         href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
-      - icon: file
+      - icon: file-pdf
         # text: CV
         href: https://drive.google.com/file/d/133PNQ0epTvvytGrdLu6Uwfkh2Et5tYFX/view?usp=sharing
 

@@ -16,21 +16,19 @@ title-block-banner: true
 
 [University of Oregon Graduate School Dashboard](https://jpedroza1228.github.io/gradschool_dashboard/)
 
-## Docker Image
-
-[Shiny App for Bayesian Network](https://hub.docker.com/r/japedroza1228/bayesnetapp)
-
--   GitHub Repository: ([Link](https://github.com/jpedroza1228/bayes-net-app))
-
 ## Shiny Examples
 
 [Neuropsychology Assessment Calculations](https://jp-shinyapps.shinyapps.io/neuropsych_calculations/)
 
--   GitHub Repository: ([Link](https://github.com/jpedroza1228/neuropsych_calculations))
+-   [GitHub Repository](https://github.com/jpedroza1228/neuropsych_calculations)
 
 [Prophet Stock Price Parameters Shiny App](https://jp-shinyapps.shinyapps.io/stock_price_parameters/)
 
--   GitHub Repository: ([Link](https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R))
+-   [GitHub Repository](https://github.com/jpedroza1228/data_visualizations/blob/master/stock_prices/app.R)
+
+[Discrete Bayesian Network Modeling with no Coding](https://hub.docker.com/r/japedroza1228/bayesnetapp) (Docker Image)
+
+-   [GitHub Repository](https://github.com/jpedroza1228/bayes-net-app)
 
 ## Visualizations With Write Ups
 
@@ -39,7 +37,3 @@ title-block-banner: true
 [Funding for University of Oregon Teaching Assistants](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization2.pdf)
 
 [The Importance of Including Variables in Models](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization3.pdf)
-
-## Current Projects/Analyses
-
-[Suspension Levels for Students with Disabilities in California Districts](https://html-preview.github.io/?url=https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/student_suspensions/ca_student_suspension.html)
