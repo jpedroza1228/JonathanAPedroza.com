@@ -2,12 +2,31 @@ project:
   type: website
 
 website:
-  title: "Jonathan A. Pedroza"
+  title: "Jonathan A. Pedroza PhD"
   navbar:
     left:
       - href: resources.qmd
-      #- href: index.qmd
+      - href: projects.qmd
       - href: posts.qmd
+    right:
+      - icon: bluesky
+        # text: BlueSky
+        href: https://bsky.app/profile/jonathanpedroza.bsky.social
+      - icon: mastodon
+        # text: Mastodon
+        href: https://fosstodon.org/@jpedroza
+      - icon: linkedin
+        # text: LinkedIn
+        href: https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/
+      - icon: github
+        # text: Github
+        href: https://github.com/jpedroza1228
+      - icon: mortarboard
+        # text: Google Scholar
+        href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
+      - icon: file
+        # text: CV
+        href: https://drive.google.com/file/d/133PNQ0epTvvytGrdLu6Uwfkh2Et5tYFX/view?usp=sharing
 
 format:
   html:
@@ -22,4 +41,3 @@ format:
     toc: true
 
 editor: visual
-
