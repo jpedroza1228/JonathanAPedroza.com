@@ -6,65 +6,15 @@ format:
       toc: false
 about:
   template: jolla
-  links:
-    - icon: <i class="fa-brands fa-bluesky"></i>
-      text: BlueSky
-      href: https://bsky.app/profile/jonathanpedroza.bsky.social
-    - icon: <i class="fa-brands fa-mastodon"></i>
-      text: Mastodon
-      href: https://fosstodon.org/@jpedroza
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/
-    - icon: github
-      text: Github
-      href: https://github.com/jpedroza1228
-    - icon: graduation-cap
-      text: Google Scholar
-      href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
-    - icon: cv
-      text: CV
-      href: https://drive.google.com/file/d/133PNQ0epTvvytGrdLu6Uwfkh2Et5tYFX/view?usp=sharing
 ---
 
-Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a prevention scientist and data science educator with work that focuses on accurate measurement, examining protective and risk factors for various health conditions, and early detection of 
+Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a [prevention scientist](https://www.npscoalition.org/prevention-science) and data science educator with work that focuses on accurate measurement, examining protective and risk factors for health behaviors, and early detection of both health and educational outcomes. I have 10+ years of experience in project management, statistical analyses, stakeholder engagement, and mentorship. 
 
+Currently, I am a postdoctoral fellow in data science education at UC Berkeley with a focus on making data science more equitable by closing the divide in statistics proficiency between students with strong backgrounds in mathematics and statistics and students eager to learn data science without that proficiency. Specifically, my research focus is in altering course designs, providing more chances for students to learn concepts through alternative grading practices, and using diagnostic classification models in small samples to identify students in need to provide additional resources. 
 
-My education in [Prevention Science](https://www.npscoalition.org/prevention-science)
+Additionally, I am a data science mentor at Posit Academy where I mentor cohorts to learn data science skills in both R and Python. These skills include data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports, while navigating the changing data science field of AI incorporation.
 
- included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. 
-
-I currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.
-
-```{r}
-#| echo: false
-#| eval: true
-
-interests <- c(
-  "examining health disparities through a socio-ecological framework in Latina/o populations",
-  "exploring environmental factors that contributed to inequities in access to and engagement in health behaviors",
-  "the role of acculturation in helping to explain health disparities in Latina/o populations",
-  "the link between mental and physical health in Latina/o populations"
-) |> 
-  tibble::as_tibble() |> 
-  dplyr::rename(
-  `My Research Interests` = value
-  ) |> 
-  dplyr::mutate(
-    `My Research Interests` = stringr::str_to_title(`My Research Interests`),
-    `My Research Interests` = stringr::str_replace(
-      `My Research Interests`,
-      "Latina/O",
-      "Latina/o"
-    )
-  )
-
-reactable::reactable(
-  interests
-)
-```
-
-My posts often include using R and Python for data analyses and machine learning. Some of these topics include Bayesian statistics with Stan, interactive documents, and shiny apps. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I'm currently on [BlueSky](https://bsky.app/profile/jonathanpedroza.bsky.social) for social media and infrequently check [Mastodon](https://fosstodon.org/@jpedroza). You can also email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires.
+In this blog, there are posts on topics I find interesting revolving around statistics and machine learning, resources on tools, shiny apps, and dashboards I have built, and current projects I am working on. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. You can email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires or interests in collaborating.
 
 # Data Science Colleagues
 
