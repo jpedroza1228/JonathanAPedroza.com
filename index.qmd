@@ -1,9 +1,9 @@
 ---
 title: "About Me"
-image: jp_resume_photo.jpg
+image: /images/main_page_jp.jpg
 format:
     html:
-        toc: false
+      toc: false
 about:
   template: jolla
   links:
@@ -27,7 +27,14 @@ about:
       href: https://drive.google.com/file/d/133PNQ0epTvvytGrdLu6Uwfkh2Et5tYFX/view?usp=sharing
 ---
 
-Hi! My name is Jonathan Andrew Pedroza PhD, but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. My education in [Prevention Science](https://www.npscoalition.org/prevention-science) included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. I currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.
+Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a prevention scientist and data science educator with work that focuses on accurate measurement, examining protective and risk factors for various health conditions, and early detection of 
+
+
+My education in [Prevention Science](https://www.npscoalition.org/prevention-science)
+
+ included training in *program evaluation*, *implementation science*, *machine learning*, *inferential statistics*, and *survey design*. 
+
+I currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.
 
 ```{r}
 #| echo: false
@@ -61,4 +68,10 @@ My posts often include using R and Python for data analyses and machine learning
 
 # Data Science Colleagues
 
-![](cats_working.jpg)
+::: {layout-ncol=3, layout="[33.3, 33.3, 33.3]"}
+![](/images/dirty_charles.jpg){fig-alt="A picture of an orange long haired cat Charlie with dirt on his face."}
+
+![](/images/lucy.jpg){fig-alt="A picture of a gray and white long haired cat Lucy."}
+
+![](/images/daisy.jpg){fig-alt="A picture of a tabby cat leaning and falling asleep on a couch."}
+:::
