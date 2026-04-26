@@ -32,7 +32,7 @@
     "href": "resources.html#shiny-examples",
     "title": "Resources",
     "section": "Shiny Examples",
-    "text": "Shiny Examples\nNeuropsychology Assessment Calculations\n\nGitHub Repository: (Link)\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository: (Link)"
+    "text": "Shiny Examples\nNeuropsychology Assessment Calculations\n\nGitHub Repository\n\nProphet Stock Price Parameters Shiny App\n\nGitHub Repository\n\nDiscrete Bayesian Network Modeling with no Coding (Docker Image)\n\nGitHub Repository"
   },
   {
     "objectID": "resources.html#visualizations-with-write-ups",
@@ -53,7 +53,7 @@
     "href": "index.html",
     "title": "About Me",
     "section": "",
-    "text": "Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a prevention scientist and data science educator with work that focuses on accurate measurement, examining protective and risk factors for various health conditions, and early detection of\nMy education in Prevention Science\nincluded training in program evaluation, implementation science, machine learning, inferential statistics, and survey design.\nI currently am a contractor for Posit Academy as a data science mentor. As a mentor, I train cohorts from organizations around the world to learn data science skills in R and Python, such as data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports. I am open to learning more about a new field, especially since working with data from various fields with my academy cohorts.\n\n\n\n\n\n\nMy posts often include using R and Python for data analyses and machine learning. Some of these topics include Bayesian statistics with Stan, interactive documents, and shiny apps. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. I’m currently on BlueSky for social media and infrequently check Mastodon. You can also email me at  jonpedroza1228@gmail.com with any inquires.\n\nData Science Colleagues"
+    "text": "Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a prevention scientist and data science educator with work that focuses on accurate measurement, examining protective and risk factors for health behaviors, and early detection of both health and educational outcomes. I have 10+ years of experience in project management, statistical analyses, stakeholder engagement, and mentorship.\nCurrently, I am a postdoctoral fellow in data science education at UC Berkeley with a focus on making data science more equitable by closing the divide in statistics proficiency between students with strong backgrounds in mathematics and statistics and students eager to learn data science without that proficiency. Specifically, my research focus is in altering course designs, providing more chances for students to learn concepts through alternative grading practices, and using diagnostic classification models in small samples to identify students in need to provide additional resources.\nAdditionally, I am a data science mentor at Posit Academy where I mentor cohorts to learn data science skills in both R and Python. These skills include data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports, while navigating the changing data science field of AI incorporation.\nIn this blog, there are posts on topics I find interesting revolving around statistics and machine learning, resources on tools, shiny apps, and dashboards I have built, and current projects I am working on. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. You can email me at  jonpedroza1228@gmail.com with any inquires or interests in collaborating.\n\nData Science Colleagues"
   },
   {
     "objectID": "posts/2024-11-11-bayes-net-bnlearn-us-coffee-tasting/index.html",
@@ -359,7 +359,7 @@
   {
     "objectID": "posts.html",
     "href": "posts.html",
-    "title": "My Posts",
+    "title": "Posts",
     "section": "",
     "text": "Diving into Data:\n\n\n\ncmdstanpy\n\npython\n\nbayesian\n\nstan\n\npandas\n\n\n\n\n\n\n\n\n\n\nApr 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nLooping Through Parameterized Reports\n\n\n\nPython\n\nQuarto\n\npandas\n\nplotnine\n\ngreat_tables\n\nplotly\n\n\n\n\n\n\n\n\n\n\nDec 5, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nUsing a Bayesian Network For Machine Learning\n\n\n\nBayes Net\n\nBayesian Network\n\nMachine Learning\n\nR\n\nbnlearn\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nData Manipulation in R & Python\n\n\n\nData Manipulation\n\ndplyr\n\npandas\n\nnumpy\n\nPython\n\nR\n\ndata.table\n\npolars\n\nData Wrangling\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy submission to Posit’s Closeread Competition\n\n\n\nCloseread\n\nggplot2\n\nHTML\n\nQuarto\n\n\n\n\n\n\n\n\n\n\nNov 15, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nProphet Model\n\n\n\nggplot2\n\nforecast\n\ntidymodels\n\nmodeltime\n\nprophet\n\nR\n\n\n\n\n\n\n\n\n\n\nNov 14, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nBayesian Network for US Coffee Tasting Data\n\n\n\nBayesian\n\nBayesian Network\n\nBayes Net\n\nR\n\nbnlearn\n\nDAG\n\n\n\n\n\n\n\n\n\n\nNov 11, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\nGraduate Student Satisfaction Exit Surveys\n\n\n\nggplot2\n\nShiny\n\nEducation\n\n\n\n\n\n\n\n\n\n\nJun 19, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidy Tuesday Coffee Ratings\n\n\n\nggplot2\n\ntidymodels\n\nTidy Tuesday\n\nthemis\n\nMachine Learning\n\n\n\n\n\n\n\n\n\n\nMay 13, 2021\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwitter Conference Presentation\n\n\n\nR\n\nggplot2\n\nHierarchical Linear Modeling\n\nMultilevel Modeling\n\nModeling\n\n\n\n\n\n\n\n\n\n\nApr 30, 2021\n\n\n\n\n\n\nNo matching items"
   },
@@ -418,5 +418,26 @@
     "title": "Diving into Data:",
     "section": "Zero-Inflated Poisson Model",
     "text": "Zero-Inflated Poisson Model\nLet’s now do all the same things for a zero-inflated model. This model would treat O-ring damage as a count variable, which would be appropriate given that there cannot be negative damage.\n\n\nCode\nprint(count_diagnose.sort_values('R_hat', ascending = False).head())\n\n\n               Mean      MCSE    StdDev       MAD        5%       50%  \\\ny_rep[1]   1.529880  0.033078  2.932730  0.000000  0.000000  0.000000   \nbeta_psi   0.015648  0.000339  0.018899  0.018976 -0.016385  0.015950   \nalpha_psi -0.000379  0.018102  0.994878  0.976714 -1.571130 -0.017029   \nlogit_psi  0.907235  0.005667  0.465994  0.463543  0.162189  0.887682   \ny_rep[12]  2.111000       NaN  4.420870  0.000000  0.000000  0.000000   \n\n                 95%  ESS_bulk  ESS_tail  ESS_bulk/s    R_hat  \ny_rep[1]    8.000000   8021.27   7912.33     3145.60  1.00146  \nbeta_psi    0.045705   3137.61   3264.18     1230.43  1.00118  \nalpha_psi   1.696960   3050.45   3017.70     1196.26  1.00090  \nlogit_psi   1.693470   6852.13   4970.67     2687.11  1.00079  \ny_rep[12]  12.000000   7662.92   6795.75     3005.06  1.00069  \n\n\nModel still looks good based on these fit indices.\n\n\nCode\nicount = azb.from_cmdstanpy(\n    posterior = count_fit,\n    prior = count_prior_fit,\n    posterior_predictive = ['y_rep'],\n    prior_predictive = ['y_rep'],\n    observed_data = {'y_rep': stan_dict['y']},\n    log_likelihood = 'log_lik'\n    )\n\n\n\n\nCode\nazp.plot_dist(\n    icount,\n    kind = 'kde',\n    col_wrap = 1,\n    var_names = ['alpha_psi', 'beta_psi',\n                  'alpha_lam', 'beta_lam',\n                  'psi', 'lam']\n)\n\n\n\n\n\n\n\n\n\nWhile there are several parameters from the zero-inflated and poisson models, I am going to focus on the following two parameters because they are the most applicable to our SRBs and O-ring damage.\n\\(\\psi\\): The average probability of zero damage index.\n\\(\\lambda\\): The aerage expected damage index when the observations are not zero.\nThe average posterior probability of no damage index is 70%, so it is more likely for zeros to be present. This tracks as our data is mainly comprised of 0 damage index values. When observations are not zero, the average damage index would be 4.7.\n\n\nCode\nazp.plot_forest(\n    icount,\n    var_names = ['alpha_psi', 'beta_psi',\n                  'alpha_lam', 'beta_lam',\n                  'psi', 'lam']\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\nazp.plot_prior_posterior(\n    icount,\n    var_names = ['alpha_psi', 'beta_psi',\n                  'alpha_lam', 'beta_lam'],\n    kind = 'kde'\n)\n\n\n\n\n\n\n\n\n\nLooking at the linear parameters for calculating the sections for the zero-inflated and poisson models, the intercepts follow the priors well, but the beta parameters are similar to the previous models.\n\n\nCode\nazp.plot_ppc_dist(icount, kind = 'kde', num_samples = 100)\n\n\n\n\n\n\n\n\n\n\n\nCode\nazp.plot_ppc_dist(icount, kind = 'ecdf', num_samples = 100)\n\n\n\n\n\n\n\n\n\nWhile not amazing, this model seems the best in comparison to the impossible values from the linear models.\n\n\nCode\nazp.plot_ppc_tstat(icount, t_stat = 'mean')\nazp.plot_ppc_tstat(icount, t_stat = 'std')\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe posterior predictive checks also seem better than the previous models.\n\n\nCode\nazp.plot_trace(icount)\n\n\n\n\n\n\n\n\n\nFinally, the trace plots look acceptable."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Under construction! Coming soon!"
+  },
+  {
+    "objectID": "projects.html#current-projects",
+    "href": "projects.html#current-projects",
+    "title": "Projects",
+    "section": "",
+    "text": "Under construction! Coming soon!"
+  },
+  {
+    "objectID": "projects.html#current-projectsanalyses",
+    "href": "projects.html#current-projectsanalyses",
+    "title": "Projects",
+    "section": "Current Projects/Analyses",
+    "text": "Current Projects/Analyses\nSuspension Levels for Students with Disabilities in California Districts"
   }
 ]
