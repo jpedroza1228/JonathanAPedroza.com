@@ -1,14 +1,8 @@
 ---
 title: "Projects"
-page-layout: full
-title-block-banner: true
+listing: 
+  contents: projects # all Quarto docs in the `posts` directory will be included on your listing page
+  type: default # or `default` or `table`; each type has its own set of yaml options to include
+  sort: "date desc" # can also sort on more than one field
+  categories: true # allows you to sort posts by assigned categories 
 ---
-
-## Current Projects
-
-Under construction! Coming soon!
-
-## Current Projects/Analyses
-
-[Suspension Levels for Students with Disabilities in California Districts](https://html-preview.github.io/?url=https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/student_suspensions/ca_student_suspension.html)
-

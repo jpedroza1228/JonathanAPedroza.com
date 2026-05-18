@@ -1,0 +1,20 @@
+---
+title: "Show Your Work" 
+categories: [show-your-work]
+date: 2026-04-26
+# citation:
+  # url: 
+draft: true
+execute:
+    message: false
+    warning: false
+params:
+  slug: show-your-work
+  date: 2026-04-26
+---
+
+As I have started working as a postdoctoral researcher I have been working under the supervision of Dr. Michelle H. Wilkerson, an Associate Professor at UC Berkeley's School of Education. My work with Michelle has focused on creating and evaluating Jupyter notebooks for K-12 educators to potentially use in their teaching materials.
+
+The repository with notebooks in both R and Python can be found \[here\]().
+
+My role within this project is to examine interview and survey data to look for trends. I also was responsible for building the geospatial notebook content for educators to see how educators use this information to explore public health data on life expectancy and predictors of life expectancy between states.
