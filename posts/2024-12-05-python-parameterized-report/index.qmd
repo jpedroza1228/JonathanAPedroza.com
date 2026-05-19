@@ -25,7 +25,7 @@ I wanted to make a quick post about looping through a parameterized report using
 #| include: false
 
 library(reticulate)
-use_python(here::here("website_venv/bin/python3.12"))
+use_python(here::here(".venv/bin/python3"))
 # use_virtualenv(here::here("website_venv"))
 ```
 
@@ -120,6 +120,37 @@ pn.ggplot.show(
 (
   GT(pen_table)
 )
+```
+
+## Rendering a Single Parameterized Report
+
+Let's say we want to run one parameterized report. Of course if we wanted to, we could use the `Preview` button or play button somewhere on whatever IDE we are using. The other option is to either use the command line to write out the code to render our specific report.
+
+First, we can do this in the command line. We call the render function from quarto to get our index file and choose the specific year of 2008. Finally, we can create a report name for our report.
+
+```{txt}
+#| eval: false
+#| echo: true
+
+quarto render index.qmd -P year:2008 --output penguin_report_2008.html
+```
+
+We could also do the same thing using a python script. You will be able to notice the similarities between the top options.
+
+```{python}
+#| eval: false
+#| echo: true
+
+import os
+
+ output_file = 'penguin_report_2008.html'
+  command = (
+    'quarto render index.qmd '
+    '-P year:2008 '
+    '--output "{output_file}"'
+  )
+    os.system(command)
+
 ```
 
 ## Looping Through Years

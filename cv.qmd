@@ -1,0 +1,1195 @@
+---
+format: typst
+---
+
+```{=typst}
+// Variables
+#let update = [Updated March 2026]
+#let address = [Berkeley, CA]
+#let current_email = [jpedroza1228\@berkeley.edu]
+```
+
+```{=typst}
+//#import "@preview/tablex:0.0.8": tablex
+
+#show heading.where(level: 1): it => {
+  underline(it.body)
+}
+#show link: underline
+#show link: set text(font: "Crimson Pro", fill: rgb("#56B4E9"))
+
+#set text(font: "Crimson Pro", size: 12pt)
+
+#set block(spacing: 1em)
+#set par(leading: .5em)
+
+#set page(
+  margin: (
+  top: 3cm,
+  bottom: 1cm,
+  x: 1cm
+  ),
+  header: [
+    #set align(center)
+    #set text(font: "Crimson Pro", size: 18pt)
+    
+    *Jonathan Andrew Pedroza PhD*
+    
+    #set text(font: "Crimson Pro", size: 12pt)
+    
+    #link("https://github.com/jpedroza1228")[GitHub] |
+    #h(.1em)
+    #link("https://jonathanapedroza.com/")[Website] |
+    #h(.1em)
+    *Contact*: #current_email |
+    #h(.1em)
+    #address
+  ],
+  header-ascent: .5em,
+  footer: [
+    #set align(right)
+    #update
+  ]
+)
+
+#line(
+      length: 100%,
+      stroke: black
+    )
+
+= Education
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Doctor of Philosophy, Prevention Science (2021)
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        _Specialization: Educational Data Science_
+      ],
+      [
+        Committee: Elizabeth L Budd PhD, MPH (Chair), Atika Khurana PhD, Nichole R Kelly PhD, & Raoul S Liévanos PhD
+      ],
+      [
+        *Dissertation Title:* Greater Access to Recreational Resources is Associated with More Leisure-Time Physical Activity Engagement in Counties Across the United States
+      ]
+    )
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Master of Science, Prevention Science (2020)
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Advisor: Elizabeth L Budd PhD, MPH
+      ]
+    )
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Master of Arts, Health Psychology (2017)
+      ], 
+      [
+        California State University, Dominguez Hills
+      ],
+      [
+        Committee: Larry Rosen PhD (Co-Chair), L Mark Carrier PhD (Co-Chair), & Silvia Santos PhD
+      ],
+      [
+        *Thesis Title:* Technology’s Impact on Psychological Well-Being Independent of Negative Health Impacts in College Students
+      ]
+    )
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Bachelor of Arts in Psychology (2014)
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ]
+    )
+
+
+= Publications
+
+#set par(hanging-indent: 2em)
+
+*Pedroza, J. A.*, Guardado-García, J. J., Williams, M. J., Alcala, M., Nakamura, N. N., Serpas, D. G., Harrison, A., Chon, D. (_in press_). Measurement Invariance of the LGBT Microaggressions Scale among Latina/o/x persons and non-Latina/o/x People of Color. _LGBT Health_.
+
+*Pedroza, J. A.*, Serpas, D. G., Guardado-García, J. J., Zelaya, D. G., Alcala, M. S., & Keys, K. (_in press_). Cardiovascular Disease Risk Factors, Intersectional Minority Stressors, and Self-Reported Cardiovascular Disease Among Sexual and Gender Minority People of Color: An Exploratory Latent Class Analysis. _LGBT Health_.
+
+Nichols, L. M., Fleming, C. M., *Pedroza, J. A.*, O’Brien, K. M., & Tanner-Smith, E. E. (2024). Psychometric Properties of the Alabama Parenting Questionnaire Among Adolescents with Substance Use Disorder Histories. _Child and Adolescent Social Work Journal_, 1-14.
+
+Nichols, L. M., *Pedroza, J. A.*, Fleming, C. M., O’Brien, K. M., & Tanner-Smith, E. E. (2021). Social-ecological Predictors of Opioid Use among Adolescents with Histories of Substance Use Disorders. _Frontiers in Psychology_, 12.
+
+Rosen, L. D., Carrier, L. M., *Pedroza, J. A.*, Elias, S., O’Brien, K. M., Lozano, J., ... & Ruiz, A. (2018). The Role of Executive Functioning and Technological Anxiety (FOMO) in College Course Performance as Mediated by Technology Usage and Multitasking Habits. _Psicologia Educativa, 24(1)_, 14-25.
+
+_Manuscripts in Progress:_
+
+Pychometric: Using Python and Stan for Bayesian Estimated Diagnostic Classification Models 
+
+#set par(hanging-indent: 0em)
+
+#set page(
+  margin: (
+  top: 1cm,
+  bottom: 1cm,
+  x: 1cm
+  ),
+  header:[
+    #set align(right)
+    Pedroza
+    #h(.01em)
+    #context(counter(page).display("1"))
+  ],
+  header-ascent: .5em,
+  footer: [
+    #set align(right)
+    #update
+  ]
+)
+
+= Research Experience
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Addressing Inequities in the Association Between Access to Recreational Resources and Leisure-time Physical Activity in the United States. Examining Violent Crime Rates as a Moderator (2020-2021)
+      ],
+      [
+        Supervisor: Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Collected and joined county-level data from various public data sources],
+  [Conducted spatial regression techniques]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Examining Physical Activity as a Mediator between Neighborhood Walkability and Obesity in a Sample of Latinx Adults (2018-2021)
+      ],
+      [
+        Supervisors: Tasia M Smith PhD & Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Formulated study design],
+  [Conducted structural equation modeling techniques],
+  [Wrote and edited a draft of the manuscript]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Investigating Psychometric Measures and Ecological Predictors for At-Risk Adolescents (2018-2020)
+      ],
+      [
+        Supervisors: Emily E Tanner-Smith, PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature reviews],
+  [Formulated study design],
+  [Conducted exploratory factor analyses, multiple imputation, and regression analyses],
+  [Wrote sections of the manuscript]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Association of Depressive Symptoms and Body Mass Among Young Adults with Higher Education (2017-2021)
+      ],
+      [
+        Supervisors: Tasia M Smith PhD, Nichole R Kelly PhD, & Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Conducted regression analyses],
+  [Wrote and edited sections of the manuscript]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Are Smartphones Really Mobile Devices? The Examination of Smartphone Use as a Moderator of the Relationship Between Acculturation and Screen-based Sedentary Behaviors in a Diverse Sample of Latinx Adults (2017-2019)
+      ],
+      [
+        Supervisors: Tasia M Smith PhD, Nichole R Kelly PhD, & Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Conducted regression analyses],
+  [Wrote a draft of the manuscript]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Understanding Food Access in Oakridge and other Rural Communities (2017-2019)
+      ],
+      [
+        Supervisors: Tasia M Smith PhD, Nichole R Kelly PhD, & Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Recruited participants],
+  [Led data collection],
+  [Conducted focus groups],
+  [Created relationships with rural communities],
+  [Conducted regression analyses],
+  [Mentored undergraduate lab members]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Pokémon GO and Meet Others: Technology’s Effect on Physical Activity and Social 
+Connectedness (2016-2017)
+      ],
+      [
+        Supervisor: Larry Rosen PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Recruited participants through social media outlets],
+  [Conducted analyses]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Differences in Prefrontal Cortex Activation and Executive Functioning Between Light and Heavy Technology Users (2015 – 2017) 
+      ],
+      [
+        Supervisors: Larry Rosen PhD, L Mark Carrier PhD, & Alex Lim MA
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Cleaned neuroimaging data using fNIR Soft],
+  [Analyzed neuroimaging data],
+  [Trained new lab technicians in neuroimaging measures],
+  [Trained new lab technicians in physiological measures],
+  [Created protocols for experiments]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        How Executive Functioning, Anxiety and Technology Use Impact College Students’ Course Performance (2015-2016)
+      ],
+      [
+        Supervisor: Larry Rosen PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Assisted in the data collection procedures],
+  [Addressed issues with the data collecting app],
+  [Assisted in conducting analyses],
+  [Mentored undergraduates]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Brain Imaging Study of Adult Latinas/os Who Translate (2015 – 2017)
+      ],
+      [
+        Supervisors: Alejandro Morales PhD & Alex Lim MA
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Conducted literature review],
+  [Cleaned neuroimaging data using fNIR Soft],
+  [Analyzed neuroimaging data]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Content Analysis of Type 2 Diabetes Interventions for Latinos (2014)
+      ],
+      [
+        Supervisor: Alejandro Morales PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Coded articles to examine differences in interventions],
+  [Examined practicality and possible implementation of interventions],
+  [Examined theory involved in interventions],
+)
+
+= Presentations
+
+== National Conferences
+
+#set par(hanging-indent: 2em)
+
+*Pedroza, J. A.* (September 2020). _Examining the Longitudinal Association Between Access to Recreational Resources and Leisure-time Physical Activity Across California_. Virtual presentation at the American Public Health Association Physical Activity Twitter Conference. (https://twitter.com/PaSectionAPHA/status/1309192269447143425). 
+
+Nichols, L. M., Fleming, C. M., *Pedroza, J. A.*, O’Brien, K. M., & Tanner-Smith, E. E. (August 2020). _Psychometric Properties of the Alabama Parenting Questionnaire Among Adolescents in Recovery from Substance Use_. Poster presented at the American Psychological Association Convention. (Virtual Conference). 
+
+Nichols, L. M., Fleming, C. M., *Pedroza, J. A.*, O’Brien, K. M., & Tanner-Smith, E. E. (April, 2020).  _Psychometric Properties of the Alabama Parenting Questionnaire Among High-risk Adolescents_. Poster to be presented at the Collaborative Perspectives on Addiction Conference, San Diego, CA. (Poster accepted but conference canceled).
+
+Luther, G., *Pedroza, J. A.*, & Kelly, N. R. (November 2019). _The Role of Perceived Racial Discrimination and Weight Status on Depression Among Latina Women_. Poster presented at The Obesity Society, Las Vegas, NV.
+
+*Pedroza, J. A.*, Kelly, N. R., & Budd, E. L. (November 2019). _Neighborhood Walkability is Associated with Physical Activity in Latinx Adults, Particularly Those with High Acculturation_. Oral presentation accepted at the American Public Health Association Conference, Philadelphia, PA. 
+
+Cahn, A. F., *Pedroza, J. A.*, Terral, H. & Budd, E. L. (November 2019). _Neighborhood Walkability, Physical Activity, and Sedentary Behaviors Examined by Perceived Health Status among Diverse Latinx Adults_. Oral presentation presented at the American Public Health Association, Philadelphia, PA.
+
+Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (May 2019). The Impact of _Individual-Level Motivators of and Barriers to Healthy Food Choices on Perceived Healthy Food Access in a Rural Community_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California. 
+
+*Pedroza, J. A.*, Luther, G. M., Folger, A. C., Smith, T. M., Kelly, N. R., & Budd, E. L. (May 2019). _Smartphone Use as a Moderator of Bicultural Dimensions of Acculturation and Sedentary Behaviors Among a Sample of Latinx Young Adults_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California.
+
+*Pedroza, J. A.*, Folger, A. C., Luther, G. M., & Smith, T. M., Kelly, N. R., & Budd, E. L. (May 2019). _Assessing Nutrition Knowledge in Rural Communities: Examining the Association between Sociodemographic Factors and Nutrition Knowledge_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California. 
+
+Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (August 2019). _Depression and Chronic Health Conditions: Examining Racial Identity as a Moderator_. Poster accepted for presentation at American Psychological Association Convention, Chicago, Illinois.
+
+Smith, T. M., *Pedroza, J. A.*, Kashani, Y., Kelly, N. R., Budd, E. L., & Giuliani, N. R. (January 2019). _Depressive Symptoms are Associated with Body Mass Index among Young Adults with Higher Education_. Poster to be presented at National Multicultural Conference and Summit, Denver, Colorado.
+
+*Pedroza, J. A.*, Smith, T. M., & Budd, E. L. (July 2018). _Language Competence and Screen-time Sedentary Behaviors are Moderated by Smartphones_. Poster presentation at APA Division 45 Research Conference, Austin, Texas. 
+
+== Regional Conferences
+
+*Pedroza, J. A.*, Kelly N. R., & Budd, E. L. (October 2019). _The Association of Neighborhood Walkability and Physical Activity in Differing Levels of Acculturated Latinx Adults_. Oral presentation accepted at the Oregon Public Health Association Conference, Corvallis, OR. 
+
+Lieberman, N., *Pedroza, J. A.*, Elias, S., Jimenez, M., Cheever, N. A., Carrier, L.M., & Rosen, L. D. (April 2017). _The Psychology of New Technologies: Exploring Executive Functioning, Anxiety, Physical Activity, and Time Perception_. Symposium presented at Western Psychological Association Convention, Sacramento, California. 
+
+Lim, A. F., *Pedroza, J. A.*, O’Brien, K., Ceja, L., Jimenez, M., Carrier, L.M., & Rosen, L. D. (April 2016). _Using Functional Near-Infrared Spectroscopy to Examine the Impact of Personal Technology Usage on Executive Functioning_. Symposium presented at Western Psychological Association Convention, Long Beach, California. 
+
+Lim, A. F., *Pedroza, J. A.*, Jimenez, M., Morales, A., Carrier, L.M., & Rosen, L. D. (April 2016). _New Developments in Language Brokering Research Among Latinas/os_. Symposium presented at Western Psychological Association Convention, Long Beach, California.
+
+*Pedroza, J. A.*, Franco, D., Franco, J. A., & Norman, T. J. (April 2016). _Student Satisfaction in International College Students_. Presentation at the Western Decision Sciences Institute, Las Vegas, Nevada.
+
+*Pedroza, J. A.*, Franco, J. A., Franco, D. & Norman, T. J. (April 2016). _Google Glass: The Influence of Recording Interviews on Prefrontal Cortex Activation_. Presentation at the Western Decision Sciences Institute, Las Vegas, Nevada.
+
+== Local Conferences
+
+\*denotes mentored undergraduate students
+
+*Pedroza, J. A.* & Strang A. (March 2026). _Assessing Statistics Understanding: Early Detection of Learning Gaps using Diagnostic Classification Models_. Poster presentation at Berkeley School of Education Research Day, Berkeley, California.
+
+*Pedroza, J. A.*, Yan, W., & Wilkerson, M. H. (March 2026). _Using Computational Notebooks as Teaching Tools: The Show Your Work Mapping Notebook_. Poster presentation at Berkeley School of Education Research Day, Berkeley, California.
+
+Lindsey, M.\*, Smith, T.M., & *Pedroza, J. A.* (May 2018). _Latinx Perceptions of Their Environment: The Examination of Neighborhood Walkability by Region in a National Latinx Sample_. Poster presentation at Undergraduate Research Symposium, Eugene, Oregon.
+
+Bender, C.\*, Smith, T.M., & *Pedroza, J. A.* (May 2018). _Examining Risk and Protective Factors in the Relationship Between Discrimination Stress and Body Mass Index (BMI) in a Sample of Latinx Adults_. Poster presentation at Undergraduate Research Symposium, Eugene, Oregon. 
+
+*Pedroza, J. A.* & Smith, T. M. (May 2018). _The Examination of Smartphone Use as a Moderator on the Association between Acculturation and Sedentary Behaviors_. Poster presentation at Graduate Research Forum, Eugene, Oregon.
+
+Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matters! Understanding Health Inequities in the Latinx Community_. Invited Presentation at Raza Unida Youth Conference, Eugene, Oregon. 
+
+*Pedroza, J. A.*, Carrier, L.M., & Rosen, L. D. (February 2017). _The Effects of Media and Technology Use on Psychological Well-Being Independent of Health Habits_. Presentation at Student Research Day, Carson, California.
+
+*Pedroza, J. A.* & Rosen, L. D. (February 2017). _Pokémon GO and Meet People. Examination of Technology’s Effect on Physical Activity and Social Connectedness_. Presentation at Student Research Day, Carson, California.
+
+*Pedroza, J. A.* & Rosen, L. D. (February 2016). _Technology and Mental Well-being: A Literature Review Examining Media Use and Health Factors’ Effects on Mental Health_. Poster presentation at Student Research Day, Carson, California.
+
+*Pedroza, J. A.* & Morales, A. (March 2014). _Latinos Living with Diabetes: A Content Analysis of Interventions for Self-Management_. Poster presentation at Student Research Conference, Pomona, California.
+
+#set par(hanging-indent: 0em)
+    
+= Teaching & Mentoring Experience
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Lecturer (Fall 2026)]
+      ],
+      [
+        INCLUDE COURSE HERE
+      ],
+      [
+        UC Berkeley
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Lecturer (Fall 2026)]
+      ],
+      [
+        INCLUDE COURSE HERE
+      ],
+      [
+        UC Berkeley
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Mentor (Spring 2026)]
+      ],
+      [
+        Latinx AI Fellowship
+      ],
+      [
+        UC Berkeley
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Shared personal academic trajectories with mentees],
+  [Discussed how my culture influences my research],
+  [Learned about mentees' research discuss the benefits and drawbacks of pursuing graduate degrees]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Panelist (Winter 2025)]
+      ],
+      [
+        PREV 607: Seminar
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Professional Development
+      ],
+      [
+        Instructor: Ashley Linden-Carmichael PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Lecturer (Spring 2022)]
+      ],
+      [
+        PSY 4433/A: Experimental Psychology & Activity
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Lecturer (Spring 2022)]
+      ],
+      [
+        PSY 3307/A: Statistics for Psychology & Activity
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Lecturer (Fall 2021)]
+      ],
+      [
+        PSY 3307/A: Statistics for Psychology (2 sections) & Activity
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Panelist (Winter 2021)]
+      ],
+      [
+        FHS 492: Contemporary Issues in Public Health, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Community-based COVID-19 Prevention & Control Research
+      ],
+      [
+        Instructor: Elizabeth L Budd MPH, PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Panelist (Fall 2020)]
+      ],
+      [
+        PREV 633: Contemporary Issues in Public Health, Prevention Science
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Community-based COVID-19 Prevention & Control Research
+      ],
+      [
+        Instructor: Elizabeth L Budd MPH, PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Guest Lecturer (Winter 2020)]
+      ],
+      [
+        FHS 420: Research in Human Services, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Experimental Designs
+      ],
+      [
+        Instructor: Justin Caouette PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Guest Lecturer (Fall 2019)]
+      ],
+      [
+        FHS 328: Human Development in the Family Context, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Examination of Inequities of Immigrant Families in the United States
+      ],
+      [
+        Instructor: Bertranna Muruthi PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Guest Lecturer (Fall 2019)]
+      ],
+      [
+        FHS 328: Human Development in the Family Context, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Transition between Childhood and Adolescence: Middle Childhood
+      ],
+      [
+        Instructor: Bertranna Muruthi PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Guest Lecturer (Fall 2018)]
+      ],
+      [
+        FHS 215: Exploring Family and Human Services, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Working with Low Income Rural Populations
+      ],
+      [
+        Instructor: Kavitha Rao MEd, MA
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Invited Guest Lecturer (Winter 2018)]
+      ],
+      [
+        FHS 420: Research Methods, Family and Human Services
+      ],
+      [
+        University of Oregon
+      ],
+      [
+        Topic: Experiences Using fNIRS Neuroimaging Techniques
+      ],
+      [
+        Instructor: Emily Tanner-Smith PhD
+      ]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Teaching Assistant (Spring 2017)]
+      ],
+      [
+        UNV 395: Special Topics, McNair Scholars Program
+      ],
+      [
+        California State University, Dominguez Hills
+      ],
+      [
+        Instructor: Michelle Martinez EdD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gave guest lectures],
+  [Graded Assignments],
+  [Held Office Hours]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Teaching Assistant (Spring 2016)]
+      ],
+      [
+        PSY 415 & 416: Advanced Research Methods in Cognitive Psychology, Department of Psychology
+      ],
+      [
+        California State University, Dominguez Hills
+      ],
+      [
+        Instructor: Alex Lim MA
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gave guest lectures],
+  [Graded Assignments],
+  [Held Office Hours]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Teaching Assistant (Fall 2015)]
+      ],
+      [
+        PSY 235: Introduction to Research Methods, Department of Psychology
+      ],
+      [
+        California State University, Dominguez Hills
+      ],
+      [
+        Instructor: Alex Lim MA
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gave guest lectures],
+  [Graded Assignments],
+  [Held Office Hours]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        #text(style: "italic")[Teaching Assistant (Fall 2014)]
+      ],
+      [
+        PSY 455: Human Sexual Behavior: Relationships, Department of Psychology
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ],
+      [
+        Instructor: Alejandro Morales PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gave guest lectures],
+  [Held Office Hours]
+)
+
+= Relevant Work Experience
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Data Science Education Postdoctoral Researcher (2025 - Present)
+      ],
+      [
+        University of California, Berkeley
+      ],
+      [
+        Supervisor: Michelle H Wilkerson PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Evaluated #link("https://dlab.berkeley.edu/")[D-Lab] workshops to improve attendance and instructor preparedness],
+  [Developed a foundational statistics workshop for data science skills]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Data Science Mentor (2022 – Present)
+      ],
+      [
+        Posit Academy - Posit
+      ],
+      [
+        Supervisor: Kristin Bott
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Lead collaborative and presentation sessions for R and Python cohorts],
+  [Mentor learners on visualizations, data manipulation, database management, data analysis, dashboards, and report creation],
+  [Support students with troubleshooting R and Python code],
+  [Propose changes for curriculum changes based on learners' needs]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Data Scientist (2022 - 2024)
+      ],
+      [
+        Accessible Teaching, Learning, & Assessment Systems - University of Kansas
+      ],
+      [
+        Supervisors: W Jake Thompson PhD & Jennifer Kobrin EdD
+      ]
+)
+
+#list(
+      indent: 1em,
+      [Took the lead as the co-chair of the Diversity, Equity, Inclusivity, and Belonging Committee],
+      [Created reports for collaborating institutions],
+      [Conducted ad-hoc analyses for research projects],
+      [Constructed machine learning model that predicted the use of a text-to-speech function for students with significant cognitive disabilities],
+      [Developed a Bayesian Network to measure student mastery of Dynamic Learning Maps (DLM) assessments],
+      [Refined post-processing methods for optimal classification threshold selection],
+      [Developed presentation and technical report templates to be presented to stakeholders],
+      [Created a dashboard for state stakeholders to identify school districts struggling to implement DLM assessments],
+      [Improved response rate to teachers' DLM questions using natural language processes]
+    )
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Lecturer in Psychology (2021 – 2022)
+      ],
+      [
+        California State Polytechnic University, Pomona
+      ],
+      [
+        Supervisor: Erika DeJonghe PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Taught multiple sections of Statistics and Applied Experimental Design],
+  [Instructed students how to calculate statistics by hand and using programming languages (e.g.,SPSS and R)],
+  [Trained students to conduct literature reviews, develop hypotheses, design experiments, conduct statistical analyses, and write academic reports],
+  [Taught students t-tests, chi-square tests, as well as between-, within-design ANOVAs, linear and generalized linear regressions]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Diversity and Inclusion Graduate Employee (2020-2021)
+      ],
+      [
+        Division of Graduate Studies - University of Oregon
+      ],
+      [
+        Supervisor: Padma Akkaraju PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Created advisory groups to meet with departments to improve inclusivity for the Division of Graduate Studies],
+  [Cleaned data for departments to choose candidates for Promising Scholar awards],
+  [Organized data from McNair Scholars programs to match with graduate programs at the University of Oregon],
+  [Developed a dashboard that showed increasing graduate student staffing levels resulted in an increase in undergraduate credits],
+  [Held office hours for students with departmental issues],
+  [Hosted professional development sessions with graduate students from various disciplines]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Team Lead & Contact Tracer (2020)
+      ],
+      [
+        Student Corps to Combat Coronavirus – University of Oregon
+      ],
+      [
+        Supervisors: Angela Long MPH & Jeffrey Measelle PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Interviewed potential positive cases of COVID-19],
+  [Supervised several contact tracers],
+  [Provided resources for contacts to get necessities during quarantine],
+  [Worked alongside the local public health department to track cases and contacts]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Graduate Teaching Assistant (2019-2020)
+      ],
+      [
+        Family and Human Services – University of Oregon
+      ],
+      [
+        Supervisor: Ellen McWhirter PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gave guest lectures],
+  [Graded students’ assignments],
+  [Held office hours to assist students with assignments]
+)
+
+#table(
+      columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Graduate Research Assistant (2017-2019)
+      ],
+      [
+        The Culture and Health Promotion Laboratory - University of Oregon
+      ],
+      [
+        Supervisors: Tasia M Smith PhD, Nichole R Kelly PhD, & Elizabeth L Budd PhD, MPH
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Collaborated on National Institute of Health grants],
+  [Held training sessions for lab members on survey design, data analysis, and report writing],
+  [Conducted a needs assessment and analyses for food insecurity in rural Oregon communities],
+  [Conducted statistical analyses for several projects],
+  [Presented project findings at academic conferences],
+  [Supervised multiple research assistants in recruitment, data collection, and data cleaning for qualitative and quantitative projects],
+  [Mentored research assistants' projects which resulted in conference presentations and an undergraduate thesis]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Research Assistant (2017)
+      ],
+      [
+        McNair Scholars Program – California State University, Dominguez Hills
+      ],
+      [
+        Supervisor: Michelle Martinez EdD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Created presentations for graduate school preparation],
+  [Taught students how to create personal statements, diversity, statements, and CVs],
+  [Provided edits on graduate school materials],
+  [Assisted scholars with literature review, hypothesis formulation, methodology, analyses, and the writing process]
+)
+
+#table(
+  columns: 1,
+      align: left,
+      stroke: none,
+      //auto-lines: false,
+      inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
+      [
+        Research Assistant (2016)
+      ],
+      [
+        Book Title: From Smartphones to Social Media: How Technology Affects our Brains and Behavior
+      ],
+      [
+        Supervisor: L Mark Carrier PhD
+      ]
+)
+
+#list(
+  indent: 1em,
+  [Gathered literature on technology use areas],
+  [Assisted in discussions about direction of chapters]
+)
+
+= Presentation Awards
+
+#list(
+  [Runner up Best Student Oral Presentation Award (2019) Neighborhood Walkability is Associated with Physical Activity in Latinx Adults, Particularly Those with High Acculturation – American Public Health Association Conference, Physical Activity Section],
+  [1st Place Oral Presentation (2017) The Effects of Media and Technology Use on Psychological Well-Being Independent of Health Habits – California State University, Dominguez Hills Student Research Day Conference],
+  [2nd Place Oral Presentation (2017) Pokémon GO and Meet People. Examination of Technology’s effect on Physical Activity and Social Connectedness – California State University, Dominguez Hills Student Research Day Conference],
+  [Winning Paper and Poster Presentation (2016) Investigation of the Neural Correlates of Sex and Proficiency Level in Language Brokers: A Pilot Study Using Functional Near-Infrared (fNIR) Spectroscopy – South Bay Economic Forecast Conference],
+  [1st Place Oral Presentation (2016) Examination of Executive Functioning Behaviors: A Comparison between Light and Heavy Technology Users – California State University, Dominguez Hills Student Research Day Conference],
+  [1st Place Oral Presentation (2016) A Comparison in Prefrontal Cortex Activity between Light and Heavy Technology Users – California State University, Dominguez Hills Student Research Day Conference]
+)
+
+= Honors & Awards
+
+#list(
+  [California State University Chancellor’s Doctoral Incentive Program (2020-2021)],
+  [General University Scholarship - \$2,700 (Fall 2020)],
+  [Society of Prevention Research ECPN Travel Award (Spring 2019)],
+  [General University Scholarship - \$2,700 (Fall 2018)],
+  [APA Division 45 Conference Travel Award (Summer 2018)],
+  [American Psychological Association’s Travel Award (Spring 2018)],
+  [Graduate Research Advancement & Development Grant (Spring 2017)],
+  [Promising Scholar Award (Fall 2017)],
+  [Graduate Equity Fellowship - \$5,000 (Summer 2016)],
+  [Graduate Research Advancement & Development Grant (Spring 2016)]
+)
+
+= Package Development Contributions
+
+#list(
+  link("https://thresholdr.measr.info/")[Thresholdr]
+)
+
+= Open-Source Projects
+
+#list(
+  link("https://jpedroza1228.github.io/medical_use_dashboard/")[Dashboard on Dental Visits and Costs Between Males and Females],
+  link("https://hub.docker.com/r/japedroza1228/bayesnetapp")[Web Application for Building a Discrete Bayesian Network (Docker Image)],
+  link("https://jp-shinyapps.shinyapps.io/neuropsych_calculations/")[Percentile Ranking for Psychological Assessments],
+  link("https://hub.docker.com/r/japedroza1228/exit-survey-app")[Dashboard on Exit Survey Data From Graduate Students at the University of Oregon (Docker Image)],
+  link("https://jpedroza1228.github.io/gradschool_dashboard/")[Dashboard of the Association Between Graduate Student Teaching and Undergraduate Credit Hours]
+)
+
+= Training & Service
+
+#list(
+  [International Society of the Learning Sciences Reviewer (2026)],
+  [American Public Health Association Physical Activity Section Abstract Reviewer (2020)],
+  [APA Advanced Training Institute – Research Methods with Diverse and Ethnic Group (2017)] 
+)
+```

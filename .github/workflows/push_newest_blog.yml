@@ -1,0 +1,16 @@
+name: Notify readme of new post
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pulls most recent post
+        run: |
+          curl -X POST https://api.github.com/repos/jpedroza1228/jonathanapedroza.com/dispatches \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PROFILE_TOKEN}}" \
+          -d '{"event_type": "website_updated"}'

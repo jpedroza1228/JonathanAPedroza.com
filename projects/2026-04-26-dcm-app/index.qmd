@@ -1,0 +1,14 @@
+---
+title: "DCM Shiny App" 
+categories: [dcm-app]
+date: 2026-04-26
+# citation:
+  # url: 
+draft: true
+execute:
+    message: false
+    warning: false
+params:
+  slug: dcm-app
+  date: 2026-04-26
+---

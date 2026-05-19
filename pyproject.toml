@@ -17,6 +17,7 @@ dependencies = [
     "jupyter>=1.1.1",
     "matplotlib>=3.10.8",
     "numpy>=2.4.3",
+    "palmerpenguins>=0.1.6",
     "pandas>=3.0.1",
     "plotnine>=0.15.3",
     "polars>=1.39.3",
