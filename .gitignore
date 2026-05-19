@@ -57,3 +57,5 @@ client_secrets.json
 website_venv/
 
 **/*.quarto_ipynb
+
+/push_newest_blog.yml

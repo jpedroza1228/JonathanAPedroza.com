@@ -1,16 +1,16 @@
-# name: Notify Profile Repo
-# on:
-#   push:
-#     branches:
-#       - main # Or your default branch
+name: Notify readme of new post
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   ping-profile:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Emit repository dispatch
-#         run: |
-#           curl -X POST https://api.github.com/repos/YOUR_USERNAME/YOUR_PROFILE_REPO_NAME/dispatches \
-#           -H "Accept: application/vnd.github.v3+json" \
-#           -H "Authorization: Bearer ${{ secrets.PROFILE_REPO_TOKEN }}" \
-#           -d '{"event_type": "website_updated"}'
+jobs:
+  notify-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pulls most recent post
+        run: |
+          curl -X POST https://api.github.com/repos/jpedroza1228/jonathanapedroza.com/dispatches \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PROFILE_TOKEN}}" \
+          -d '{"event_type": "website_updated"}'
