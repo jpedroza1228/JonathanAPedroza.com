@@ -8,7 +8,6 @@ format: typst
 #let address = [Berkeley, CA]
 #let current_email = [jpedroza1228\@berkeley.edu]
 ```
-
 ```{=typst}
 //#import "@preview/tablex:0.0.8": tablex
 
