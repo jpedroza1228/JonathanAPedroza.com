@@ -127,16 +127,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../resources.html"> 
-<span class="menu-text">Resources</span></a>
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">Posts</span></a>
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv.pdf"> 
+<span class="menu-text">cv.pdf</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -162,11 +166,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://scholar.google.com/citations?user=_LpAFsIAAAAJ&amp;hl=en&amp;oi=ao"> <i class="bi bi-mortarboard" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://drive.google.com/file/d/133PNQ0epTvvytGrdLu6Uwfkh2Et5tYFX/view?usp=sharing"> <i class="bi bi-file-pdf" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -245,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>I wanted to make a quick post about looping through a parameterized report using Quarto and Python because I could not find much information on this topic using Python. When I was creating this, I came across a wonderful video explaining a more in-depth example of looping through a couple of parameters for Quarto documents in Python (video <a href="https://www.youtube.com/watch?v=_kjs_u3Ctt4">here</a>, Quarto document code <a href="https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/parameterized-report.qmd">here</a>, for loop code <a href="https://github.com/KeithGalli/quarto-crash-course/blob/parameterized-reports/generate_all_reports.py">here</a>).</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -261,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="parameters">Parameter(s)</h2>
 <p>In order to prepare a Quarto document to have parameters for individual reports, we need to include a <code>tags</code> evaluation option as <code>#| tags: [parameters]</code>. I have set up my year parameter for 2007. I usually run the parameterized report to make sure that the report renders correctly. When everything works like it should, I move forward with the for loop to render multiple reports.</p>
 <div class="cell" data-tags="parameters">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>year <span class="op">=</span> <span class="dv">2007</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -470,14 +469,14 @@ Name: count, dtype: int64</code></pre>
 <p>Let’s say we want to run one parameterized report. Of course if we wanted to, we could use the <code>Preview</code> button or play button somewhere on whatever IDE we are using. The other option is to either use the command line to write out the code to render our specific report.</p>
 <p>First, we can do this in the command line. We call the render function from quarto to get our index file and choose the specific year of 2008. Finally, we can create a report name for our report.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>quarto render index.qmd -P year:2008 --output penguin_report_2008.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>We could also do the same thing using a python script. You will be able to notice the similarities between the top options.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -496,7 +495,7 @@ Name: count, dtype: int64</code></pre>
 <p>To render the report above, we are going to create a python file (<code>.py</code>) to house our for loop for the reports. Rather than link to an additional file, I have the code below of what would be on the .py file. The only package we’ll need is the <code>os</code> package. Since this is a simple example, I’m going to loop through one parameter (year) and since I already went through the palmerpenguins dataset, I know there are three years of data. For this example, I hard coded the years into a list to loop through, but I could have also used <code>unique()</code> functions from pandas or numpy to get the unique values for the years, which would be more beneficial if the data would be updated in the future.</p>
 <p>The for loop then calls for each value in the <code>year_list</code> list. I also included the year in the final html file to make it easier to distinguish which report belongs to what data. Then I like to organize the command argument into the separate components of the quarto command with the name of the parameterized report template first followed by the parameter I’m looping over and then the output file name. This should render three reports, one for each year, with the first name being <code>penguin_report_2007.html</code>.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>

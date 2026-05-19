@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - cv.pdf
 
 website:
   title: "Jonathan A. Pedroza PhD"
@@ -8,7 +10,6 @@ website:
       - href: posts.qmd
       - href: projects.qmd
       - href: resources.qmd
-      - href: cv.qmd
     right:
       - icon: bluesky
         # text: BlueSky
@@ -25,6 +26,8 @@ website:
       - icon: mortarboard
         # text: Google Scholar
         href: https://scholar.google.com/citations?user=_LpAFsIAAAAJ&hl=en&oi=ao
+      - icon: file-pdf
+        href: cv.pdf
 
 format:
   html:
