@@ -8,7 +8,7 @@ website:
   navbar:
     left:
       - href: posts.qmd
-      - href: projects.qmd
+      # - href: projects.qmd
       - href: resources.qmd
     right:
       - icon: bluesky
