@@ -1,6 +1,7 @@
 ---
 title: "About Me"
 image: /images/main_page_jp.jpg
+engine: jupyter
 format:
     html:
       toc: false
@@ -8,13 +9,43 @@ about:
   template: jolla
 ---
 
+```{python}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+
+import sys
+import os
+from pyhere import here
+
+sys.path.append(os.path.abspath(here('.github/scripts')))
+
+from latest_post import get_posts, get_post_metadata, get_post_url
+
+post = get_posts()[0]
+title, subtitle, date, categories = get_post_metadata(post)
+url = get_post_url(post)
+
+from IPython.display import Markdown
+
+latest_post = f'[{title} {subtitle}]({url})'
+topics = ', '.join(categories)
+```
+
 Hi! My name is Jonathan Andrew Pedroza PhD (he/him), but everyone calls me JP. I received my PhD in Prevention Science from the University of Oregon in 2021. I am a [prevention scientist](https://www.npscoalition.org/prevention-science) and data science educator with work that focuses on accurate measurement, examining protective and risk factors for health behaviors, and early detection of both health and educational outcomes. I have 10+ years of experience in project management, statistical analyses, stakeholder engagement, and mentorship.
 
 Currently, I am a postdoctoral researcher in data science education at UC Berkeley with a focus on making data science more equitable by closing the divide in statistics proficiency between students with strong backgrounds in mathematics and statistics and students eager to learn data science without that proficiency. Specifically, my research focus is in altering course designs, providing more chances for students to learn concepts through alternative grading practices, and using diagnostic classification models in small samples to identify students in need to provide additional resources.
 
 Additionally, I am a data science mentor at Posit Academy where I mentor cohorts to learn data science skills in both R and Python. These skills include data wrangling, data visualization, functional programming, model building, and communicating results using dashboards and reports, while navigating the changing data science field of AI incorporation.
 
-In this blog, there are posts on topics I find interesting revolving around statistics and machine learning, resources on tools, shiny apps, and dashboards I have built, and current projects I am working on. When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. You can email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires or interests in collaborating.
+In this blog, there are posts on topics I find interesting revolving around statistics and machine learning, resources on tools, shiny apps, and dashboards I have built, and current projects I am working on. Below is the latest post.
+
+Latest post: `{python} Markdown(latest_post)`  
+Published date: `{python} Markdown(date.strftime('%Y-%m-%d'))`  
+Topics covered: `{python} Markdown(topics)`
+
+When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. You can email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires or interests in collaborating.
 
 # Data Science Colleagues
 
@@ -23,5 +54,5 @@ In this blog, there are posts on topics I find interesting revolving around stat
 
 ![](/images/lucy.jpg){fig-alt="A picture of a gray and white long haired cat Lucy."}
 
-![](/images/daisy.jpg){fig-alt="A picture of a tabby cat leaning and falling asleep on a couch."}
+![](/images/daisy.jpg){fig-alt="A picture of a tabby cat Daisy leaning and falling asleep on a couch."}
 :::
