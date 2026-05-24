@@ -43,7 +43,7 @@ jobs:
           # CI_COMMIT_EMAIL: username@users.noreply.github.com
           CI_COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
         run: |
-          cd profile_files
+          cd profile
           git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config user.email "${{ env.CI_COMMIT_EMAIL }}"
           
