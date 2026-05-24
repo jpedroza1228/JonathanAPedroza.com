@@ -15,6 +15,13 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.PROFILE_TOKEN }}" \
           -d '{"event_type": "website_updated"}'
 
+      # - name: Emit repository dispatch
+      #   run: |
+      #     curl -X POST https://api.github.com/repos/jpedroza1228/jpedroza1228/dispatches \
+      #     -H "Accept: application/vnd.github.v3+json" \
+      #     -H "Authorization: token ${{ secrets.PROFILE_TOKEN }}" \
+      #     -d '{"event_type": "website_updated"}'
+
 # name: Notify readme of new post
 # on:
 #   push:
