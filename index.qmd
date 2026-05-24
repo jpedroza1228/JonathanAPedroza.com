@@ -21,10 +21,10 @@ from pyhere import here
 
 sys.path.append(os.path.abspath(here('.github/scripts')))
 
-from latest_post import get_posts, get_post_metadata, get_post_url
+from latest_post import get_posts_local, get_post_metadata_local, get_post_url
 
-post = get_posts()[0]
-title, subtitle, date, categories = get_post_metadata(post)
+post = get_posts_local()[0]
+title, subtitle, date, categories = get_post_metadata_local(post)
 url = get_post_url(post)
 
 from IPython.display import Markdown
@@ -41,8 +41,8 @@ Additionally, I am a data science mentor at Posit Academy where I mentor cohorts
 
 In this blog, there are posts on topics I find interesting revolving around statistics and machine learning, resources on tools, shiny apps, and dashboards I have built, and current projects I am working on. Below is the latest post.
 
-Latest post: `{python} Markdown(latest_post)`  
-Published date: `{python} Markdown(date.strftime('%Y-%m-%d'))`  
+Latest post: `{python} Markdown(latest_post)`\
+Published date: `{python} Markdown(date.strftime('%Y-%m-%d'))`\
 Topics covered: `{python} Markdown(topics)`
 
 When I am away from my computer, I enjoy roasting and brewing coffee, hiking, fishing, cooking, and playing with my cats. You can email me at <a href="mailto:jonpedroza1228@gmail.com"> jonpedroza1228\@gmail.com</a> with any inquires or interests in collaborating.
