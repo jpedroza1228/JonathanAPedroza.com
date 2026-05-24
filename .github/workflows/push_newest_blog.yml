@@ -32,7 +32,7 @@ jobs:
       - name: Get the latest post and put it on my profile readme
         shell: bash
         run: |
-          uv pip install -r website/pyproject.toml
+          uv pip install --system -r website/pyproject.toml
           python3 ./website/.github/scripts/latest_post.py
 
       - name: Commit and push changes (if any)
