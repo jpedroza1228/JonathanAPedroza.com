@@ -1,59 +1,76 @@
-name: Notify readme of new post
+name: Trigger Profile Update
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
-  update-posts:
+  ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Emit repository dispatch
+        run: |
+          curl -X POST https://api.github.com/repos/jpedroza1228/jpedroza1228/dispatches \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PROFILE_TOKEN }}" \
+          -d '{"event_type": "website_updated"}'
 
-      - name: Checkout website repo
-        uses: actions/checkout@v6.0.2
-        with:
-          path: website
+# name: Notify readme of new post
+# on:
+#   push:
+#     branches:
+#       - main
 
-      - name: Checkout profile repo
-        uses: actions/checkout@v4
-        with:
-          repository: jpedroza1228/jpedroza1228
-          path: profile
-          token: ${{ secrets.PROFILE_TOKEN }}
+# permissions:
+#   contents: write
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
+# jobs:
+#   update-posts:
+#     runs-on: ubuntu-latest
+#     steps:
+
+#       - name: Checkout website repo
+#         uses: actions/checkout@v6.0.2
+#         with:
+#           path: website
+
+#       - name: Checkout profile repo
+#         uses: actions/checkout@v4
+#         with:
+#           repository: jpedroza1228/jpedroza1228
+#           path: profile
+#           token: ${{ secrets.PROFILE_TOKEN }}
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.14'
         
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+#       - name: Install uv
+#         uses: astral-sh/setup-uv@v5
 
-      - name: Get the latest post and put it on my profile readme
-        shell: bash
-        run: |
-          uv pip install --system -r website/pyproject.toml
-          python3 ./website/.github/scripts/latest_post.py
+#       - name: Get the latest post and put it on my profile readme
+#         shell: bash
+#         run: |
+#           uv pip install --system -r website/pyproject.toml
+#           python3 ./website/.github/scripts/latest_post.py
 
-      - name: Commit and push changes (if any)
-        shell: bash
-        env:
-          CI_COMMIT_MESSAGE: "update profile readme with latest post"
-          CI_COMMIT_AUTHOR: github-actions[bot]
-          # CI_COMMIT_EMAIL: username@users.noreply.github.com
-          CI_COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
-        run: |
-          cd profile
-          git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config user.email "${{ env.CI_COMMIT_EMAIL }}"
+#       - name: Commit and push changes (if any)
+#         shell: bash
+#         env:
+#           CI_COMMIT_MESSAGE: "update profile readme with latest post"
+#           CI_COMMIT_AUTHOR: github-actions[bot]
+#           # CI_COMMIT_EMAIL: username@users.noreply.github.com
+#           CI_COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+#         run: |
+#           cd profile
+#           git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
+#           git config user.email "${{ env.CI_COMMIT_EMAIL }}"
           
-          if ! git diff --exit-code README.md; then
-            git add README.md
-            git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
-            git push origin main
-          else
-            echo "No changes to latest posts"
-          fi
+#           if ! git diff --exit-code README.md; then
+#             git add README.md
+#             git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+#             git push origin main
+#           else
+#             echo "No changes to latest posts"
+#           fi
