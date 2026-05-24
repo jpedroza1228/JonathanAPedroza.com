@@ -12,38 +12,42 @@ jobs:
       - name: Checkout website repo
         uses: actions/checkout@v6.0.2
         with:
-          path: _site
+          path: website
 
       - name: Checkout profile repo
         uses: actions/checkout@v4
         with:
           repository: jpedroza1228/jpedroza1228
-          # path: profile
-          token: ${{ secrets.PROFILE_TOKEN}}
+          path: profile
+          token: ${{ secrets.PROFILE_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
 
       - name: Get the latest post and put it on my profile readme
         shell: bash
         run: |
-          uv pip install -r pyproject.toml
-          python3 ./.github/scripts/latest_post.py
+          uv pip install -r website/pyproject.toml
+          python3 ./website/.github/scripts/latest_post.py
 
       - name: Commit and push changes (if any)
         shell: bash
         env:
-          CI_COMMIT_MESSAGE: update profile readme with latest posts
+          CI_COMMIT_MESSAGE: "update profile readme with latest post"
           CI_COMMIT_AUTHOR: github-actions[bot]
-          CI_COMMIT_EMAIL: username@users.noreply.github.com
+          # CI_COMMIT_EMAIL: username@users.noreply.github.com
+          CI_COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
         run: |
-          cd profile
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
-          if [[ `git status --porcelain --untracked-files=no` ]]; then
-            # Changes
+          cd profile_files
+          git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config user.email "${{ env.CI_COMMIT_EMAIL }}"
+          
+          if ! git diff --exit-code README.md; then
             git add README.md
             git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
-            git push
+            git push origin main
           else
-            # No changes
-            echo "no changes to latest posts"
-            exit 0
+            echo "No changes to latest posts"
           fi

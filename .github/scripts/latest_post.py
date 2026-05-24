@@ -7,7 +7,7 @@ from pyhere import here
 
 # get the latest post that is published on the website
 def get_posts():
-    posts = os.listdir(here('_site/posts'))
+    posts = os.listdir('website/_site/posts')
     posts.sort(reverse = True)
     return posts
 
@@ -16,7 +16,7 @@ def get_posts():
 # get the title, subtitle, date of the post,
 # and the categories that are covered in the post
 def get_post_metadata(post):
-  post = frontmatter.load(here(f'posts/{post}/index.qmd'))
+  post = frontmatter.load(f'website/posts/{post}/index.qmd')
   
   title = post['title']
   subtitle = post['subtitle']
@@ -34,29 +34,37 @@ def get_post_url(post):
 
 # get_post_url(get_posts()[0])
 
-# if __name__ == "__main__":
-#   # Get the latest blog post
-#   post = get_posts()[0]
-  
-#   title, subtitle, date, categories = get_post_metadata(post)
-#   url = get_post_url(post)
-  
-#   print(f'{title} {subtitle}{url}\nPublished date: {date}\nTopics covered: {categories}')
+def update_readme():
+    readme_path = 'profile/README.md'
+    
+    # get the latest post and other information
+    newest_post_folder = get_posts()[0]
+    title, subtitle, date, categories = get_post_metadata(newest_post_folder)
+    url = get_post_url(newest_post_folder)
+    
+    # Format categories into tags if any exist
+    category_tags = " ".join([f"<code>{cat}</code>" for cat in categories]) if categories else ""
+    
+    # build the text for the html code in the readme file
+    blog_html = (
+        f"Newest blog post:<br>\n"
+        f"<strong><a href='{url}'>{title}</a></strong> - <em>{date}</em><br>\n"
+        f"<small>{subtitle}</small> {category_tags}\n"
+    )
+    
+    # read the readme file
+    with open(readme_path, "r", encoding = "utf-8") as f:
+        readme_content = f.read()
 
-#   # Open the index file of the main page of my 
-#   with open(here('index.qmd'), 'r') as f:
-#       main = f.readlines()
-#       f.close()
-#       # Delete the old latest posts
-#       del main[
-#           main.index('<!-- START_SECTION:latest_posts -->\n')
-#           + 1 : main.index('<!-- END_SECTION:latest_posts -->\n')
-#       ]
-#       # Add the new latest posts
-#       main.insert(
-#           main.index('<!-- START_SECTION:latest_posts -->\n') + 1
-#       )
-#   # Open the README.md file again, this time for writing
-#   with open(here('index.qmd'), "w") as f:
-#       f.writelines(main)
-#       f.close()
+    pattern = r"(\n)(.*?)(\n)"
+    replacement = f"\\1{blog_html}\\3"
+    
+    updated_content = re.sub(pattern, replacement, readme_content, flags = re.DOTALL)
+
+    with open(readme_path, "w", encoding = "utf-8") as f:
+        f.write(updated_content)
+        
+    print(f"Successfully added latest post: '{title}' to profile README.")
+
+if __name__ == "__main__":
+    update_readme()
