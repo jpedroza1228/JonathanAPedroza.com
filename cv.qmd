@@ -147,9 +147,11 @@ Nichols, L. M., *Pedroza, J. A.*, Fleming, C. M., O’Brien, K. M., & Tanner-Smi
 
 Rosen, L. D., Carrier, L. M., *Pedroza, J. A.*, Elias, S., O’Brien, K. M., Lozano, J., ... & Ruiz, A. (2018). The Role of Executive Functioning and Technological Anxiety (FOMO) in College Course Performance as Mediated by Technology Usage and Multitasking Habits. _Psicologia Educativa, 24(1)_, 14-25.
 
+/*
 _Manuscripts in Progress:_
 
-Pychometric: Using Python and Stan for Bayesian Estimated Diagnostic Classification Models 
+Pychometric: Using Python and Stan for Bayesian Estimated Diagnostic Classification Models
+*/ 
 
 #set par(hanging-indent: 0em)
 
