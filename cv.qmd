@@ -137,9 +137,9 @@ format: typst
 
 #set par(hanging-indent: 2em)
 
-*Pedroza, J. A.*, Guardado-García, J. J., Williams, M. J., Alcala, M., Nakamura, N. N., Serpas, D. G., Harrison, A., Chon, D. (_in press_). Measurement Invariance of the LGBT Microaggressions Scale among Latina/o/x persons and non-Latina/o/x People of Color. _LGBT Health_.
+*Pedroza, J. A.*, Guardado-García, J. J., Williams, M. J., Alcala, M., Nakamura, N. N., Serpas, D. G., Harrison, A., Chon, D. (2026). Measurement Invariance of the LGBT Microaggressions Scale among Latina/o/x persons and non-Latina/o/x People of Color. _LGBT Health_.
 
-*Pedroza, J. A.*, Serpas, D. G., Guardado-García, J. J., Zelaya, D. G., Alcala, M. S., & Keys, K. (_in press_). Cardiovascular Disease Risk Factors, Intersectional Minority Stressors, and Self-Reported Cardiovascular Disease Among Sexual and Gender Minority People of Color: An Exploratory Latent Class Analysis. _LGBT Health_.
+*Pedroza, J. A.*, Serpas, D. G., Guardado-García, J. J., Zelaya, D. G., Alcala, M. S., & Keys, K. (2026). Cardiovascular Disease Risk Factors, Intersectional Minority Stressors, and Self-Reported Cardiovascular Disease Among Sexual and Gender Minority People of Color: An Exploratory Latent Class Analysis. _LGBT Health_.
 
 Nichols, L. M., Fleming, C. M., *Pedroza, J. A.*, O’Brien, K. M., & Tanner-Smith, E. E. (2024). Psychometric Properties of the Alabama Parenting Questionnaire Among Adolescents with Substance Use Disorder Histories. _Child and Adolescent Social Work Journal_, 1-14.
 
