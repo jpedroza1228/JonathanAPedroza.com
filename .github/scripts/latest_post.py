@@ -18,6 +18,7 @@ def get_posts_local():
     return posts
 
 # get_posts()[0]
+# get_posts_local()[0]
 
 # get the title, subtitle, date of the post,
 # and the categories that are covered in the post
@@ -42,11 +43,11 @@ def get_post_metadata_local(post):
 
   return title, subtitle, date, categories
 
-# get_post_metadata(get_posts()[0])
+# get_post_metadata_local(get_posts_local()[0])
 
 # Build the URL of the published post from the filename
 def get_post_url(post):
     url = 'https://jonathanapedroza.com/posts/' + post +'/'
     return url
 
-# get_post_url(get_posts()[0])
+# get_post_url(get_posts_local()[0])

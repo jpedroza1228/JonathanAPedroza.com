@@ -1,0 +1,320 @@
+---
+title: "The Cappuccino Index" 
+subtitle: |
+  "Creating Visualizations "
+# image: 
+categories: [python, pandas, plotnine, coffee]
+date: today
+# citation:
+  # url: 
+draft: true
+execute:
+    message: false
+    warning: false
+params:
+  slug: cappuccino-index
+  date: today
+---
+
+```{python}
+import pandas as pd
+import numpy as np
+import plotnine as pn
+from pyhere import here
+from bs4 import BeautifulSoup
+import requests
+from janitor import clean_names
+
+pn.theme_set(pn.theme_light())
+
+cap = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_2026_full_data.csv')).clean_names(case_type = 'snake')
+index = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_all_countries.csv')).clean_names(case_type = 'snake')
+
+cap = cap.merge(index,
+                'inner',
+                'country')
+cap.head()
+
+cap['hourly_wage'] = cap['hourly_wage'].str.replace(',', '')
+cap['price_per_small_cappuccino'] = cap['price_per_small_cappuccino'].str.replace(',', '')
+cap[['hourly_wage', 'price_per_small_cappuccino']] = cap[['hourly_wage', 'price_per_small_cappuccino']].astype(float)
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+url = 'https://www.globalproductprices.com/rankings/milk_prices/'
+response = requests.get(url)
+
+soup = BeautifulSoup(response.text, 'html.parser')
+
+print(soup.prettify())
+
+print(soup.find('table').prettify())
+
+#| eval: false
+#| echo: true
+country_names = []
+for i in soup.find('table').find_all('a'):
+  countries = i['id']
+  country_names.append(countries)
+
+
+soup.find('table').find_all('td')[1]
+
+milk_list = []
+for i in np.arange(1, len(soup.find('table').find_all('td')), 3):
+  milk = soup.find('table').find_all('td')
+  prices = milk[i].get_text()
+  milk_list.append(prices)
+
+
+milk = pd.DataFrame({'country': country_names,
+                     'milk_price': milk_list})
+
+milk['milk_price'] = milk['milk_price'].str.replace('\r\n\t\t\t\t\t\t\t', '')
+milk['milk_price'] = milk['milk_price'].astype(float)
+
+milk['country'] = milk['country'].str.replace(r'_l', '')
+milk['country'] = milk['country'].str.replace('-', ' ')
+```
+
+```{python}
+#| eval: true
+#| echo: true
+
+# milk.to_csv(here('posts/2026-08-07-cappuccino-index/jan_2026_milk_data.csv'))
+milk = pd.read_csv(here('posts/2026-08-07-cappuccino-index/jan_2026_milk_data.csv')).drop(columns = 'Unnamed: 0')
+milk.head()
+
+# 1 USD = .74 GBP
+def usd_2_gbp(x):
+  return x * .74
+```
+
+```{python}
+milk['milk_price_gbp'] = milk['milk_price'].apply(usd_2_gbp)
+milk
+```
+
+```{python}
+combo = cap.merge(milk,
+        'inner',
+        'country')
+
+combo 
+```
+
+```{python}
+#| eval: false
+#| echo: false
+
+from currencyapinet.currency import Currency
+import yaml
+
+# Open and load the YAML file
+with open('config.yml', 'r') as file:
+    config = yaml.safe_load(file)
+
+# Extract the API key
+api_key = config['api']['key']
+
+currency = Currency(api_key)
+result = currency.rates().get()
+result
+```
+
+```{python}
+country_calc = combo.groupby('country')[['hourly_wage_in_gbp', 'price_per_cappuccino_in_gbp', 'milk_price_gbp']].agg(['mean', 'median', 'std']).reset_index()
+
+country_calc.columns = [f'{i[0]}_{i[1]}' if i[1] else i[0] for i in country_calc.columns]
+
+country_std = country_calc.loc[:, ['country', 'hourly_wage_in_gbp_std', 'price_per_cappuccino_in_gbp_std']].melt(id_vars = 'country')
+
+pn.ggplot.show(
+  pn.ggplot(country_std.loc[(country_std['value'] > 0) | (~country_std['value'].isna())],
+  pn.aes('country',
+        'value'))
+        + pn.geom_col(color = 'black',
+        fill = 'seagreen')
+        + pn.coord_flip()
+        + pn.facet_wrap('variable')
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(country_std.loc[(country_std['value'] > 2)],
+  pn.aes('country',
+        'value'))
+        + pn.geom_point(color = 'seagreen')
+        + pn.coord_flip()
+        + pn.scale_y_continuous(limits = [2, 5],
+                                breaks = np.arange(2, 5, .5))
+)
+```
+
+```{python}
+vary_country = combo.loc[combo['country'].isin(country_std.loc[(country_std['value'] > 2), 'country'])]
+```
+
+```{python}
+vary_country['urban_classification'].value_counts()
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(vary_country,
+            pn.aes('country',
+                  'hourly_wage'))
+  + pn.geom_boxplot()
+  + pn.coord_flip()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(vary_country.loc[vary_country['data_entries'] > 20],
+            pn.aes('hourly_wage',
+                  'price_per_small_cappuccino'))
+  + pn.geom_point()
+  + pn.geom_smooth(method = 'lm')
+  + pn.facet_wrap('country',
+                  scales = 'free')
+)
+```
+
+```{python}
+country_avg = combo.loc[combo['data_entries'] > 5]
+country_avg = country_avg.groupby('country')[['hourly_wage_in_gbp', 'price_per_cappuccino_in_gbp', 'milk_price_gbp']].agg('mean').reset_index()
+
+country_avg_long = country_avg.melt(id_vars = 'country')
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(country_avg_long,
+            pn.aes('country',
+            'value'))
+  + pn.geom_col(pn.aes(fill = 'variable'),
+                # position = pn.position_dodge(),
+                color = 'black')
+  + pn.coord_flip()
+  # + pn.facet_wrap('country')
+  + pn.theme(legend_position = 'bottom')
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(country_avg,
+            pn.aes('price_per_cappuccino_in_gbp',
+            'milk_price_gbp'))
+  + pn.geom_text(pn.aes(color = 'country',
+                        label = 'country'))
+  # + pn.geom_smooth(method = 'lm', se = False)
+  + pn.scale_x_continuous(limits = [1, 6])
+  + pn.scale_y_continuous(limits = [0.5, 2.6])
+  + pn.theme(legend_position = 'none')
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(country_avg,
+            pn.aes('hourly_wage_in_gbp',
+            'milk_price_gbp'))
+  + pn.geom_text(pn.aes(color = 'country',
+                        label = 'country'))
+  # + pn.geom_smooth(method = 'lm', se = False)
+  + pn.scale_x_continuous(limits = [0, 25])
+  + pn.scale_y_continuous(limits = [0.5, 2.6])
+  + pn.theme(legend_position = 'none')
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(vary_country.loc[vary_country['urban_classification'].isin(['Urban', 'Suburban', 'Rural'])],
+            pn.aes('country',
+                  'hourly_wage_in_gbp'))
+  + pn.geom_boxplot(pn.aes(fill = 'urban_classification',
+                          color = 'urban_classification'))
+  + pn.coord_flip()
+  + pn.theme(legend_position = 'bottom')
+)
+```
+
+```{python}
+def q5_outlier(x):
+  return x.quantile(.05) - 1.5 * .05
+
+def q95_outlier(x):
+  return x.quantile(.95) + 1.5 * .95
+
+q5_outlier(vary_country['hourly_wage'])
+q95_outlier(vary_country['hourly_wage'])
+
+vary_country_stats = vary_country.groupby('country')['hourly_wage'].agg([q5_outlier, np.median, q95_outlier]).reset_index()
+
+vary_country_stats
+```
+
+```{python}
+vary_combo = vary_country.merge(vary_country_stats,
+                  'inner',
+                  'country')
+
+vary_outlier = vary_combo.loc[(vary_combo['hourly_wage'] < vary_combo['q5_outlier']) |
+                (vary_combo['hourly_wage'] > vary_combo['q95_outlier'])]
+```
+
+```{python}
+from great_tables import GT as gt
+
+gt(vary_outlier.sort_values('country')[['hourly_wage', 'price_per_small_cappuccino', 'currency', 'country', 'city', 'urban_classification', 'q5_outlier', 'median', 'q95_outlier']].round(2))
+```
+
+```{python}
+combo.sort_values('index_number')['country'].unique()
+
+combo['country_order'] = pd.Categorical(combo['country'],
+              categories = combo.sort_values('index_number')['country'].unique(),
+              ordered = True)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(combo.sort_values('country_order'),
+  pn.aes('country_order',
+  'index_number'))
+  + pn.geom_col(position = pn.position_dodge(),
+                fill = 'seagreen',
+                color = 'black')
+  + pn.coord_flip()
+)
+```
+
+```{python}
+import plotly.express as px
+
+france = combo.loc[combo['country'] == 'France']
+france['city'].value_counts()
+```
+
+```{python}
+
+france_prices = france.groupby('city')['hourly_wage'].mean().reset_index()
+france['city'].value_counts().reset_index()
+
+pn.ggplot.show(
+  pn.ggplot(france_prices,
+            pn.aes('city',
+                  'hourly_wage'))
+  + pn.geom_col(color = 'black',
+              fill = 'seagreen',
+              position = pn.position_dodge())
+  + pn.coord_flip()
+)
+```
