@@ -1,0 +1,15 @@
+---
+title: "PSY 3307"
+subtitle: "Statistics for Psychology" 
+categories: [PSY3307]
+date: 2026-08-13
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: psy-3307
+  date: 2026-08-13
+---
+

@@ -59,3 +59,7 @@ website_venv/
 **/*.quarto_ipynb
 
 /push_newest_blog.yml
+
+# hides api keys
+config.yml
+config.yaml

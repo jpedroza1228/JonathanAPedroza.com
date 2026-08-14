@@ -1,0 +1,14 @@
+---
+title: "PSY 4433"
+subtitle: "Experimental Psychology" 
+categories: [PSY4433]
+date: 2026-08-13
+# citation:
+  # url: 
+execute:
+    message: false
+    warning: false
+params:
+  slug: psy-4433
+  date: 2026-08-13
+---

@@ -8,6 +8,7 @@ website:
   navbar:
     left:
       - href: posts.qmd
+      - href: courses.qmd
       # - href: projects.qmd
       - href: resources.qmd
     right:
