@@ -1,9 +1,9 @@
 ---
 title: "The Cappuccino Index" 
 subtitle: |
-  "Creating Visualizations "
+  "Thinking About Data Through Visualizations"
 # image: 
-categories: [python, pandas, plotnine, coffee]
+categories: [python, pandas, plotnine, matplotlib, coffee]
 date: today
 # citation:
   # url: 
@@ -16,6 +16,8 @@ params:
   date: today
 ---
 
+For this week, I wanted to walk through a video about *The Cappuccino Index* from [James Hoffmann's youtube channel](). In that video, James was nice enough to include some raw and more aggregated data on country differences of hourly wages and the price of a small cappuccino. 
+
 ```{python}
 import pandas as pd
 import numpy as np
@@ -27,17 +29,23 @@ from janitor import clean_names
 
 pn.theme_set(pn.theme_light())
 
-cap = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_2026_full_data.csv')).clean_names(case_type = 'snake')
-index = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_all_countries.csv')).clean_names(case_type = 'snake')
+cap_df = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_2026_full_data.csv')).clean_names(case_type = 'snake')
+index_df = pd.read_csv(here('posts/2026-08-07-cappuccino-index/cappuccino_index_all_countries.csv')).clean_names(case_type = 'snake')
 
-cap = cap.merge(index,
+cap_df = cap_df.merge(index_df,
                 'inner',
                 'country')
-cap.head()
 
-cap['hourly_wage'] = cap['hourly_wage'].str.replace(',', '')
-cap['price_per_small_cappuccino'] = cap['price_per_small_cappuccino'].str.replace(',', '')
-cap[['hourly_wage', 'price_per_small_cappuccino']] = cap[['hourly_wage', 'price_per_small_cappuccino']].astype(float)
+print(cap_df.head())
+print(index_df.head())
+```
+
+Looking at the data, we can see the cappuccino index that is created 
+
+```{python}
+cap_df['hourly_wage'] = cap_df['hourly_wage'].str.replace(',', '')
+cap_df['price_per_small_cap_dfpuccino'] = cap_df['price_per_small_cappuccino'].str.replace(',', '')
+cap_df[['hourly_wage', 'price_per_small_cappuccino']] = cap_df[['hourly_wage', 'price_per_small_cappuccino']].astype(float)
 ```
 
 ```{python}
@@ -99,7 +107,7 @@ milk
 ```
 
 ```{python}
-combo = cap.merge(milk,
+combo = cap_df.merge(milk,
         'inner',
         'country')
 

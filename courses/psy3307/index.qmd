@@ -13,3 +13,10 @@ params:
   date: 2026-08-13
 ---
 
+*Note*: The contents of this repo have been shifted from Rmarkdown files to quarto files. Some of the slides may be slightly off; however all the content should be the same.
+
+# GitHub Repo Contents
+
+- Semester
+  - f21
+  - sp22

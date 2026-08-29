@@ -30,6 +30,8 @@ title-block-banner: true
 
 -   [GitHub Repository](https://github.com/jpedroza1228/bayes-net-app)
 
+⚠️🚧⚠️ [DINO or DINA Diagnostic Classification Model [Only GitHub Repo Currently]](https://github.com/jpedroza1228/dcm_app) 
+
 ## Visualizations With Write Ups
 
 [Reductions in Physical Activity in California Counties](https://github.com/jpedroza1228/projects_portfolio_and_practice/blob/main/projects/visualization_portfolio/Visualization1.pdf)
