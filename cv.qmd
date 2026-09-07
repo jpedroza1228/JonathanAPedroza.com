@@ -4,7 +4,7 @@ format: typst
 
 ```{=typst}
 // Variables
-#let update = [Updated March 2026]
+#let update = [Updated September 2026]
 #let address = [2121 Berkeley Way, 4th Floor, Berkeley, CA 94720]
 #let current_email = [jpedroza1228\@berkeley.edu]
 #let phone_number = [(562) 547-5729]
@@ -52,6 +52,8 @@ Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (May 
 *Pedroza, J. A.*, Luther, G. M., Folger, A. C., Smith, T. M., Kelly, N. R., & Budd, E. L. (May 2019). _Smartphone Use as a Moderator of Bicultural Dimensions of Acculturation and Sedentary Behaviors Among a Sample of Latinx Young Adults_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California.
 
 *Pedroza, J. A.*, Folger, A. C., Luther, G. M., & Smith, T. M., Kelly, N. R., & Budd, E. L. (May 2019). _Assessing Nutrition Knowledge in Rural Communities: Examining the Association between Sociodemographic Factors and Nutrition Knowledge_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California. 
+
+#pagebreak()
 
 Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (August 2019). _Depression and Chronic Health Conditions: Examining Racial Identity as a Moderator_. Poster accepted for presentation at American Psychological Association Convention, Chicago, Illinois.
 
@@ -119,6 +121,8 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Examined educators' interest, confidence, and barriers to using computational notebooks]
   )
 
+#pagebreak()
+
   #table(
       columns: (75%, 25%),
       align: (left, right),
@@ -136,7 +140,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Creating an app for instructors to input data and custom priors and model type and output a report],
     [Co-developed a proxy measure to evaluate student perceived readiness for statistics and data science courses]
   )
-
+  
   #table(
       columns: (75%, 25%),
       align: (left, right),
@@ -188,6 +192,8 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Analyzed national and regional datasets to examine how built environment factors (e.g., neighborhood walkability) and sociocultural factors (e.g., acculturation, language competence) influence physical activity, screen-time, and sedentary behaviors among Latina/o/x adults]
   )
 
+#pagebreak()
+
   #table(
       columns: (75%, 25%),
       align: (left, right),
@@ -223,7 +229,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Led lab workshops on research design, presentation skills, preparing for graduate school, and statistical analyses],
     [Developed workflow to clean fNIRS data and match with behavioral and cognitive data for various projects]
   )
-
+  
   #table(
       columns: (70%, 30%),
       align: (left, right),
@@ -365,6 +371,8 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       /*[Topic: _Transition between Childhood and Adolescence: Middle Childhood_], [],*/
       [Instructor: Michelle Martinez EdD], []
 )
+
+#pagebreak()
 
 #table(
       columns: (85%, 15%),
@@ -554,6 +562,8 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Discussed mentees' research interest and the benefits and drawbacks of pursuing a graduate degree]
   )
 
+#pagebreak()
+  
   #table(
       columns: (80%, 20%),
       align: (left, right),
@@ -573,9 +583,6 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Hosted professional development sessions with graduate students from various disciplines]
   )
 ]
-```
-
-```{=typst}
 
 //------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------
@@ -590,9 +597,11 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
 //------------------------------------------------------------------------------------------------------------
 
 //Packages
+
 // #import "lib-gen.typ": *
 // #import "lib-impl.typ": *
 // #import "lib.typ": *
+
 
 #show heading.where(level: 1): it => block(
   width: 100%,
@@ -750,10 +759,6 @@ _Manuscripts Under Review_
 
 #review_pubs
 
-_Manuscripts In Progress_
-
-#progress_pubs
-
 #pagebreak()
 
 #set page(
@@ -774,6 +779,10 @@ _Manuscripts In Progress_
     #update
   ]
 )
+
+_Manuscripts In Progress_
+
+#progress_pubs
 
 #set par(hanging-indent: 0em)
 
@@ -800,6 +809,8 @@ _Manuscripts In Progress_
 #research_experience
 
 = Teaching Experience
+
+#pagebreak()
 
 == Instructor
 
