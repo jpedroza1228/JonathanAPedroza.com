@@ -25,13 +25,15 @@ Rosen, L. D., Carrier, L. M., *Pedroza, J. A.*, Elias, S., O’Brien, K. M., Loz
 ]
 
 #let review_pubs = [
-  Lopez, J. L. S., *Pedroza, J. A.*, Usovich, K., Van Dusen E., & Norouzi, N. Conceptualizing Programming and Mathematics Self-Concept Among Community College Data Science Students. 
+  Lopez, J. L. S., *Pedroza, J. A.*, Usovich, K., Van Dusen, E., & Norouzi, N. Conceptualizing Programming and Mathematics Self-Concept Among Community College Data Science Students. 
 
-  Yan, W., Wilkerson, M. H., & *Pedroza, J. A.* K-12 Teachers' Perception and Navigation of Computational Notebooks as Data Investigation Tools. 
+  Yan, W., *Pedroza, J. A.*, & Wilkerson, M. H. K-12 Teachers' Perception and Navigation of Computational Notebooks as Data Investigation Tools. 
 ]
 
 #let progress_pubs = [
-*Pedroza, J. A.* Pychometric: Using Python and Stan for Bayesian Estimated Diagnostic Classification Models.
+Zhang, C. & *Pedroza, J. A.* Comparing Estimation Approaches to Implementing Diagnostic Classification Models in Small Samples.
+
+*Pedroza, J. A.* & Strang, A. Exploring Pathways to Achieve Proficiency and Mastery in Data Science Courses.
 ]
 
 #let national_presentations = [
@@ -53,8 +55,6 @@ Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (May 
 
 *Pedroza, J. A.*, Folger, A. C., Luther, G. M., & Smith, T. M., Kelly, N. R., & Budd, E. L. (May 2019). _Assessing Nutrition Knowledge in Rural Communities: Examining the Association between Sociodemographic Factors and Nutrition Knowledge_. Poster accepted for presentation at Society of Prevention Research Conference, San Francisco, California. 
 
-#pagebreak()
-
 Folger, A. C., *Pedroza, J. A.*, Smith, T. M., Budd, E. L., & Kelly, N. R. (August 2019). _Depression and Chronic Health Conditions: Examining Racial Identity as a Moderator_. Poster accepted for presentation at American Psychological Association Convention, Chicago, Illinois.
 
 Smith, T. M., *Pedroza, J. A.*, Kashani, Y., Kelly, N. R., Budd, E. L., & Giuliani, N. R. (January 2019). _Depressive Symptoms are Associated with Body Mass Index among Young Adults with Higher Education_. Poster to be presented at National Multicultural Conference and Summit, Denver, Colorado.
@@ -63,9 +63,9 @@ Smith, T. M., *Pedroza, J. A.*, Kashani, Y., Kelly, N. R., Budd, E. L., & Giulia
 ]
 
 #let regional_presentations = [
-Lopez J. S. L., Usovich, K., Van Dusen E., Norouzi, N., & *Pedroza, J. A.* (October 2026). Interdisciplinary Perspectives for Centering Student Experience and Identity in Data Science Program Evaluation. Poster presentation accepted at the INSPIRE Conference, Los Angeles, CA.
+Lopez, J. S. L., Usovich, K., Van Dusen E., Norouzi, N., & *Pedroza, J. A.* (October 2026). Interdisciplinary Perspectives for Centering Student Experience and Identity in Data Science Program Evaluation. Poster presentation accepted at the INSPIRE Conference, Los Angeles, CA.
   
-*Pedroza, J. A.*, Kelly N. R., & Budd, E. L. (October 2019). _The Association of Neighborhood Walkability and Physical Activity in Differing Levels of Acculturated Latinx Adults_. Oral presentation accepted at the Oregon Public Health Association Conference, Corvallis, OR. 
+*Pedroza, J. A.*, Kelly, N. R., & Budd, E. L. (October 2019). _The Association of Neighborhood Walkability and Physical Activity in Differing Levels of Acculturated Latinx Adults_. Oral presentation accepted at the Oregon Public Health Association Conference, Corvallis, OR. 
 
 Lieberman, N., *Pedroza, J. A.*, Elias, S., Jimenez, M., Cheever, N. A., Carrier, L.M., & Rosen, L. D. (April 2017). _The Psychology of New Technologies: Exploring Executive Functioning, Anxiety, Physical Activity, and Time Perception_. Symposium presented at Western Psychological Association Convention, Sacramento, California. 
 
@@ -81,7 +81,7 @@ Lim, A. F., *Pedroza, J. A.*, Jimenez, M., Morales, A., Carrier, L.M., & Rosen, 
 #let local_presentations = [
 \*denotes mentored undergraduate students
 
-*Pedroza, J. A.* & Strang A. (March 2026). _Assessing Statistics Understanding: Early Detection of Learning Gaps using Diagnostic Classification Models_. Poster presentation at Berkeley School of Education Research Day, Berkeley, California.
+*Pedroza, J. A.* & Strang, A. (March 2026). _Assessing Statistics Understanding: Early Detection of Learning Gaps using Diagnostic Classification Models_. Poster presentation at Berkeley School of Education Research Day, Berkeley, California.
 
 *Pedroza, J. A.*, Yan, W., & Wilkerson, M. H. (March 2026). _Using Computational Notebooks as Teaching Tools: The Show Your Work Mapping Notebook_. Poster presentation at Berkeley School of Education Research Day, Berkeley, California.
 
@@ -109,7 +109,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [UC Berkeley], [Fall 2026 - Present],
+      [UC Berkeley], [Fall 2026 -- Present],
       [PI: Michelle H Wilkerson PhD], [GitHub: #link("https://github.com/CalCoRE/show-your-work")[Show Your Work]],
       [_Developing Pedagogical Computing Practices for K-12 Educators Using Computational Notebooks_], []
   )
@@ -121,16 +121,14 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Examined educators' interest, confidence, and barriers to using computational notebooks]
   )
 
-#pagebreak()
-
   #table(
       columns: (75%, 25%),
       align: (left, right),
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [UC Berkeley], [Fall 2026 - Present],
-      [PI: Alexander Strang PhD], [GitHub: #link("https://github.com/jpedroza1228/data89_evaluation")[TODO CLEAN]],
+      [UC Berkeley], [Fall 2026 -- Present],
+      [PI: Alexander Strang PhD], [GitHub: #link("https://github.com/jpedroza1228/data89_evaluation")[DS Evaluation]],
       [_Assessing Internal Motivators & Developing Methods to Make Data Science More Equitable_], []
   )
 
@@ -147,7 +145,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [CSU Fullerton], [Fall 2025 - Present],
+      [CSU Fullerton], [Fall 2025 -- Present],
       [PI: James J Guardado-García PhD], [],
       [_Exploring the Role of Intersectional Minority Stress in LGBTQ+ People of Color_], []
   )
@@ -164,7 +162,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Oregon], [Fall 2019 - Summer 2024],
+      [University of Oregon], [Fall 2019 -- Summer 2024],
       [PI: Emily E. Tanner-Smith PhD], [],
       [_Examining the Roles of Social-Ecological Predictors Among Adolescents With Substance Use Disorders_], []
   )
@@ -175,13 +173,15 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Established an ecological approach to detect associations from intrapersonal, interpersonal, school, and communal factors with opioid use in at-risk adolescents]
   )
   
+#pagebreak()
+
   #table(
       columns: (70%, 30%),
       align: (left, right),
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Oregon], [Spring 2019 - Summer 2021],
+      [University of Oregon], [Spring 2019 -- Summer 2021],
       [PIs: Elizabeth L Budd PhD, MPH & Nichole R Kelly PhD], [],
       [_Addressing Health Disparities in Latina/o/x Adults_], []
   )
@@ -192,15 +192,13 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Analyzed national and regional datasets to examine how built environment factors (e.g., neighborhood walkability) and sociocultural factors (e.g., acculturation, language competence) influence physical activity, screen-time, and sedentary behaviors among Latina/o/x adults]
   )
 
-#pagebreak()
-
   #table(
       columns: (75%, 25%),
       align: (left, right),
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Oregon], [Fall 2017 - Fall 2018],
+      [University of Oregon], [Fall 2017 -- Fall 2018],
       [PI: Tasia S Smith], [],
       [_Understanding Food Access in Rural Communities_], []
   )
@@ -218,7 +216,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [CSU Dominguez Hills], [Spring 2015 - Summer 2017],
+      [CSU Dominguez Hills], [Spring 2015 -- Summer 2017],
       [PIs: Larry D Rosen PhD & L Mark Carrier PhD], [],
       [_Exploring the Role of Technology Use on Health and Cognition_], []
   )
@@ -236,7 +234,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [CSU Dominguez Hills], [Spring 2017 - Summer 2017],
+      [CSU Dominguez Hills], [Spring 2017 -- Summer 2017],
       [PI: Michelle Martinez EdD], [],
       [_McNair Scholars Program_], []
   )
@@ -244,7 +242,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
   #list(
     indent: 1em,
     [Created presentations for graduate school preparation],
-    [Taught students how to create personal statements, diversity, statements, and Curriculum Vitaes],
+    [Taught students how to create personal statements, diversity statements, and curriculum vitae],
     [Provided edits on graduate school materials],
     [Assisted scholars with literature review, hypothesis formulation, methodology, analyses, and the writing process]
   )
@@ -255,7 +253,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [Cal Poly Pomona], [Fall 2013 - Summer 2017],
+      [Cal Poly Pomona], [Fall 2013 -- Summer 2017],
       [PI: Alejandro Morales PhD], [],
       [_Investigating Prefrontal Cortex Activation in Adult Latina/o/x Language Brokers_], []
   )
@@ -323,7 +321,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [Cal Poly Pomona], [Fall 2021 - Spring 2022],
+      [Cal Poly Pomona], [Fall 2021 -- Spring 2022],
       [PSY 3307/A: _Statistics for Psychology & Activity_], [#link("https://github.com/jpedroza1228/cpp_3307_updated")[Class Materials]]
 )
 
@@ -372,8 +370,6 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       [Instructor: Michelle Martinez EdD], []
 )
 
-#pagebreak()
-
 #table(
       columns: (85%, 15%),
       align: (left, right),
@@ -418,7 +414,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
       [UC Berkeley], [Fall 2026],
       [_SESAME Colloquium_], [],
-      [Topic: Examining Student Internal Motivators and Ways For Improving Competency in an Accelerated Statistics Course], []
+      [Topic: Examining Student Internal Motivators and Ways for Improving Competency in an Accelerated Statistics Course], []
 )
   
 #table(
@@ -489,7 +485,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [Posit - Posit Academy], [Jan 2022 - Present],
+      [Posit -- Posit Academy], [Jan 2022 -- Present],
       [Data Science Mentor], [],
       [Supervisor: Kristin Bott], []
     )
@@ -507,7 +503,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Kansas - Accessible Teaching, Learning, & Assessment Systems], [Sep 2022 - Jul 2024],
+      [University of Kansas -- Accessible Teaching, Learning, & Assessment Systems], [Sep 2022 -- Jul 2024],
       [Data Scientist], [],
       [W Jake Thompson PhD], []
 )
@@ -517,7 +513,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       [Took the lead as the co-chair of the Diversity, Equity, Inclusivity, and Belonging Committee],
       [Developed automated, parameterized reports to present current findings and compare trends to previous years for collaborating institutions to disseminate on their websites],
       [Delivered rapid ad-hoc analyses to support center-wide research initiatives],
-      [Constructed predictive models evaluating the text-to-speech functionality to improve accessibility for diagnostic models assessments],
+      [Constructed predictive models evaluating the text-to-speech functionality to improve accessibility for diagnostic model assessments],
       [Advanced Dynamic Learning Maps (DLM) assessments, by developing models to assess linear dependencies between attributes],
       [Built interactive dashboards for state-level stakeholders to identify school districts with challenges implementing DLM assessments],
       [Utilized natural language processing to improve response rate to teachers implementing DLM assessments]
@@ -529,7 +525,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Oregon - Student Corps to Combat Coronavirus], [Jun 2020 - Sep 2020],
+      [University of Oregon -- Student Corps to Combat Coronavirus], [Jun 2020 -- Sep 2020],
       [Team Lead Contact Tracer], [],
       [Jeffrey Measelle PhD], []
 )
@@ -551,7 +547,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [UC Berkeley - D-Lab], [Jan - May 2026],
+      [UC Berkeley -- D-Lab], [Jan -- May 2026],
       [Latinx AI Fellowship Mentor], []
   )
   
@@ -570,7 +566,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [University of Oregon - Division of Graduate Studies], [Sep 2020 - Jun 2021],
+      [University of Oregon -- Division of Graduate Studies], [Sep 2020 -- Jun 2021],
       [Diversity & Inclusion Graduate Employee], []
   )
   
@@ -579,7 +575,7 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
     [Created advisory groups to meet with departments to improve inclusivity for the Division of Graduate Studies],
     [Cleaned data for departments to choose candidates for Promising Scholar awards],
     [Organized data from McNair Scholars programs to match with graduate programs at the university],
-    [Assisted students address with departmental issues during office hours],
+    [Assisted students in addressing departmental issues during office hours],
     [Hosted professional development sessions with graduate students from various disciplines]
   )
 ]
@@ -597,11 +593,6 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
 //------------------------------------------------------------------------------------------------------------
 
 //Packages
-
-// #import "lib-gen.typ": *
-// #import "lib-impl.typ": *
-// #import "lib.typ": *
-
 
 #show heading.where(level: 1): it => block(
   width: 100%,
@@ -643,23 +634,17 @@ Smith, T. M., Vargas, K., & *Pedroza, J. A.* (February 2018). _Your Health Matte
       stroke: none,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
       [
-        // #fa-building() 
         #address
         #linebreak()
-        // #fa-envelope() 
         #current_email
         #linebreak()
-        // #fa-phone() 
         #phone_number
       ],
       [
-        // #fa-orcid() 
         #orcid_number
         #linebreak()
-        // #fa-github() 
         #github_link
         #linebreak()
-        // #fa-globe() 
         #website
         
       ]
@@ -798,19 +783,19 @@ _Manuscripts In Progress_
 
 #regional_presentations
 
+#pagebreak()
 == Local Conferences
 
 #local_presentations
 
 #set par(hanging-indent: 0em)
 
+#pagebreak()
 = Research Experience
 
 #research_experience
 
 = Teaching Experience
-
-#pagebreak()
 
 == Instructor
 
@@ -842,11 +827,11 @@ _Manuscripts In Progress_
       stroke: none,
       //auto-lines: false,
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
-      [CSU Chancellor’s Doctoral Incentive Program], [2020-2021],
-      [General University Scholarship - \$2,700], [Fall 2018, Fall 2020],
+      [CSU Chancellor’s Doctoral Incentive Program], [2020--2021],
+      [General University Scholarship -- \$2,700], [Fall 2018, Fall 2020],
       [Graduate Research Advancement & Development Grant], [Spring 2016, Spring 2017],
       [Promising Scholar Award], [Fall 2017],
-      [Graduate Equity Fellowship - \$5,000], [Summer 2016]
+      [Graduate Equity Fellowship -- \$5,000], [Summer 2016]
 )
 
 == Travel Awards
@@ -888,7 +873,7 @@ _Manuscripts In Progress_
       inset: (left: 0pt, right: 0pt, top: 3pt, bottom: 3pt),
       [International Society of the Learning Sciences Reviewer], [2026],
       [American Public Health Association Physical Activity Section Abstract Reviewer], [2020],
-      [American Psychological Association Advanced Training Institute – Research Methods with Diverse and Ethnic Group], [2017]
+      [American Psychological Association Advanced Training Institute – Research Methods with Diverse and Ethnic Groups], [2017]
 )
 
 = Package Development Contributions
