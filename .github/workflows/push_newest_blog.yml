@@ -1,10 +1,37 @@
-name: Trigger Profile Update
+name: Website Content & Profile Update
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Points directly to your _site directory
+          path: './_site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
   ping:
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +48,10 @@ jobs:
       #     -H "Accept: application/vnd.github.v3+json" \
       #     -H "Authorization: token ${{ secrets.PROFILE_TOKEN }}" \
       #     -d '{"event_type": "website_updated"}'
+
+
+
+      
 
 # name: Notify readme of new post
 # on:
