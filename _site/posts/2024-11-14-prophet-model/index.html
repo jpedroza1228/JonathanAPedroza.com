@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2024-11-14">
 
-<title>Prophet Model – Jonathan A. Pedroza</title>
+<title>Prophet Model – Jonathan A. Pedroza PhD</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Jonathan A. Pedroza</span>
+    <span class="navbar-title">Jonathan A. Pedroza PhD</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -127,12 +127,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">My Posts</span></a>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://bsky.app/profile/jonathanpedroza.bsky.social"> <i class="bi bi-bluesky" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jpedroza"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jpedroza1228"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=_LpAFsIAAAAJ&amp;hl=en&amp;oi=ao"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../cv.pdf"> <i class="bi bi-file-pdf" role="img">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -232,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><a href="https://lubridate.tidyverse.org/">lubridate</a></p></li>
 </ul>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
@@ -248,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://docs.google.com/spreadsheets/d/1wYpTEQqreipZVeZRq0VV9r-o8FPgM8hGoFT_QhGCOVI/edit#gid=0">JetBlue Sheet</a></p>
 <p>Here I have a copy of my Google Sheet for JetBlue that I will use to train and test my Prophet model. Instead of having a <code>.csv</code> file on my local machine, I decided to keep this on Google Drive so that it constantly updates with the Google Finance function. This meant that I had to use the <code>googlesheets4</code> package to load the data from a Google Sheet. I also changed the name and class of the date variable to make it a date variable instead of a date and time variable.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>googlesheets4<span class="sc">::</span><span class="fu">gs4_deauth</span>()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -263,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="cleaning-up-the-data">Cleaning Up the Data</h3>
 <p>Based on some visualizations below, I also decided to create some additional variables from the date variable. Specifically, I used <code>lubridate's wday()</code> function to create a new variable that gives you the actual day from the corresponding cell’s date. I also used the <code>ts_clean_vec</code> function from <code>time_tk</code> to clean for outliers in the stock price values. There are additional arguments for the function, like applying a Box-Cox transformation but that is for a multiplicative trend, which this model does not appear to fit since the variation in the outcome does not grow exponentially. I’ll also include 2002 as the reference year for the year variable and make sure that my data is arranged by date.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="ot">&lt;-</span> jet <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">actual_day =</span> <span class="fu">wday</span>(ds,</span>
@@ -289,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="visualizing-data">Visualizing Data</h2>
 <p>Starting with some quick visualizations, we can see that the only area that there is a difference in the variation of the stock prices is in the beginning of 2020. I wonder what that could have been.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year_num, month_num) <span class="sc">|&gt;</span> </span>
@@ -309,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Next, we can look at the histograms for the outcome of interest. If we look at the histograms, we can see that there are potential outliers in the original stock prices data. We can also see that cleaning the variable removed the potential outliers.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>only_numeric <span class="ot">&lt;-</span> jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(close, clean)</span>
@@ -360,7 +392,7 @@ $clean</code></pre>
 </div>
 <p>There will also be a lot of use of the <code>purrr</code> package and the <code>map</code> functions, which are part of the tidyverse. We can also see that in the plot series visualization using <code>modeltime's plot_time_series</code> function, that the cleaned stock prices remove the outliers. So from here on out, I’ll be using the cleaned stock prices.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map2</span>(only_numeric,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">names</span>(only_numeric),</span>
@@ -394,7 +426,7 @@ $clean</code></pre>
 </div>
 <p>We can also look for anomalies, or points that deviate from the trend. Using the <code>plot_anomaly_diagnostics</code> function from the <code>modeltime</code> package, I can see all the anomalies in the data. I also used ggplot to create my own visualization using the same data. Lastly, we’ll deal with those anomalies by removing them from the dataset. This is not too much of a problem because the Prophet model should be able to handle this fairly easy.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_anomaly_diagnostics</span>(ds,</span>
@@ -411,7 +443,7 @@ $clean</code></pre>
 </div>
 </div>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tk_anomaly_diagnostics</span>(ds,</span>
@@ -431,7 +463,7 @@ $clean</code></pre>
 </figure>
 </div>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>anomaly <span class="ot">&lt;-</span> jetblue <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tk_anomaly_diagnostics</span>(ds,</span>
@@ -443,7 +475,7 @@ $clean</code></pre>
 </div>
 <p>We can also look into additional regressors to include in the model by looking into seasonality. We can see some fluctuation in stock prices across the years. We’ll include the year variable as another regressor on the stock prices.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_seasonal_diagnostics</span>(ds,</span>
@@ -463,7 +495,7 @@ $clean</code></pre>
 <h2 class="anchored" data-anchor-id="training-the-prophet-model">Training the Prophet Model</h2>
 <p>Before we begin, I’m going to designate 10 cores to process any models run.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05262022</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -472,7 +504,7 @@ $clean</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parallel_start</span>(<span class="dv">10</span>,</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">.method =</span> <span class="st">'parallel'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -480,7 +512,7 @@ $clean</code></pre>
 </div>
 <p>First, instead of the normal <code>initial_split</code> used for training and testing splits, we’ll use the <code>initial_time_split</code> function from <code>tidymodels</code> to separate the first 80% of the data into training set and the last 20% into the testing set.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05262022</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>jet_split <span class="ot">&lt;-</span> <span class="fu">initial_time_split</span>(jetblue)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -490,7 +522,7 @@ $clean</code></pre>
 <h3 class="anchored" data-anchor-id="prophet-model-function">Prophet Model Function</h3>
 <p>I decided to create my own Prophet function to be able to use for both training the model and testing it. In this function, I’ve also included parameters that can be changed to see if the model performs better or worse. Lastly, the <code>train = TRUE</code> allows us to practice with the training dataset and then when we’re happy with the model, we can use it to test our model. For our model, we’ll be predicting stock prices with date and comparing each year to the reference year (2002).</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>prophet_mod <span class="ot">&lt;-</span> <span class="cf">function</span>(splits,</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">changepoints =</span> .<span class="dv">05</span>,</span>
@@ -546,7 +578,7 @@ $clean</code></pre>
 </div>
 <p>It is worth noting that I’m using the <code>modeltime</code> package to run the prophet model because I believe it is easier to use (especially for later steps) than from Prophet, but both can be implemented in this function. Let’s try running this model with the some random parameters I chose from the <a href="https://facebook.github.io/prophet/docs/diagnostics.html#hyperparameter-tuning">Prophet website</a> until realizing that the <code>modeltime</code> parameters are log transformed.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05262022</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">prophet_mod</span>(jet_split,</span>
@@ -564,7 +596,7 @@ $clean</code></pre>
 </div>
 <p>So with the model, we can see that the Mean Absolute Scaled Error (MASE) is 4.6774069 and the Root Mean Square Error (RMSE) is 1.3720952. Not bad for an initial run. Let’s look at how the model fits the training data.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">train =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span>  </span>
@@ -588,7 +620,7 @@ $clean</code></pre>
 <h3 class="anchored" data-anchor-id="tuning-the-model">Tuning the Model</h3>
 <p>Now, I’ll tune the prior scale values for the model. I’ll use the <code>grid_latin_hypercube</code> from the <code>dials</code> package in <code>tidymodels</code> to choose 5 sets of parameter values to run. I’m also using the <code>rolling_origin</code> from the <code>rsample</code> package in <code>tidymodels</code> because we are working with time series data. This does not create random samples but instead has samples with data points with consecutive values.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05262022</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -642,7 +674,7 @@ $clean</code></pre>
 </details>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_rds</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">'posts/2024-11-14-prophet-model/tuned_metrics.rds'</span>))</span>
@@ -670,7 +702,7 @@ $clean</code></pre>
 <h3 class="anchored" data-anchor-id="final-training-model">Final Training Model</h3>
 <p>I then decided to run the prophet model on the training dataset with the new parameter values.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>final_train <span class="ot">&lt;-</span> <span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -689,7 +721,7 @@ $clean</code></pre>
 </div>
 </div>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -717,7 +749,7 @@ $clean</code></pre>
 <h2 class="anchored" data-anchor-id="testing-the-model">Testing the Model</h2>
 <p>Finally, let’s test our Prophet model to see how well the model fits.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -739,7 +771,7 @@ $clean</code></pre>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>test_model <span class="ot">&lt;-</span> <span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -763,7 +795,7 @@ $clean</code></pre>
 <h2 class="anchored" data-anchor-id="forecasting-ahead-a-year">Forecasting Ahead a Year</h2>
 <p>Well our model fit could be better, but let’s see how the model looks when refit to the full data and forecast ahead a year. So in a year, it seems that JetBlue stock may experience an uptick in prices to almost $10 a stock at the beginning of 2024. Then it seems like the value may drop again as the year goes on. The confidence intervals for the forecast do not appear to change much from the rest of the model as well.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>future <span class="ot">&lt;-</span> jetblue <span class="sc">|&gt;</span> </span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">future_frame</span>(<span class="at">.length_out =</span> <span class="st">'1 year'</span>, <span class="at">.bind_data =</span> <span class="cn">TRUE</span>)</span>
@@ -804,7 +836,7 @@ $ year_num      &lt;fct&gt; 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002, 2002
 $ month_num     &lt;fct&gt; 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 05, …
 $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 1, 2…</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>test_model1 <span class="ot">&lt;-</span> <span class="fu">prophet_mod</span>(jet_split,</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">changepoints =</span> <span class="fl">3.53</span>,</span>
@@ -833,7 +865,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 <h1>Testing the Algorithm on a Different Airline’s Stock Prices</h1>
 <p>Let’s take this a step further and see how well our algorithm fits on a different airline’s stock price data. We will use the final Prophet model to see if it works well using all of American Airlines data to make predictions.</p>
 <div class="cell" data-figh-width="8">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>link <span class="ot">&lt;-</span> <span class="st">'https://docs.google.com/spreadsheets/d/11DWSWLFXT84uGg_mBvVYJevQOsN7ghYovJefH87BJXc/edit#gid=0'</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -911,7 +943,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
 </div>
 <p>It appears that the prophet model does an excellent job of predicting the data. The MASE is 3.06 and seems good and the RMSE is reasonable (2.23). The forecast similarly shows an uptick at the beginning of 2024, but does not drop as much as the JetBlue stocks.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model_cali <span class="sc">|&gt;</span> </span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modeltime_refit</span>(<span class="at">data =</span> future_amer) <span class="sc">|&gt;</span></span>
@@ -1006,7 +1038,7 @@ $ day_num       &lt;dbl&gt; 12, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 29, 30, 
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/jpedroza1228\.github\.io\/JonathanAPedroza\.com\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

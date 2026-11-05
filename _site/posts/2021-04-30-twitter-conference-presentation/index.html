@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2021-04-30">
 
-<title>Twitter Conference Presentation – Jonathan A. Pedroza</title>
+<title>Twitter Conference Presentation – Jonathan A. Pedroza PhD</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Jonathan A. Pedroza</span>
+    <span class="navbar-title">Jonathan A. Pedroza PhD</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -127,12 +127,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">My Posts</span></a>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://bsky.app/profile/jonathanpedroza.bsky.social"> <i class="bi bi-bluesky" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jpedroza"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jpedroza1228"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=_LpAFsIAAAAJ&amp;hl=en&amp;oi=ao"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../cv.pdf"> <i class="bi bi-file-pdf" role="img">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -206,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="packages-ued" class="level3">
 <h3 class="anchored" data-anchor-id="packages-ued">Packages ued</h3>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(inspectdf)</span>
@@ -233,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
 <p>Before beginning I created a simple function to get the intraclass correlation coefficient (ICC). I also included a function to get data from the 5 years of County Health Rankings data. The function to get the ICC from random-intercept models is the between county variation divided by the total variation between counties and within counties. This gives you information about how much of the variation in the model can be attributed to differences between counties regarding your outcome. Random-intercept models were tested because I was only interested in knowing the variation in counties’ LTPA engagement. There were also not enough points for each county to test individual slopes for each county (random-slopes model).</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>county_icc_2level <span class="ot">&lt;-</span> <span class="cf">function</span>(multi_model){</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  between <span class="ot">&lt;-</span> multi_model<span class="sc">$</span>vcov[<span class="dv">1</span>]</span>
@@ -277,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>I also made some slight changes to my data. The first was to get rid of the estimates for each state and only focus on estimates from the county. I also wanted to treat year as a continuous variable in my models but wanted to keep the <code>year</code> variable as a factor too. Then after filtering to only examine California counties I used the <code>str_replace_all</code> function from the <code>stringr</code> package to get rid of the county name after each observation. This was to make it easier to join with map data from the <code>maps</code> package. Lastly, I made the counties title case to also make joining the observations easier.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>county <span class="ot">&lt;-</span> county <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(fips_code, <span class="st">'000$'</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>))</span>
@@ -296,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="models">Models</h3>
 <p>Now when running the first model, I was first interested in examining if there was an increase in LTPA engagement in all California counties from 2016 to 2020. From the finding below, it shows that in California, there was a decrease in LTPA over that time. It’s also important to note that <code>lmerTest</code> and <code>lme4</code> both have a <code>lmer</code> function. By namespacing them with two colons, you can see that the summary information is slightly different.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>preliminary_ltpa_long <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(ltpa_percent <span class="sc">~</span> year_num <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> county_fips_code), <span class="at">data =</span> ca,</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
@@ -334,7 +366,7 @@ year_num -1.000</code></pre>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>prelim_ltpa_lmer <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(ltpa_percent <span class="sc">~</span> year_num <span class="sc">+</span>(<span class="dv">1</span> <span class="sc">|</span> county_fips_code), <span class="at">data =</span> ca,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
@@ -369,7 +401,7 @@ year_num -1.000</code></pre>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ltpa_null_icc <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">VarCorr</span>(preliminary_ltpa_long))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -382,7 +414,7 @@ year_num -1.000</code></pre>
 1 county_fips_code (Intercept) &lt;NA&gt;   7.19  2.68
 2 Residual         &lt;NA&gt;        &lt;NA&gt;   5.17  2.27</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">county_icc_2level</span>(ltpa_null_icc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -392,7 +424,7 @@ year_num -1.000</code></pre>
 </div>
 <p>Along with the fixed effects, we also got our random effects for both differences found between counties for LTPA engagement and differences within counties for LTPA engagement. This shows that there was a good amount of variation between counties (σ2 = 7.19) but also a large amount of variation within each county in California (σ2 = 5.17). Using the function to calculate the ICC, it found that county differences attributed to 58% of the variation in LTPA engagement. Something that should be considered is the potential for heteroscedastic residual variance at level 1. There is also the issue that the residuals could suggest spatial autocorrelation or clustering within these counties. Maybe I’ll create something on these soon. But for the time being, lets move on to what was found for the twitter conference.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ltpa_long_access <span class="ot">&lt;-</span> <span class="fu">lmer</span>(ltpa_percent <span class="sc">~</span> year_num <span class="sc">+</span> violent_crime <span class="sc">+</span> obesity_percent <span class="sc">+</span> median_household_income <span class="sc">+</span> rural_percent <span class="sc">+</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                           access_pa_percent <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> county_fips_code), <span class="at">data =</span> ca,</span>
@@ -416,7 +448,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>other_var <span class="ot">&lt;-</span> <span class="fu">lmer</span>(ltpa_percent <span class="sc">~</span> year_num <span class="sc">+</span> violent_crime <span class="sc">+</span> obesity_percent <span class="sc">+</span> median_household_income <span class="sc">+</span> rural_percent <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> county_fips_code), <span class="at">data =</span> ca,</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
@@ -437,7 +469,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>With the inclusion of several predictors for fixed effects, a likelihood ratio test was conducted to see if the inclusion of these fixed effects revealed a significantly better fitting model. The inclusion of these predictors revealed a better fitting model. It would probably be better to see if the inclusion of one variable of interest, such as access, resulted in a better fitting model than a model with the other social determinants of health. As can be see here, the likelihood ratio test of including only access still resulted in a signifcantly better fitting model.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ltpa_long_access)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -496,7 +528,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 </div>
 <p>The model summary suggests that the fixed effect of access on LTPA engagement was significantly associated. The thing that stands out the most here is that the inclusion of the predictors resulted in more variation within counties than between counties. So lets look into that more closely.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ltpa_access_icc <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">VarCorr</span>(ltpa_long_access))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ltpa_access_icc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -508,7 +540,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 1 county_fips_code (Intercept) &lt;NA&gt;   1.29  1.13
 2 Residual         &lt;NA&gt;        &lt;NA&gt;   3.14  1.77</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">county_icc_2level</span>(ltpa_access_icc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -522,7 +554,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 <h3 class="anchored" data-anchor-id="visuals-prep">Visuals Prep</h3>
 <p>Below we’ll start by using the <code>maps</code> package to get county-level data of the contiguous United States. The steps below were to make sure this data frame joined with the county health rankings data we had created previously.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>us <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="at">map =</span> <span class="st">'county'</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -570,7 +602,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 <h3 class="anchored" data-anchor-id="visualizing-model">Visualizing model</h3>
 <p>One way to visualize the variation between counties in our final model (<code>ltpa_long_access</code>) is to use a caterpillar plot. This allows you to view variation in the residuals of each county for your outcome. From the visual, you can see the differences between Humboldt County and Tehama County.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>main_effects_var <span class="ot">&lt;-</span> <span class="fu">ranef</span>(ltpa_long_access, <span class="at">condVar =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -606,7 +638,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 </div>
 <p>This plot shows the fixed effect of access and LTPA across the various years.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ca <span class="sc">|&gt;</span> </span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">as.factor</span>(year)) <span class="sc">|&gt;</span> </span>
@@ -629,7 +661,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
 </div>
 <p>Finally, a gif of the change of LTPA from 2016 to 2020.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -743,7 +775,7 @@ Some predictor variables are on very different scales: consider rescaling</code>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/jpedroza1228\.github\.io\/JonathanAPedroza\.com\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

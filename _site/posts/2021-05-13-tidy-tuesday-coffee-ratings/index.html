@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2021-05-13">
 
-<title>Tidy Tuesday Coffee Ratings – Jonathan A. Pedroza</title>
+<title>Tidy Tuesday Coffee Ratings – Jonathan A. Pedroza PhD</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Jonathan A. Pedroza</span>
+    <span class="navbar-title">Jonathan A. Pedroza PhD</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -127,12 +127,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Resources</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">My Posts</span></a>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://bsky.app/profile/jonathanpedroza.bsky.social"> <i class="bi bi-bluesky" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jpedroza"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jonathan-a-pedroza-phd-5721a7120/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jpedroza1228"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=_LpAFsIAAAAJ&amp;hl=en&amp;oi=ao"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../cv.pdf"> <i class="bi bi-file-pdf" role="img">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -208,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="predicting-process-of-green-coffee-beans">Predicting Process of Green Coffee Beans</h2>
 <p>With coffee being a hobby of mine, I was scrolling through past Tidy Tuesdays and found one on coffee ratings. Originally I thought looking at predictions of total cup points, but I assumed with all the coffee tasting characteristics that it wouldn’t really tell me anything. Instead, I decided to look into the processing method, as there are different taste characteristics between washed and other processing methods.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>coffee <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv'</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">as.factor</span>(species),</span>
@@ -227,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>After looking at the distributions of procssing methods, I also decided to make the processing method binary with washed and not washed. This worked out better for the prediction models. There are also some descriptives of each variable.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>coffee <span class="sc">|&gt;</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(processing_method)) <span class="sc">+</span></span>
@@ -241,7 +273,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>coffee <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(process)) <span class="sc">+</span></span>
@@ -255,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(coffee, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)[<span class="fu">c</span>(<span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"skew"</span>, <span class="st">"kurtosis"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -309,7 +341,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 </div>
 <p>Now, its time to split the data into training and testing data. I also included the function of <code>strata</code> to stratify sampling based on process.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05132021</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -321,7 +353,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 </div>
 <p>I also did some cross validation for the training dataset and used the metrics I was most interested in.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05132021</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -332,7 +364,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 </div>
 <p>From the beginning I was interested in the tasting characteristics and how they would predict whether the green coffee was washed or not washed. I also included the total cup points because I wanted to see the importance of that predictor on the processing method. The only feature engineering I did was to remove any zero variance in the predictors of the model.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05132021</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -364,7 +396,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 <h3 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h3>
 <p>The first model I wanted to test with the current recipe was logistic regression. The <code>accuracy</code> and <code>roc auc</code> were alright for a starting model.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(lr_fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -382,7 +414,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 <h3 class="anchored" data-anchor-id="lasso-regression">Lasso Regression</h3>
 <p>Now for the first penalized regression. The lasso regression did not improve in either metric. Let’s try the next penalized regression.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(lasso_fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -400,7 +432,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 <h3 class="anchored" data-anchor-id="ridge-regression">Ridge Regression</h3>
 <p>The ridge regression was shown to not be a good fitting model. So I tested an additional penalized regression while tuning hyper-parameters.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(ridge_fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -418,7 +450,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 <h3 class="anchored" data-anchor-id="elastic-net-regression">Elastic Net Regression</h3>
 <p>The elastic net regression had slightly better accuracy than the non-penalized logistic regression but the ROC AUC was exactly the same. While the elastic net regression did not take long computationally due to the small amount of data, this model would not be chosen over the logistic regression.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(elastic_fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -438,7 +470,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 10 0.000000215         0 accuracy    binary     0.698    10 0.00342 Preprocesso…
 # ℹ 290 more rows</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(elastic_fit, <span class="at">metric =</span> <span class="st">"accuracy"</span>, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -452,7 +484,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 4 0.0000000167    0.333 accuracy binary     0.703    10 0.00422 Preprocessor1_M…
 5 0.000000215     0.333 accuracy binary     0.703    10 0.00422 Preprocessor1_M…</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(elastic_fit, <span class="at">metric =</span> <span class="st">"roc_auc"</span>, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -466,7 +498,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 4 0.000000215         0 roc_auc binary     0.648    10  0.0188 Preprocessor1_Mo…
 5 0.00000278          0 roc_auc binary     0.648    10  0.0188 Preprocessor1_Mo…</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(elastic_fit, <span class="at">metric =</span> <span class="st">"accuracy"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -476,7 +508,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                 
 1  0.0774   0.111 Preprocessor1_Model019</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(elastic_fit, <span class="at">metric =</span> <span class="st">"roc_auc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -492,7 +524,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 <h3 class="anchored" data-anchor-id="new-recipe">New Recipe</h3>
 <p>Even though the elastic net regression was only slightly better, I decided to update the workflow using that model. This time I decided to update the recipe by including additional predictors like if there were any defects in the green coffee beans, the species of the coffee (e.g., Robusta and Arabica), and the country of origin. I also included additional steps in my recipe by transforming the category predictors and working with the factor predictors, like species, and country of origin. The inclusion of additional steps and the predictors created a better fitting model with the elastic net regression.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">05132021</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -510,7 +542,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 </details>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(elastic_bal_fit) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -530,7 +562,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 10 0.000000215         0 accuracy    binary     0.839    10 0.00923 Preprocesso…
 # ℹ 290 more rows</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"accuracy"</span>, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -544,7 +576,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 4 0.00599    0.222 accuracy binary     0.840    10 0.00933 Preprocessor1_Model0…
 5 0.00599    0.333 accuracy binary     0.840    10 0.00933 Preprocessor1_Model0…</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"mn_log_loss"</span>, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -558,7 +590,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 4 0.000464   0.667 mn_log_loss binary     0.420    10  0.0178 Preprocessor1_Mod…
 5 0.000464   0.556 mn_log_loss binary     0.420    10  0.0177 Preprocessor1_Mod…</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"roc_auc"</span>, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -572,7 +604,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 4 0.000464   0.444 roc_auc binary     0.843    10  0.0141 Preprocessor1_Model047
 5 0.000464   0.556 roc_auc binary     0.843    10  0.0141 Preprocessor1_Model057</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"accuracy"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -582,7 +614,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                 
 1 0.000464   0.111 Preprocessor1_Model017</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"mn_log_loss"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -592,7 +624,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;                 
 1 0.000464       1 Preprocessor1_Model097</code></pre>
 </div>
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(elastic_bal_fit, <span class="at">metric =</span> <span class="st">"roc_auc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -605,7 +637,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
 </div>
 <p>Now using the testing dataset, we can see how well the final model fit the testing data. While not the best at predicting washed green coffee beans, this was a good test to show that the penalized regressions are not always the best fitting models compared to regular logistic regression. In the end, it seemed like the recipe was the most important component to predicting washed green coffee beans.</p>
 <div class="cell">
-<details class="code-fold">
+<details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>final_results <span class="sc">|&gt;</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -698,7 +730,7 @@ process*               1168    1.30    0.46  1.00      2.00  0.86    -1.27</code
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/jpedroza1228\.github\.io\/JonathanAPedroza\.com\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
